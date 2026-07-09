@@ -45,6 +45,13 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#footer-placeholder {
+    margin-top: auto;
 }
 
 /* Background ambient light blobs */
