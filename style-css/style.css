@@ -52,12 +52,13 @@ body {
 
 #footer-placeholder {
     margin-top: auto;
+    width: 100%;
 }
 
 /* Background ambient light blobs */
 body::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 5%;
     left: -10%;
     width: 60vw;
@@ -69,7 +70,7 @@ body::before {
 
 body::after {
     content: '';
-    position: absolute;
+    position: fixed;
     bottom: 25%;
     right: -10%;
     width: 70vw;
