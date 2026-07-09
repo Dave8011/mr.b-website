@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bhupesh Dave (Mr. B) - Indian Super Brain. Coming Soon.">
+    <title>Bhupesh Dave | Mr. B - Coming Soon</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="style-css/style.css">
+    
+    <!-- Page Specific Styles -->
+    <link rel="stylesheet" href="style-css/index.css">
+</head>
+<body>
+    
+    <!-- Background Ambient Glows -->
+    <div class="bg-glow"></div>
+    <div style="position:fixed; top:20%; right:10%; width:60vw; height:60vw; background:radial-gradient(circle, rgba(15,118,110,0.05) 0%, rgba(12,12,30,0) 60%); z-index:-2; pointer-events:none;"></div>
+
+    <!-- Global Navigation Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Coming Soon Section -->
+    <section class="coming-soon-section">
+        <div class="container">
+            <div class="cs-tag">Website Under Construction</div>
+            
+            <div class="quote-container" id="quote-container">
+                <!-- Quotes will be injected here via JS -->
+            </div>
+            
+            <div style="margin-top: 4rem;">
+                <p style="font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 1.1rem;">
+                    Something extraordinary is being crafted...
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <script src="components.js"></script>
+    <script>
+        const quotes = [
+            "He doesn't just read minds. <span class='gold-highlight'>He changes them.</span>",
+            "The mind is the only limit to <span class='gold-highlight'>what you can achieve.</span>",
+            "Perception is not reality. It's just <span class='gold-highlight'>the starting point.</span>",
+            "Unlock the untapped potential of your <span class='gold-highlight'>subconscious.</span>",
+            "Where logic ends, the <span class='gold-highlight'>miracle of the mind begins.</span>",
+            "You are not your thoughts. You are the <span class='gold-highlight'>observer of them.</span>",
+            "The greatest magic trick is <span class='gold-highlight'>transforming your own reality.</span>",
+            "A trained mind can see <span class='gold-highlight'>what the eyes cannot.</span>",
+            "Your brain is a supercomputer; it's time to learn the <span class='gold-highlight'>programming language.</span>",
+            "There are no secrets, only <span class='gold-highlight'>mysteries waiting to be unraveled.</span>",
+            "When you control your focus, you <span class='gold-highlight'>command your future.</span>",
+            "Intuition is the whisper of the soul; <span class='gold-highlight'>listen closely.</span>",
+            "The extraordinary is hidden <span class='gold-highlight'>within the ordinary.</span>",
+            "Thoughts become things. <span class='gold-highlight'>Choose the good ones.</span>",
+            "Every mind is a <span class='gold-highlight'>universe waiting to be explored.</span>",
+            "We are only limited by the boundaries <span class='gold-highlight'>we accept.</span>",
+            "The sixth sense isn't supernatural; <span class='gold-highlight'>it's super natural.</span>",
+            "Master your memory, and you <span class='gold-highlight'>master your destiny.</span>",
+            "Doubt is the illusion; <span class='gold-highlight'>belief is the reality.</span>",
+            "Expect the impossible. <span class='gold-highlight'>Experience the incredible.</span>"
+        ];
+
+        const quoteContainer = document.getElementById('quote-container');
+        
+        // Initialize quotes in DOM
+        quotes.forEach((quoteHtml, index) => {
+            const el = document.createElement('div');
+            el.className = 'quote-text';
+            if (index === 0) el.classList.add('active');
+            el.innerHTML = `"${quoteHtml}"`;
+            quoteContainer.appendChild(el);
+        });
+
+        const quoteElements = document.querySelectorAll('.quote-text');
+        let currentIndex = 0;
+
+        function rotateQuotes() {
+            const currentEl = quoteElements[currentIndex];
+            currentEl.classList.remove('active');
+            currentEl.classList.add('exit');
+            
+            setTimeout(() => {
+                currentEl.classList.remove('exit'); // Reset for next time
+            }, 1000);
+
+            currentIndex = (currentIndex + 1) % quoteElements.length;
+            const nextEl = quoteElements[currentIndex];
+            
+            nextEl.classList.add('active');
+        }
+
+        // Change quote every 5 seconds
+        setInterval(rotateQuotes, 5000);
+    </script>
+</body>
+</html>
