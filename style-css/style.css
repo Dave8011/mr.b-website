@@ -5,22 +5,22 @@
     /* Color Palette */
     --gold: #C9A02A;
     --gold-rgb: 201, 160, 42;
-    --purple: #3A3A3A;
-    --purple-rgb: 58, 58, 58;
-    --teal: #4A4A4A;
-    --teal-rgb: 74, 74, 74;
-    --burgundy: #222222;
-    --burgundy-rgb: 34, 34, 34;
+    --purple: #5B21B6;
+    --purple-rgb: 91, 33, 182;
+    --teal: #0F766E;
+    --teal-rgb: 15, 118, 110;
+    --burgundy: #881337;
+    --burgundy-rgb: 136, 19, 55;
     
-    --background: #000000;
-    --background-navy: #050505;
-    --background-card: #0a0a0a;
-    --text-light: #F5F5F7;
-    --text-muted: #888888;
+    --background: #0C0C1E;
+    --background-navy: #09091A;
+    --background-card: rgba(12, 12, 30, 0.7);
+    --text-light: #F5F0E8;
+    --text-muted: #A1A1B5;
     
     /* Layout & Effects */
-    --glass-bg: rgba(255, 255, 255, 0.02);
-    --glass-border: rgba(255, 255, 255, 0.05);
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.06);
     --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -55,7 +55,42 @@ body {
     width: 100%;
 }
 
-/* Removed Background ambient light blobs for minimalist aesthetic */
+/* Background ambient light blobs */
+body::before {
+    content: '';
+    position: fixed;
+    top: 5%;
+    left: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(201, 160, 42, 0.08) 0%, rgba(12, 12, 30, 0) 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 25%;
+    right: -10%;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, rgba(91, 33, 182, 0.06) 0%, rgba(12, 12, 30, 0) 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.bg-glow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    height: 90vw;
+    background: radial-gradient(circle, rgba(15, 118, 110, 0.03) 0%, rgba(6, 6, 20, 0) 60%);
+    z-index: -2;
+    pointer-events: none;
+}
 
 a {
     color: inherit;
@@ -102,6 +137,9 @@ p {
 
 .section {
     padding: 6rem 0;
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, transparent 10%);
 }
 
 .text-center {
@@ -141,26 +179,39 @@ p {
 }
 
 .btn-primary {
-    background: #fff;
-    color: #000;
-    box-shadow: 0 4px 15px rgba(255,255,255, 0.1);
+    background: linear-gradient(135deg, var(--gold) 0%, #dfb22f 100%);
+    color: #0c0c1e;
+    box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(255,255,255,0.2), transparent);
+    pointer-events: none;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255,255,255, 0.2);
-    background: #e0e0e0;
+    transform: scale(1.02) translateY(-2px);
+    box-shadow: 0 12px 30px rgba(var(--gold-rgb), 0.4), inset 0 1px 0 rgba(255,255,255,0.4);
+    background: linear-gradient(135deg, #e6c55c 0%, var(--gold) 100%);
 }
 
 .btn-secondary {
-    background-color: transparent;
-    border: 1px solid var(--glass-border);
+    background-color: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
     color: var(--text-light);
 }
 
 .btn-secondary:hover {
     background-color: rgba(255, 255, 255, 0.05);
     border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(var(--gold-rgb), 0.15);
 }
 
 .btn-nav {
@@ -187,15 +238,19 @@ p {
 .image-frame-glow {
     position: relative;
     border-radius: 12px;
-    padding: 0;
-    overflow: hidden;
-    background: transparent;
-    border: 1px solid var(--glass-border);
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255,255,255,0.02);
     transition: var(--transition-smooth);
 }
 
 .image-frame-glow:hover {
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(201, 160, 42, 0.3);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(var(--gold-rgb), 0.2);
+    transform: translateY(-4px);
 }
 
 /* Slide Headers */
@@ -1076,8 +1131,10 @@ p {
    Global Slim Footer Layout
    ========================================================================== */
 .brand-footer.slim-footer {
-    background-color: #0c0c1e;
-    border-top: 1px solid rgba(201, 160, 42, 0.2);
+    background-color: rgba(9, 9, 26, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding: 0;
     position: relative;
 }
