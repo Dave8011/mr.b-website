@@ -1,0 +1,13 @@
+{
+  "showHeroBanner": true,
+  "banners": [
+    {
+      "id": "1783946392391",
+      "url": "images/banners/banner_1783946392870.jpg",
+      "uploadDate": "2026-07-13T12:39:52.391Z"
+    }
+  ],
+  "activeBannerUrls": [
+    "images/banners/banner_1783946392870.jpg"
+  ]
+}
