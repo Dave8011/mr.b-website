@@ -10,19 +10,16 @@
 .event-item {
     display: flex;
     align-items: center;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.03) 100%);
+    background: transparent;
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     padding: 2rem;
     transition: var(--transition-smooth);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .event-item:hover {
-    background: linear-gradient(90deg, rgba(201, 160, 42, 0.02) 0%, rgba(201, 160, 42, 0.05) 100%);
-    border-color: rgba(201, 160, 42, 0.3);
-    transform: translateX(8px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(201, 160, 42, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
 }
 
 .event-date {
@@ -117,21 +114,17 @@
 }
 
 .testimonial-card {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: transparent;
+    border: 1px solid var(--glass-border);
     border-radius: 12px;
     padding: 3.5rem;
     position: relative;
     transition: var(--transition-smooth);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .testimonial-card:hover {
-    border-color: rgba(201, 160, 42, 0.3);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(201, 160, 42, 0.08);
-    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 .testimonial-author {
@@ -169,11 +162,9 @@
 
 .collab-logo:hover {
     opacity: 1;
-    color: var(--gold);
-    border-color: rgba(201, 160, 42, 0.15);
-    background: rgba(201, 160, 42, 0.03);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(201, 160, 42, 0.05);
+    color: #fff;
+    border-color: var(--glass-border);
+    transform: translateY(-2px);
 }
 
 /* Responsive Overrides */
