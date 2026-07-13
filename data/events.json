@@ -1,5 +1,16 @@
 [
   {
+    "id": "event-1783945244323",
+    "title": "test",
+    "date": "2026-07-15",
+    "time": "7:30 pm",
+    "location": "mumbai",
+    "image_url": "images/event1.jpg",
+    "image_alt": "",
+    "link": "/contact",
+    "is_hidden": false
+  },
+  {
     "id": "event-1783921931000",
     "title": "The Mind Unveiled - Mumbai",
     "date": "2026-08-15",
