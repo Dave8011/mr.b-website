@@ -136,7 +136,7 @@ p {
 }
 
 .section {
-    padding: 8rem 0;
+    padding: 6rem 0;
 }
 
 .text-center {
@@ -172,6 +172,7 @@ p {
     transition: var(--transition-smooth);
     font-family: 'Inter', sans-serif;
     border: none;
+    min-height: 48px; /* Mobile touch target standard */
 }
 
 .btn-primary {
@@ -343,7 +344,7 @@ p {
 
 .hero-quote-title {
     font-family: 'Cinzel', serif;
-    font-size: 3.4rem;
+    font-size: clamp(2.2rem, 7vw, 3.4rem);
     line-height: 1.15;
     font-weight: 900;
     margin-bottom: 2.5rem;
@@ -1235,10 +1236,6 @@ p {
         align-items: center;
     }
     
-    .hero-quote-title {
-        font-size: 2.8rem;
-    }
-    
     .hero-actions {
         justify-content: center;
     }
@@ -1304,7 +1301,7 @@ p {
 
 @media (max-width: 768px) {
     .section {
-        padding: 5rem 0;
+        padding: 4rem 0;
     }
     
     .header {
@@ -1317,7 +1314,9 @@ p {
         top: 100%;
         left: 0;
         width: 100%;
-        background-color: rgba(12, 12, 30, 0.95);
+        background-color: rgba(9, 9, 26, 0.98);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
         flex-direction: column;
         padding: 2rem 0;
         gap: 1.5rem;
