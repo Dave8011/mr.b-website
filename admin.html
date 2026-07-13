@@ -4,84 +4,282 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mr. B - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #0b0c10;
-            --surface: #1f2833;
+            --bg-dark: #050508;
+            --bg-navy: #0a0b16;
+            --surface: rgba(18, 20, 36, 0.6);
             --gold: #c9a02a;
-            --text: #c5c6c7;
+            --gold-light: #e0b842;
+            --text-light: #f5f5f7;
+            --text-muted: #9ba0ab;
             --danger: #ff4c4c;
+            --border: rgba(255, 255, 255, 0.08);
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .card { background: var(--surface); padding: 2rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 2rem; }
-        h1, h2 { color: #fff; margin-top: 0; }
-        input, select { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid #333; background: #000; color: #fff; border-radius: 4px; box-sizing: border-box; }
-        button { background: var(--gold); color: #000; border: none; padding: 0.8rem 1.5rem; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.3s; }
-        button:hover { filter: brightness(1.2); }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-danger { background: var(--danger); color: white; }
-        .event-list { display: grid; gap: 1rem; }
-        .event-card { background: #111; border: 1px solid #333; padding: 1rem; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;}
-        .event-details h3 { margin: 0 0 0.5rem 0; color: #fff; }
-        .event-details p { margin: 0; font-size: 0.9rem; color: #aaa; }
-        .status-badge { padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-        .status-active { background: rgba(0, 255, 0, 0.1); color: #0f0; }
-        .status-hidden { background: rgba(255, 0, 0, 0.1); color: #f00; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: radial-gradient(circle at top right, var(--bg-navy), var(--bg-dark) 80%); 
+            color: var(--text-light); 
+            margin: 0; 
+            padding: 3rem 1rem; 
+            min-height: 100vh;
+        }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        h1, h2, h3 { font-family: 'Cinzel', serif; color: #fff; font-weight: 700; margin-top: 0; }
+        .gold-text { color: var(--gold); }
+        
+        .card { 
+            background: var(--surface); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border); 
+            padding: 2.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+            margin-bottom: 2.5rem; 
+        }
+        
+        .input-group { margin-bottom: 1.5rem; flex: 1; min-width: 250px; }
+        .input-group label { 
+            display: block; 
+            margin-bottom: 0.6rem; 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        
+        input, select { 
+            width: 100%; 
+            padding: 1rem 1.2rem; 
+            background: rgba(0, 0, 0, 0.3); 
+            border: 1px solid var(--border); 
+            color: #fff; 
+            border-radius: 8px; 
+            font-family: 'Inter', sans-serif; 
+            transition: all 0.3s ease; 
+            box-sizing: border-box; 
+            font-size: 1rem;
+        }
+        
+        input:focus { 
+            outline: none; 
+            border-color: var(--gold); 
+            box-shadow: 0 0 15px rgba(201,160,42,0.15); 
+            background: rgba(0,0,0,0.5); 
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--gold), var(--gold-light)); 
+            color: #000; 
+            border: none; 
+            padding: 1rem 2rem; 
+            font-weight: 700; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            font-family: 'Inter', sans-serif; 
+            letter-spacing: 1px;
+            font-size: 1rem;
+        }
+        
+        .btn-primary:hover:not(:disabled) { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 20px rgba(201,160,42,0.3); 
+        }
+        
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .btn-secondary { 
+            background: rgba(255,255,255,0.05); 
+            color: #fff; 
+            border: 1px solid var(--border); 
+            padding: 0.8rem 1.2rem; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
+        
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+        
+        .btn-danger { 
+            background: rgba(255, 76, 76, 0.1); 
+            color: var(--danger); 
+            border: 1px solid rgba(255, 76, 76, 0.3); 
+        }
+        
+        .btn-danger:hover { background: rgba(255, 76, 76, 0.2); }
+        
+        .event-list { display: grid; gap: 1.2rem; }
+        
+        .event-card { 
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid var(--border); 
+            padding: 1.5rem; 
+            border-radius: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: 0.3s; 
+        }
+        
+        .event-card:hover { 
+            border-color: rgba(255,255,255,0.15); 
+            background: rgba(0,0,0,0.4); 
+            transform: translateX(5px);
+        }
+        
+        .event-details h3 { margin: 0 0 0.5rem 0; font-size: 1.3rem; letter-spacing: 0.5px; }
+        .event-details p { margin: 0; font-size: 0.95rem; color: var(--text-muted); }
+        
+        .status-badge { 
+            padding: 0.3rem 0.8rem; 
+            border-radius: 20px; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            margin-left: 1rem; 
+            vertical-align: middle; 
+            letter-spacing: 1px;
+        }
+        
+        .status-active { 
+            background: rgba(46, 164, 79, 0.15); 
+            color: #4ade80; 
+            border: 1px solid rgba(46, 164, 79, 0.3); 
+        }
+        
+        .status-hidden { 
+            background: rgba(255, 76, 76, 0.1); 
+            color: var(--danger); 
+            border: 1px solid rgba(255, 76, 76, 0.3); 
+        }
+        
         .hidden { display: none !important; }
-        #toast { position: fixed; bottom: 20px; right: 20px; background: var(--gold); color: #000; padding: 1rem 2rem; border-radius: 4px; transform: translateY(100px); opacity: 0; transition: 0.3s; }
+        
+        #toast { 
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px; 
+            background: linear-gradient(135deg, var(--gold), var(--gold-light)); 
+            color: #000; 
+            padding: 1.2rem 2.5rem; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            transform: translateY(100px); 
+            opacity: 0; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            z-index: 1000; 
+        }
+        
         #toast.show { transform: translateY(0); opacity: 1; }
+        
+        @media (max-width: 600px) {
+            .event-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .event-actions { width: 100%; display: flex; justify-content: flex-end; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem;">
-        <h1>Mr. B Admin Panel</h1>
-        <div><i class="fa-solid fa-lock"></i> Secure Access</div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
+        <h1 style="font-size: 2rem; margin: 0;">Mr. B <span class="gold-text">Admin Panel</span></h1>
+        <div style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;"><i class="fa-solid fa-shield-halved gold-text"></i> SECURE ACCESS</div>
     </div>
 
     <!-- Login Form -->
-    <div class="card" id="login-section" style="max-width: 400px; margin: 4rem auto;">
-        <h2 style="text-align: center; margin-bottom: 2rem;">Login</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="login()" style="width: 100%; margin-top: 1rem;">Login</button>
-        <p id="login-error" style="color: var(--danger); text-align: center; margin-top: 1rem; font-size: 0.9rem;" class="hidden">Invalid credentials.</p>
+    <div class="card" id="login-section" style="max-width: 450px; margin: 4rem auto; text-align: center;">
+        <i class="fa-solid fa-user-lock gold-text" style="font-size: 3.5rem; margin-bottom: 1.5rem;"></i>
+        <h2 style="margin-bottom: 2.5rem; font-size: 1.5rem;">Authentication Required</h2>
+        
+        <div class="input-group" style="text-align: left;">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Enter your username">
+        </div>
+        <div class="input-group" style="text-align: left;">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter your password">
+        </div>
+        
+        <button class="btn-primary" onclick="login()" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-right-to-bracket" style="margin-right: 0.5rem;"></i> Secure Login
+        </button>
+        
+        <p id="login-error" style="color: var(--danger); text-align: center; margin-top: 1.5rem; font-size: 0.9rem; font-weight: 500;" class="hidden">
+            <i class="fa-solid fa-triangle-exclamation"></i> Invalid credentials.
+        </p>
     </div>
 
     <!-- Events Manager -->
     <div id="app-section" class="hidden">
+        
+        <!-- Add Event Card -->
         <div class="card">
-            <h2>Add New Event</h2>
-            <div style="display:flex; gap:1rem;">
-                <input type="text" id="ev-title" placeholder="Event Title (e.g. Corporate Illusions)">
-                <input type="date" id="ev-date">
+            <h2 style="margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                <i class="fa-solid fa-calendar-plus gold-text" style="margin-right: 0.5rem;"></i> Create New Event
+            </h2>
+            
+            <div style="display:flex; gap:1.5rem; flex-wrap: wrap;">
+                <div class="input-group">
+                    <label>Event Title</label>
+                    <input type="text" id="ev-title" placeholder="e.g. Corporate Illusions">
+                </div>
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="date" id="ev-date">
+                </div>
             </div>
-            <div style="display:flex; gap:1rem;">
-                <input type="text" id="ev-time" placeholder="Time (e.g. 7:00 PM)">
-                <input type="text" id="ev-location" placeholder="Location">
+            
+            <div style="display:flex; gap:1.5rem; flex-wrap: wrap;">
+                <div class="input-group">
+                    <label>Time</label>
+                    <input type="text" id="ev-time" placeholder="e.g. 7:00 PM">
+                </div>
+                <div class="input-group">
+                    <label>Location</label>
+                    <input type="text" id="ev-location" placeholder="e.g. Taj West End, Bangalore">
+                </div>
             </div>
-            <input type="text" id="ev-image" placeholder="Image URL (default: images/event1.jpg)" value="images/event1.jpg">
-            <button onclick="addEvent()"><i class="fa-solid fa-plus"></i> Add Event</button>
+            
+            <div class="input-group">
+                <label>Featured Image URL</label>
+                <input type="text" id="ev-image" placeholder="default: images/event1.jpg" value="images/event1.jpg">
+            </div>
+            
+            <div style="text-align: right; margin-top: 1rem;">
+                <button class="btn-primary" onclick="addEvent()">
+                    <i class="fa-solid fa-plus" style="margin-right: 0.5rem;"></i> Add Event to Roster
+                </button>
+            </div>
         </div>
 
+        <!-- Manage Events Card -->
         <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
-                <h2>Manage Events</h2>
-                <button onclick="publishEvents()" style="background:#2ea44f; color:white;"><i class="fa-solid fa-cloud-arrow-up"></i> Publish to Website</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">
+                <h2 style="margin: 0;">
+                    <i class="fa-solid fa-list-check gold-text" style="margin-right: 0.5rem;"></i> Manage Events
+                </h2>
+                <button class="btn-primary" onclick="publishEvents()" style="background: linear-gradient(135deg, #2ea44f, #22863a); color: white;">
+                    <i class="fa-solid fa-cloud-arrow-up" style="margin-right: 0.5rem;"></i> Publish to Website
+                </button>
             </div>
+            
             <div class="event-list" id="event-list">
-                <!-- Event cards -->
+                <!-- Event cards injected here -->
             </div>
         </div>
     </div>
 </div>
 
-<div id="toast">Saved!</div>
+<div id="toast"><i class="fa-solid fa-circle-check"></i> Saved!</div>
 
 <script>
     let eventsData = [];
@@ -96,9 +294,9 @@
 
     function showToast(msg) {
         const t = document.getElementById('toast');
-        t.innerText = msg;
+        t.innerHTML = `<i class="fa-solid fa-circle-check" style="margin-right:0.5rem;"></i> ${msg}`;
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3000);
+        setTimeout(() => t.classList.remove('show'), 3500);
     }
 
     async function login() {
@@ -107,7 +305,7 @@
         const btn = document.querySelector('#login-section button');
         const err = document.getElementById('login-error');
         
-        btn.innerText = "Authenticating...";
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
         err.classList.add('hidden');
 
         try {
@@ -123,14 +321,14 @@
                 localStorage.setItem('admin_token', data.token);
                 loadEvents(data.token);
             } else {
-                err.innerText = data.error || "Login failed";
+                err.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${data.error || "Login failed"}`;
                 err.classList.remove('hidden');
             }
         } catch (e) {
-            err.innerText = "Network error.";
+            err.innerHTML = `<i class="fa-solid fa-wifi"></i> Network error. Please try again.`;
             err.classList.remove('hidden');
         } finally {
-            btn.innerText = "Login";
+            if(!res?.ok) btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Secure Login';
         }
     }
 
@@ -148,6 +346,7 @@
                 localStorage.removeItem('admin_token');
                 loginSec.classList.remove('hidden');
                 appSec.classList.add('hidden');
+                document.querySelector('#login-section button').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Secure Login';
                 return;
             }
 
@@ -169,19 +368,26 @@
         const container = document.getElementById('event-list');
         container.innerHTML = '';
         
+        if(eventsData.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-style:italic; padding: 2rem;">No events found. Add one above to get started!</p>';
+            return;
+        }
+        
         eventsData.forEach((ev, index) => {
-            const status = ev.is_hidden ? '<span class="status-badge status-hidden">Hidden</span>' : '<span class="status-badge status-active">Active</span>';
+            const status = ev.is_hidden ? '<span class="status-badge status-hidden">HIDDEN</span>' : '<span class="status-badge status-active">ACTIVE</span>';
             const html = `
                 <div class="event-card">
                     <div class="event-details">
                         <h3>${ev.title} ${status}</h3>
-                        <p>${ev.date} | ${ev.time} | ${ev.location}</p>
+                        <p><i class="fa-regular fa-calendar" style="margin-right:0.3rem;"></i> ${ev.date} &nbsp;|&nbsp; <i class="fa-regular fa-clock" style="margin-right:0.3rem;"></i> ${ev.time} &nbsp;|&nbsp; <i class="fa-solid fa-location-dot" style="margin-right:0.3rem;"></i> ${ev.location}</p>
                     </div>
-                    <div>
-                        <button onclick="toggleEvent(${index})" style="background:#555; color:#fff;" title="Toggle Visibility">
+                    <div class="event-actions">
+                        <button class="btn-secondary" onclick="toggleEvent(${index})" title="Toggle Visibility" style="margin-right: 0.5rem;">
                             <i class="fa-solid ${ev.is_hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
                         </button>
-                        <button onclick="deleteEvent(${index})" class="btn-danger" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn-secondary btn-danger" onclick="deleteEvent(${index})" title="Delete Event">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             `;
@@ -196,7 +402,10 @@
         const location = document.getElementById('ev-location').value;
         const image = document.getElementById('ev-image').value || "images/event1.jpg";
 
-        if (!title || !date) return alert("Title and Date are required");
+        if (!title || !date) {
+            alert("Please provide at least a Title and a Date.");
+            return;
+        }
 
         eventsData.unshift({
             id: 'event-' + Date.now(),
@@ -220,7 +429,7 @@
     }
 
     function deleteEvent(idx) {
-        if(confirm("Delete this event?")) {
+        if(confirm("Are you sure you want to permanently delete this event?")) {
             eventsData.splice(idx, 1);
             renderEvents();
         }
@@ -230,7 +439,7 @@
         const token = localStorage.getItem('admin_token');
         const btn = document.querySelector('button[onclick="publishEvents()"]');
         const origText = btn.innerHTML;
-        btn.innerHTML = "Publishing...";
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
         btn.disabled = true;
 
         try {
