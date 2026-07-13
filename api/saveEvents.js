@@ -26,6 +26,10 @@ export default async function handler(req, res) {
     const githubToken = process.env.GITHUB_TOKEN;
     const path = 'data/events.json';
 
+    if (!owner || !repo || !githubToken) {
+        return res.status(500).json({ error: `Server Configuration Error: Missing GitHub environment variables in Vercel. Make sure GITHUB_OWNER, GITHUB_REPO, and GITHUB_TOKEN are set and redeploy.` });
+    }
+
     // Base64 encode the content (Node.js way)
     const content = Buffer.from(JSON.stringify(eventsData, null, 2), 'utf-8').toString('base64');
 
