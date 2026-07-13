@@ -1,0 +1,22 @@
+[
+  {
+    "id": "event-1783921931000",
+    "title": "The Mind Unveiled - Mumbai",
+    "date": "2026-08-15",
+    "time": "7:00 PM",
+    "location": "NCPA, Nariman Point",
+    "image_url": "images/event1.jpg",
+    "link": "/contact",
+    "is_hidden": false
+  },
+  {
+    "id": "event-1783921932000",
+    "title": "Corporate Illusions - Bangalore",
+    "date": "2026-09-22",
+    "time": "6:30 PM",
+    "location": "Taj West End",
+    "image_url": "images/event2.jpg",
+    "link": "/contact",
+    "is_hidden": false
+  }
+]

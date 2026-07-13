@@ -1,83 +1,213 @@
-/* Specific Styles for Coming Soon Page */
-.coming-soon-section {
-    min-height: 80vh;
+/* Specific Styles for Index Page Sections */
+
+/* Events List */
+.events-list {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    text-align: center;
-    padding: 2rem;
-    overflow: hidden;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.cs-tag {
-    display: inline-block;
-    padding: 0.6rem 2rem;
-    background: rgba(255, 255, 255, 0.05);
+.event-item {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.03) 100%);
     border: 1px solid var(--glass-border);
-    border-radius: 50px;
+    border-radius: 12px;
+    padding: 2rem;
+    transition: var(--transition-smooth);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.event-item:hover {
+    background: linear-gradient(90deg, rgba(201, 160, 42, 0.02) 0%, rgba(201, 160, 42, 0.05) 100%);
+    border-color: rgba(201, 160, 42, 0.3);
+    transform: translateX(8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(201, 160, 42, 0.05);
+}
+
+.event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    padding-right: 2.5rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.event-date .day {
+    font-family: 'Cinzel', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
     color: var(--gold);
-    font-family: 'Inter', sans-serif;
+    line-height: 1;
+    text-shadow: 0 2px 10px rgba(201, 160, 42, 0.2);
+}
+
+.event-date .month {
+    font-size: 1rem;
     font-weight: 600;
-    font-size: 0.9rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.event-image-wrapper {
+    margin-left: 2.5rem;
+    width: 180px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.event-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.event-item:hover .event-img {
+    transform: scale(1.08);
+}
+
+.event-details {
+    flex-grow: 1;
+    padding: 0 2.5rem;
+}
+
+.event-details h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+}
+
+.event-details p {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    font-family: 'Lora', serif;
+    font-style: italic;
+}
+
+.event-action {
+    min-width: 160px;
+    text-align: right;
+}
+
+/* Videos Grid */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+}
+
+.video-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Testimonials Grid */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+
+.testimonial-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    margin-bottom: 3rem;
-    box-shadow: 0 0 20px rgba(201, 160, 42, 0.2);
-    animation: pulseGlow 3s infinite alternate;
-}
-
-@keyframes pulseGlow {
-    0% { box-shadow: 0 0 10px rgba(201, 160, 42, 0.1); border-color: rgba(201, 160, 42, 0.2); }
-    100% { box-shadow: 0 0 30px rgba(201, 160, 42, 0.4); border-color: rgba(201, 160, 42, 0.6); }
-}
-
-.quote-container {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 3.5rem;
     position: relative;
-    height: 150px; /* fixed height to prevent layout shifts */
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: var(--transition-smooth);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.quote-text {
+.testimonial-card:hover {
+    border-color: rgba(201, 160, 42, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(201, 160, 42, 0.08);
+    transform: translateY(-5px);
+}
+
+.testimonial-author {
+    margin-top: 2rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+/* Collaborations Grid */
+.collab-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2rem;
+    align-items: center;
+}
+
+.collab-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
     font-family: 'Cinzel', serif;
-    font-size: 3rem;
-    line-height: 1.2;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--text-light);
-    position: absolute;
-    width: 100%;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    opacity: 0.25;
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    letter-spacing: 2px;
 }
 
-.quote-text.active {
+.collab-logo:hover {
     opacity: 1;
-    transform: translateY(0);
-}
-
-.quote-text.exit {
-    opacity: 0;
-    transform: translateY(-20px);
-}
-
-.quote-text .gold-highlight {
     color: var(--gold);
-    text-shadow: 0 0 15px rgba(201, 160, 42, 0.3);
+    border-color: rgba(201, 160, 42, 0.15);
+    background: rgba(201, 160, 42, 0.03);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(201, 160, 42, 0.05);
 }
 
-@media (max-width: 768px) {
-    .quote-text {
-        font-size: 2rem;
+/* Responsive Overrides */
+@media (max-width: 992px) {
+    .video-grid, .testimonials-grid {
+        grid-template-columns: 1fr;
     }
-    .quote-container {
-        height: 200px;
+    .collab-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .event-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 2.5rem;
+    }
+    .event-date {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-right: 0;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .event-image-wrapper {
+        margin: 0 0 2rem 0;
+        width: 100%;
+        height: 220px;
+    }
+    .event-details {
+        padding: 0;
+        margin-bottom: 2rem;
+    }
+}
+@media (max-width: 768px) {
+    .collab-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. B - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --surface: #1f2833;
+            --gold: #c9a02a;
+            --text: #c5c6c7;
+            --danger: #ff4c4c;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--surface); padding: 2rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 2rem; }
+        h1, h2 { color: #fff; margin-top: 0; }
+        input, select { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid #333; background: #000; color: #fff; border-radius: 4px; box-sizing: border-box; }
+        button { background: var(--gold); color: #000; border: none; padding: 0.8rem 1.5rem; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.3s; }
+        button:hover { filter: brightness(1.2); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-danger { background: var(--danger); color: white; }
+        .event-list { display: grid; gap: 1rem; }
+        .event-card { background: #111; border: 1px solid #333; padding: 1rem; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;}
+        .event-details h3 { margin: 0 0 0.5rem 0; color: #fff; }
+        .event-details p { margin: 0; font-size: 0.9rem; color: #aaa; }
+        .status-badge { padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+        .status-active { background: rgba(0, 255, 0, 0.1); color: #0f0; }
+        .status-hidden { background: rgba(255, 0, 0, 0.1); color: #f00; }
+        .hidden { display: none !important; }
+        #toast { position: fixed; bottom: 20px; right: 20px; background: var(--gold); color: #000; padding: 1rem 2rem; border-radius: 4px; transform: translateY(100px); opacity: 0; transition: 0.3s; }
+        #toast.show { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem;">
+        <h1>Mr. B Admin Panel</h1>
+        <div><i class="fa-solid fa-lock"></i> Secure Access</div>
+    </div>
+
+    <!-- Login Form -->
+    <div class="card" id="login-section" style="max-width: 400px; margin: 4rem auto;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()" style="width: 100%; margin-top: 1rem;">Login</button>
+        <p id="login-error" style="color: var(--danger); text-align: center; margin-top: 1rem; font-size: 0.9rem;" class="hidden">Invalid credentials.</p>
+    </div>
+
+    <!-- Events Manager -->
+    <div id="app-section" class="hidden">
+        <div class="card">
+            <h2>Add New Event</h2>
+            <div style="display:flex; gap:1rem;">
+                <input type="text" id="ev-title" placeholder="Event Title (e.g. Corporate Illusions)">
+                <input type="date" id="ev-date">
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <input type="text" id="ev-time" placeholder="Time (e.g. 7:00 PM)">
+                <input type="text" id="ev-location" placeholder="Location">
+            </div>
+            <input type="text" id="ev-image" placeholder="Image URL (default: images/event1.jpg)" value="images/event1.jpg">
+            <button onclick="addEvent()"><i class="fa-solid fa-plus"></i> Add Event</button>
+        </div>
+
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+                <h2>Manage Events</h2>
+                <button onclick="publishEvents()" style="background:#2ea44f; color:white;"><i class="fa-solid fa-cloud-arrow-up"></i> Publish to Website</button>
+            </div>
+            <div class="event-list" id="event-list">
+                <!-- Event cards -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast">Saved!</div>
+
+<script>
+    let eventsData = [];
+    let fileSha = '';
+
+    window.onload = () => {
+        const token = localStorage.getItem('admin_token');
+        if (token) {
+            loadEvents(token);
+        }
+    };
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    async function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const btn = document.querySelector('#login-section button');
+        const err = document.getElementById('login-error');
+        
+        btn.innerText = "Authenticating...";
+        err.classList.add('hidden');
+
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+            
+            if (res.ok && data.token) {
+                localStorage.setItem('admin_token', data.token);
+                loadEvents(data.token);
+            } else {
+                err.innerText = data.error || "Login failed";
+                err.classList.remove('hidden');
+            }
+        } catch (e) {
+            err.innerText = "Network error.";
+            err.classList.remove('hidden');
+        } finally {
+            btn.innerText = "Login";
+        }
+    }
+
+    async function loadEvents(token) {
+        const loginSec = document.getElementById('login-section');
+        const appSec = document.getElementById('app-section');
+        
+        try {
+            const res = await fetch('/api/getEvents', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.status === 401) {
+                // Token invalid or expired
+                localStorage.removeItem('admin_token');
+                loginSec.classList.remove('hidden');
+                appSec.classList.add('hidden');
+                return;
+            }
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+
+            fileSha = data.sha;
+            eventsData = data.events;
+            
+            loginSec.classList.add('hidden');
+            appSec.classList.remove('hidden');
+            renderEvents();
+        } catch (e) {
+            alert("Error loading events: " + e.message);
+        }
+    }
+
+    function renderEvents() {
+        const container = document.getElementById('event-list');
+        container.innerHTML = '';
+        
+        eventsData.forEach((ev, index) => {
+            const status = ev.is_hidden ? '<span class="status-badge status-hidden">Hidden</span>' : '<span class="status-badge status-active">Active</span>';
+            const html = `
+                <div class="event-card">
+                    <div class="event-details">
+                        <h3>${ev.title} ${status}</h3>
+                        <p>${ev.date} | ${ev.time} | ${ev.location}</p>
+                    </div>
+                    <div>
+                        <button onclick="toggleEvent(${index})" style="background:#555; color:#fff;" title="Toggle Visibility">
+                            <i class="fa-solid ${ev.is_hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
+                        </button>
+                        <button onclick="deleteEvent(${index})" class="btn-danger" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        });
+    }
+
+    function addEvent() {
+        const title = document.getElementById('ev-title').value;
+        const date = document.getElementById('ev-date').value;
+        const time = document.getElementById('ev-time').value || "7:00 PM";
+        const location = document.getElementById('ev-location').value;
+        const image = document.getElementById('ev-image').value || "images/event1.jpg";
+
+        if (!title || !date) return alert("Title and Date are required");
+
+        eventsData.unshift({
+            id: 'event-' + Date.now(),
+            title, date, time, location,
+            image_url: image,
+            link: "/contact",
+            is_hidden: false
+        });
+
+        document.getElementById('ev-title').value = '';
+        document.getElementById('ev-date').value = '';
+        document.getElementById('ev-time').value = '';
+        document.getElementById('ev-location').value = '';
+
+        renderEvents();
+    }
+
+    function toggleEvent(idx) {
+        eventsData[idx].is_hidden = !eventsData[idx].is_hidden;
+        renderEvents();
+    }
+
+    function deleteEvent(idx) {
+        if(confirm("Delete this event?")) {
+            eventsData.splice(idx, 1);
+            renderEvents();
+        }
+    }
+
+    async function publishEvents() {
+        const token = localStorage.getItem('admin_token');
+        const btn = document.querySelector('button[onclick="publishEvents()"]');
+        const origText = btn.innerHTML;
+        btn.innerHTML = "Publishing...";
+        btn.disabled = true;
+
+        try {
+            const res = await fetch('/api/saveEvents', {
+                method: 'POST',
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ eventsData, sha: fileSha })
+            });
+            
+            const data = await res.json();
+            
+            if (res.status === 401) {
+                alert("Session expired. Please reload and login again.");
+                return;
+            }
+            if (!res.ok) throw new Error(data.error);
+
+            fileSha = data.newSha; // update SHA for future edits
+            showToast("Successfully Published! Website is updating.");
+        } catch (e) {
+            alert(e.message);
+        } finally {
+            btn.innerHTML = origText;
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>

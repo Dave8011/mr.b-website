@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const countUp = (element) => {
         const targetAttr = element.getAttribute('data-target');
+        const suffix = element.getAttribute('data-suffix') || '+';
         if (!targetAttr) return; // For non-numerical stats like "ISO"
         
         const target = +targetAttr;
@@ -104,16 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
             current += step;
             if (current < target) {
                 if (target >= 1000) {
-                    element.innerText = Math.floor(current / 1000) + 'k+';
+                    element.innerText = Math.floor(current / 1000) + 'k' + suffix;
                 } else {
-                    element.innerText = Math.floor(current) + '+';
+                    element.innerText = Math.floor(current) + suffix;
                 }
                 setTimeout(updateCount, 15);
             } else {
                 if (target >= 1000) {
-                    element.innerText = (target / 1000) + 'k+';
+                    element.innerText = (target / 1000) + 'k' + suffix;
                 } else {
-                    element.innerText = target + '+';
+                    element.innerText = target + suffix;
                 }
             }
         };
@@ -150,5 +151,73 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.15 });
         
         fadeElements.forEach(el => fadeObserver.observe(el));
+    }
+
+    // ==========================================================================
+    // Dynamic Events Loading
+    // ==========================================================================
+    const eventsContainer = document.getElementById('events-container');
+    
+    if (eventsContainer) {
+        fetch('data/events.json')
+            .then(res => res.json())
+            .then(events => {
+                const now = new Date();
+                now.setHours(0,0,0,0);
+                
+                let renderedCount = 0;
+                
+                events.forEach(event => {
+                    if (event.is_hidden) return;
+                    
+                    const eventDate = new Date(event.date);
+                    eventDate.setHours(0,0,0,0);
+                    
+                    const diffTime = eventDate - now;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays < 0) return; // Expired
+                    
+                    renderedCount++;
+                    
+                    const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+                    const monthStr = monthNames[eventDate.getMonth()];
+                    const dayStr = String(eventDate.getDate()).padStart(2, '0');
+                    
+                    let highlightHtml = '';
+                    if (diffDays >= 0 && diffDays <= 7) {
+                        highlightHtml = `<div style="position:absolute; top:-10px; right:20px; background:var(--gold); color:#000; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.8rem; box-shadow:0 0 10px rgba(201,160,42,0.5); z-index:10;">${diffDays === 0 ? 'TODAY!' : diffDays + ' Days Left!'}</div>`;
+                    }
+                    
+                    const eventHtml = `
+                        <div class="event-item" style="position:relative;">
+                            ${highlightHtml}
+                            <div class="event-date">
+                                <span class="day">${dayStr}</span>
+                                <span class="month">${monthStr}</span>
+                            </div>
+                            <div class="event-image-wrapper">
+                                <img src="${event.image_url}" alt="${event.title}" class="event-img" onerror="this.src='images/hero.jpg'">
+                            </div>
+                            <div class="event-details">
+                                <h3>${event.title}</h3>
+                                <p>${event.location} • ${event.time}</p>
+                            </div>
+                            <div class="event-action">
+                                <a href="${event.link}" class="btn btn-secondary">Get Tickets</a>
+                            </div>
+                        </div>
+                    `;
+                    eventsContainer.insertAdjacentHTML('beforeend', eventHtml);
+                });
+                
+                if (renderedCount === 0) {
+                    eventsContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-style:italic;">No upcoming events at the moment. Stay tuned!</p>';
+                }
+            })
+            .catch(err => {
+                console.error("Error loading events:", err);
+                eventsContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-style:italic;">Failed to load events.</p>';
+            });
     }
 });
