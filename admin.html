@@ -476,7 +476,7 @@
             
             const data = await res.json();
             if (res.ok && data.success) {
-                showToast('fa-check', 'Banner uploaded successfully!');
+                showToast('fa-check', 'Banner uploaded! Please wait 1-2 minutes for the live site to update.');
                 pendingBannerBase64 = null;
                 document.getElementById('banner-preview-container').style.display = 'none';
                 document.getElementById('banner-upload').value = '';
@@ -684,7 +684,7 @@
             if (!res.ok) throw new Error(data.error);
 
             fileSha = data.newSha;
-            showToast('fa-check', 'Changes pushed to live site!');
+            showToast('fa-check', 'Changes pushed! Please wait 1-2 minutes for the live site to update.');
         } catch (e) {
             showToast('fa-triangle-exclamation', e.message, true);
         } finally {
