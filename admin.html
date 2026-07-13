@@ -191,6 +191,15 @@
         .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 3rem; text-align: center; cursor: pointer; transition: 0.3s; }
         .upload-area:hover { border-color: var(--gold); background: rgba(201,160,42,0.05); }
 
+        /* Toggle Switch */
+        .toggle-switch { display: inline-flex; align-items: center; cursor: pointer; gap: 1rem; background: rgba(255,255,255,0.02); padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--border); }
+        .toggle-label { font-size: 0.95rem; font-weight: 500; color: var(--text-light); }
+        .switch { position: relative; width: 50px; height: 26px; background-color: var(--border); border-radius: 50px; transition: 0.3s; }
+        .switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background-color: white; border-radius: 50%; transition: 0.3s; }
+        .toggle-switch input { display: none; }
+        .toggle-switch input:checked + .switch { background-color: var(--gold); }
+        .toggle-switch input:checked + .switch::after { transform: translateX(24px); }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .navbar { flex-direction: column; gap: 1rem; padding: 1rem; text-align: center; }
@@ -249,9 +258,6 @@
             <button class="btn btn-outline" onclick="logout()">
                 <i class="fa-solid fa-power-off text-muted" style="margin-right: 0.5rem;"></i> Logout
             </button>
-            <button class="btn btn-gold" onclick="publishEvents()" id="publish-btn">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Publish Changes
-            </button>
         </div>
     </nav>
 
@@ -264,11 +270,16 @@
 
         <!-- HERO BANNER TAB -->
         <div id="tab-hero" class="tab-content">
-            <div class="page-header flex justify-between items-center">
+            <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
                 <div>
                     <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Hero Banner</h1>
                     <p class="text-muted text-sm">Upload a widescreen image (1920x800 recommended) for the homepage header.</p>
                 </div>
+                <label class="toggle-switch">
+                    <span class="toggle-label">Show Banner on Live Site</span>
+                    <input type="checkbox" id="banner-visibility-toggle" onchange="toggleBannerVisibility()">
+                    <div class="switch"></div>
+                </label>
             </div>
             
             <div class="upload-area" onclick="document.getElementById('banner-upload').click()">
@@ -291,9 +302,14 @@
                     <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Events</h1>
                     <p class="text-muted text-sm">Manage your live appearances and upcoming shows.</p>
                 </div>
-                <button class="btn btn-primary" onclick="openModal()">
-                    <i class="fa-solid fa-plus"></i> New Event
-                </button>
+                <div class="flex gap-4 items-center">
+                    <button class="btn btn-primary" onclick="openModal()">
+                        <i class="fa-solid fa-plus"></i> New Event
+                    </button>
+                    <button class="btn btn-gold" onclick="publishEvents()" id="publish-btn">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Publish Event Updates
+                    </button>
+                </div>
             </div>
 
             <div id="event-list">
@@ -353,10 +369,13 @@
 <div id="toast"></div>
 
 <script>
+    // --- Global State ---
     let eventsData = [];
-    let fileSha = '';
+    let fileSha = null;
+    let sessionToken = null;
+    let configData = { showHeroBanner: true };
+    let configSha = null;
     let editingIndex = -1; // -1 means adding new
-    let sessionToken = null; // In-memory token wipes on refresh/navigation
 
     window.onload = () => {
         // We no longer check localStorage. Forcing login on every fresh load.
@@ -390,6 +409,7 @@
             if (res.ok && data.token) {
                 sessionToken = data.token;
                 loadEvents(sessionToken);
+                loadConfig(sessionToken);
             } else {
                 err.innerText = data.error || "Invalid credentials.";
                 err.classList.remove('hidden');

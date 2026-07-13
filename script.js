@@ -154,6 +154,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
+    // Dynamic Hero Banner Configuration
+    // ==========================================================================
+    const bannerContainer = document.getElementById('dynamic-banner-container');
+    if (bannerContainer) {
+        fetch('data/siteConfig.json')
+            .then(res => res.json())
+            .then(config => {
+                if (config && config.showHeroBanner === false) {
+                    bannerContainer.style.display = 'none';
+                    const mainHero = document.getElementById('main-hero-section');
+                    if (mainHero) mainHero.style.paddingTop = '120px';
+                }
+            })
+            .catch(err => {
+                console.log("No config found or error loading, defaulting to showing banner");
+            });
+    }
+
+    // ==========================================================================
     // Dynamic Events Loading
     // ==========================================================================
     const eventsContainer = document.getElementById('events-container');
