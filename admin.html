@@ -199,6 +199,15 @@
         .toggle-switch input { display: none; }
         .toggle-switch input:checked + .switch { background-color: var(--gold); }
         .toggle-switch input:checked + .switch::after { transform: translateX(24px); }
+        
+        /* Banner Library */
+        .banner-library { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .banner-item { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; position: relative; transition: 0.3s; background: rgba(255,255,255,0.02); }
+        .banner-item.active { border-color: var(--gold); box-shadow: 0 0 15px rgba(201,160,42,0.3); }
+        .banner-item img { width: 100%; height: 120px; object-fit: cover; display: block; border-bottom: 1px solid var(--border); }
+        .banner-item-actions { padding: 1rem; text-align: center; }
+        .active-badge { position: absolute; top: 10px; right: 10px; background: var(--gold); color: #000; font-size: 0.75rem; font-weight: bold; padding: 4px 10px; border-radius: 20px; display: none; }
+        .banner-item.active .active-badge { display: block; }
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -290,8 +299,16 @@
             </div>
             <div id="banner-preview-container" style="margin-top:2rem; display:none;">
                 <p class="text-muted text-sm" style="margin-bottom:0.5rem;">Preview:</p>
-                <img id="banner-preview" style="width:100%; border-radius:12px; border:1px solid var(--border);" />
-                <button class="btn btn-gold" style="margin-top:1rem; width:100%" onclick="saveBanner()" id="save-banner-btn">Upload to Live Site</button>
+                <img id="banner-preview" style="width:100%; max-height: 400px; object-fit: cover; border-radius:12px; border:1px solid var(--border);" />
+                <button class="btn btn-gold" style="margin-top:1rem; width:100%" onclick="saveBanner()" id="save-banner-btn">Upload to Library & Set Active</button>
+            </div>
+            
+            <div style="margin-top: 4rem;">
+                <h2 style="font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Banner Library</h2>
+                <p class="text-muted text-sm">Select a past banner to make it active on the live site.</p>
+                <div id="banner-library-grid" class="banner-library">
+                    <!-- Banners injected here -->
+                </div>
             </div>
         </div>
 
@@ -484,10 +501,11 @@
         
         const btn = document.getElementById('save-banner-btn');
         const origText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Uploading...';
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Uploading to Library...';
         btn.disabled = true;
         
         try {
+            // 1. Upload image to GitHub
             const res = await fetch('/api/uploadBanner', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
@@ -495,20 +513,173 @@
             });
             
             const data = await res.json();
-            if (res.ok && data.success) {
-                showToast('fa-check', 'Banner uploaded! Please wait 1-2 minutes for the live site to update.');
-                pendingBannerBase64 = null;
-                document.getElementById('banner-preview-container').style.display = 'none';
-                document.getElementById('banner-upload').value = '';
-            } else {
+            if (!res.ok || !data.success) {
                 throw new Error(data.error || 'Upload failed');
             }
+            
+            // 2. Add to config library and set as active
+            if (!configData.banners) configData.banners = [];
+            
+            const newBanner = {
+                id: Date.now().toString(),
+                url: data.bannerUrl,
+                uploadDate: new Date().toISOString()
+            };
+            
+            configData.banners.unshift(newBanner); // Add to top of list
+            if (!configData.activeBannerUrls) configData.activeBannerUrls = [];
+            configData.activeBannerUrls.push(newBanner.url);
+            configData.showHeroBanner = true; // Auto-enable if they uploaded a new one
+            
+            // 3. Save the updated config
+            const configRes = await fetch('/api/saveConfig', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ configData: configData, sha: configSha })
+            });
+            
+            const configResData = await configRes.json();
+            if (!configRes.ok || !configResData.success) {
+                throw new Error("Banner uploaded but failed to update library config.");
+            }
+            
+            configSha = configResData.newSha;
+            showToast('fa-check', 'Banner added to library and set as active! Please wait 1-2 mins.');
+            
+            // 4. Reset UI
+            pendingBannerBase64 = null;
+            document.getElementById('banner-preview-container').style.display = 'none';
+            document.getElementById('banner-upload').value = '';
+            document.getElementById('banner-visibility-toggle').checked = true;
+            renderBanners();
+            
         } catch (e) {
             showToast('fa-triangle-exclamation', e.message, true);
         } finally {
             btn.innerHTML = origText;
             btn.disabled = false;
         }
+    }
+
+    async function loadConfig(token) {
+        try {
+            const res = await fetch('/api/getConfig', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                configSha = data.sha;
+                configData = data.config || { showHeroBanner: true, banners: [], activeBannerUrls: [] };
+                if (!configData.banners) configData.banners = [];
+                
+                // Migrate from single string to array if necessary
+                if (configData.activeBannerUrl && typeof configData.activeBannerUrl === 'string') {
+                    configData.activeBannerUrls = [configData.activeBannerUrl];
+                    delete configData.activeBannerUrl;
+                }
+                if (!configData.activeBannerUrls) configData.activeBannerUrls = [];
+                
+                document.getElementById('banner-visibility-toggle').checked = configData.showHeroBanner;
+                renderBanners();
+            }
+        } catch (e) {
+            console.error("Failed to load config:", e);
+        }
+    }
+
+    async function toggleBannerVisibility() {
+        if (!sessionToken) return;
+        const isChecked = document.getElementById('banner-visibility-toggle').checked;
+        configData.showHeroBanner = isChecked;
+        
+        try {
+            const res = await fetch('/api/saveConfig', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ configData: configData, sha: configSha })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                configSha = data.newSha;
+                showToast('fa-check', 'Banner visibility updated on live site!');
+            } else {
+                throw new Error(data.error || 'Failed to update visibility');
+            }
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+            // Revert UI on failure
+            document.getElementById('banner-visibility-toggle').checked = !isChecked;
+            configData.showHeroBanner = !isChecked;
+        }
+    }
+
+    async function toggleBannerActive(url) {
+        if (!sessionToken) return;
+        
+        if (!configData.activeBannerUrls) configData.activeBannerUrls = [];
+        
+        const index = configData.activeBannerUrls.indexOf(url);
+        if (index > -1) {
+            // Remove it
+            configData.activeBannerUrls.splice(index, 1);
+        } else {
+            // Add it
+            configData.activeBannerUrls.push(url);
+            configData.showHeroBanner = true; // Auto-enable global toggle if they are adding one
+            document.getElementById('banner-visibility-toggle').checked = true;
+        }
+        
+        renderBanners(); // Update UI immediately
+        
+        try {
+            const res = await fetch('/api/saveConfig', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ configData: configData, sha: configSha })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                configSha = data.newSha;
+                showToast('fa-check', 'Slideshow updated! Please wait 1-2 mins.');
+            } else {
+                throw new Error(data.error || 'Failed to update slideshow');
+            }
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+        }
+    }
+
+    function renderBanners() {
+        const grid = document.getElementById('banner-library-grid');
+        if (!grid) return;
+        
+        grid.innerHTML = '';
+        
+        if (!configData.banners || configData.banners.length === 0) {
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; border: 1px dashed var(--border); border-radius: 12px; color: var(--text-muted);">No banners in library yet. Upload your first one!</div>';
+            return;
+        }
+        
+        if (!configData.activeBannerUrls) configData.activeBannerUrls = [];
+        
+        configData.banners.forEach(banner => {
+            const isActive = configData.activeBannerUrls.includes(banner.url);
+            
+            const item = document.createElement('div');
+            item.className = `banner-item ${isActive ? 'active' : ''}`;
+            
+            item.innerHTML = `
+                <div class="active-badge"><i class="fa-solid fa-star"></i> Active</div>
+                <img src="${banner.url}" onerror="this.src='images/hero-banner.jpg'" />
+                <div class="banner-item-actions">
+                    ${isActive 
+                        ? `<button class="btn btn-danger" style="width: 100%; font-size: 0.8rem; padding: 0.5rem; background: rgba(220,53,69,0.1); border: 1px solid var(--danger); color: var(--danger);" onclick="toggleBannerActive('${banner.url}')">Remove from Slideshow</button>`
+                        : `<button class="btn btn-primary" style="width: 100%; font-size: 0.8rem; padding: 0.5rem;" onclick="toggleBannerActive('${banner.url}')">Add to Slideshow</button>`
+                    }
+                </div>
+            `;
+            grid.appendChild(item);
+        });
     }
 
     // --- Data Management ---

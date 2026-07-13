@@ -161,10 +161,58 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('data/siteConfig.json')
             .then(res => res.json())
             .then(config => {
-                if (config && config.showHeroBanner === false) {
-                    bannerContainer.style.display = 'none';
-                    const mainHero = document.getElementById('main-hero-section');
-                    if (mainHero) mainHero.style.paddingTop = '120px';
+                if (config) {
+                    if (config.showHeroBanner === false) {
+                        bannerContainer.style.display = 'none';
+                        const mainHero = document.getElementById('main-hero-section');
+                        if (mainHero) mainHero.style.paddingTop = '120px';
+                    } else if (config.activeBannerUrls && config.activeBannerUrls.length > 0) {
+                        const urls = config.activeBannerUrls;
+                        
+                        if (urls.length === 1) {
+                            // Single image mode
+                            const bannerImg = document.getElementById('dynamic-hero-banner');
+                            if (bannerImg) bannerImg.src = urls[0] + '?v=' + new Date().getTime();
+                        } else {
+                            // Slideshow mode
+                            bannerContainer.innerHTML = '';
+                            
+                            // Placeholder to maintain responsive height
+                            const placeholder = document.createElement('img');
+                            placeholder.src = urls[0];
+                            placeholder.style.width = '100%';
+                            placeholder.style.height = 'auto';
+                            placeholder.style.maxHeight = '70vh';
+                            placeholder.style.objectFit = 'cover';
+                            placeholder.style.visibility = 'hidden';
+                            placeholder.style.display = 'block';
+                            bannerContainer.appendChild(placeholder);
+                            
+                            const slides = [];
+                            urls.forEach((url, i) => {
+                                const slide = document.createElement('div');
+                                slide.style.position = 'absolute';
+                                slide.style.top = '80px';
+                                slide.style.left = '0';
+                                slide.style.width = '100%';
+                                slide.style.height = 'calc(100% - 80px)';
+                                slide.style.backgroundImage = `url(${url})`;
+                                slide.style.backgroundSize = 'cover';
+                                slide.style.backgroundPosition = 'center';
+                                slide.style.opacity = i === 0 ? '1' : '0';
+                                slide.style.transition = 'opacity 1s ease-in-out';
+                                bannerContainer.appendChild(slide);
+                                slides.push(slide);
+                            });
+                            
+                            let currentSlide = 0;
+                            setInterval(() => {
+                                slides[currentSlide].style.opacity = '0';
+                                currentSlide = (currentSlide + 1) % slides.length;
+                                slides[currentSlide].style.opacity = '1';
+                            }, 5000);
+                        }
+                    }
                 }
             })
             .catch(err => {
