@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     const bannerContainer = document.getElementById('dynamic-banner-container');
     if (bannerContainer) {
-        fetch('data/siteConfig.json')
+        fetch('data/siteConfig.json?v=' + new Date().getTime())
             .then(res => res.json())
             .then(config => {
                 if (config) {
