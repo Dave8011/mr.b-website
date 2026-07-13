@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="month">${monthStr}</span>
                             </div>
                             <div class="event-image-wrapper">
-                                <img src="${event.image_url}" alt="${event.title}" class="event-img" onerror="this.src='images/hero.jpg'">
+                                <img src="${event.image_url}" alt="${event.image_alt || event.title}" class="event-img" onerror="this.src='images/hero.jpg'">
                             </div>
                             <div class="event-details">
                                 <h3>${event.title}</h3>
