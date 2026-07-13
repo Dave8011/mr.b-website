@@ -29,8 +29,13 @@
     <!-- Global Navigation Placeholder -->
     <div id="header-placeholder"></div>
 
-    <!-- Hero Banner -->
-    <section class="hero-section" style="padding-top: 120px; padding-bottom: 8rem;">
+    <!-- Dynamic Admin Hero Banner -->
+    <section id="dynamic-banner-container" style="width: 100%; padding-top: 80px;">
+        <img src="images/hero-banner.jpg" alt="Mr. B - Indian Super Brain" style="width: 100%; height: auto; max-height: 70vh; object-fit: cover; display: block;" onerror="document.getElementById('dynamic-banner-container').style.display='none'; document.getElementById('main-hero-section').style.paddingTop='120px';">
+    </section>
+
+    <!-- Hero Section -->
+    <section id="main-hero-section" class="hero-section" style="padding-top: 40px; padding-bottom: 8rem;">
         <div class="container hero-container">
             <div class="hero-card-wrapper fade-in">
                 <div class="about-tag">INDIAN SUPER BRAIN</div>

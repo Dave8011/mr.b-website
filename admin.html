@@ -181,6 +181,16 @@
         .empty-state { text-align: center; padding: 4rem 2rem; border: 1px dashed var(--border); border-radius: 12px; }
         .empty-state i { font-size: 3rem; color: var(--border-light); margin-bottom: 1rem; }
 
+        /* Tabs & Uploader */
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; overflow-x: auto;}
+        .tab-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.5rem 1.5rem; border-radius: 50px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; white-space: nowrap;}
+        .tab-btn.active { background: rgba(201, 160, 42, 0.1); color: var(--gold); border-color: var(--gold); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 3rem; text-align: center; cursor: pointer; transition: 0.3s; }
+        .upload-area:hover { border-color: var(--gold); background: rgba(201,160,42,0.05); }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .navbar { flex-direction: column; gap: 1rem; padding: 1rem; text-align: center; }
@@ -246,18 +256,49 @@
     </nav>
 
     <div class="container">
-        <div class="page-header flex justify-between items-center">
-            <div>
-                <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Events</h1>
-                <p class="text-muted text-sm">Manage your live appearances and upcoming shows.</p>
-            </div>
-            <button class="btn btn-primary" onclick="openModal()">
-                <i class="fa-solid fa-plus"></i> New Event
-            </button>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn" onclick="switchTab('tab-hero')" id="btn-tab-hero">Hero Banner</button>
+            <button class="tab-btn active" onclick="switchTab('tab-events')" id="btn-tab-events">Events Management</button>
         </div>
 
-        <div id="event-list">
-            <!-- Events injected here -->
+        <!-- HERO BANNER TAB -->
+        <div id="tab-hero" class="tab-content">
+            <div class="page-header flex justify-between items-center">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Hero Banner</h1>
+                    <p class="text-muted text-sm">Upload a widescreen image (1920x800 recommended) for the homepage header.</p>
+                </div>
+            </div>
+            
+            <div class="upload-area" onclick="document.getElementById('banner-upload').click()">
+                <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h3 style="margin-bottom: 0.5rem;">Click to upload new banner</h3>
+                <p class="text-muted text-sm">JPEG or PNG. High quality landscape mode.</p>
+                <input type="file" id="banner-upload" accept="image/*" style="display:none" onchange="handleBannerUpload(event)">
+            </div>
+            <div id="banner-preview-container" style="margin-top:2rem; display:none;">
+                <p class="text-muted text-sm" style="margin-bottom:0.5rem;">Preview:</p>
+                <img id="banner-preview" style="width:100%; border-radius:12px; border:1px solid var(--border);" />
+                <button class="btn btn-gold" style="margin-top:1rem; width:100%" onclick="saveBanner()" id="save-banner-btn">Upload to Live Site</button>
+            </div>
+        </div>
+
+        <!-- EVENTS TAB -->
+        <div id="tab-events" class="tab-content active">
+            <div class="page-header flex justify-between items-center">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Events</h1>
+                    <p class="text-muted text-sm">Manage your live appearances and upcoming shows.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openModal()">
+                    <i class="fa-solid fa-plus"></i> New Event
+                </button>
+            </div>
+
+            <div id="event-list">
+                <!-- Events injected here -->
+            </div>
         </div>
     </div>
 </div>
@@ -370,6 +411,84 @@
         document.getElementById('login-btn').innerHTML = 'Sign In <i class="fa-solid fa-arrow-right"></i>';
         document.getElementById('password').value = '';
         document.getElementById('username').value = '';
+    }
+
+    // --- Tabs & Banner Logic ---
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById('btn-' + tabId).classList.add('active');
+    }
+
+    let pendingBannerBase64 = null;
+
+    function handleBannerUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                // Compress and resize
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const MAX_WIDTH = 1920;
+                
+                if (width > MAX_WIDTH) {
+                    height = Math.round((height * MAX_WIDTH) / width);
+                    width = MAX_WIDTH;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Get compressed base64 (80% quality JPEG)
+                pendingBannerBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                
+                document.getElementById('banner-preview').src = pendingBannerBase64;
+                document.getElementById('banner-preview-container').style.display = 'block';
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    async function saveBanner() {
+        if (!pendingBannerBase64 || !sessionToken) return;
+        
+        const btn = document.getElementById('save-banner-btn');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Uploading...';
+        btn.disabled = true;
+        
+        try {
+            const res = await fetch('/api/uploadBanner', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ base64Image: pendingBannerBase64 })
+            });
+            
+            const data = await res.json();
+            if (res.ok && data.success) {
+                showToast('fa-check', 'Banner uploaded successfully!');
+                pendingBannerBase64 = null;
+                document.getElementById('banner-preview-container').style.display = 'none';
+                document.getElementById('banner-upload').value = '';
+            } else {
+                throw new Error(data.error || 'Upload failed');
+            }
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+        } finally {
+            btn.innerHTML = origText;
+            btn.disabled = false;
+        }
     }
 
     // --- Data Management ---
