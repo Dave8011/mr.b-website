@@ -371,6 +371,17 @@
                 <input type="text" id="ev-image" class="form-control" placeholder="images/event1.jpg">
             </div>
             <div class="form-group">
+                <label>Category</label>
+                <select id="ev-category" class="form-control" style="appearance: none;">
+                    <option value="events">Events</option>
+                    <option value="shows">Shows</option>
+                    <option value="classes">Classes</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
                 <label>Image Alt Text</label>
                 <input type="text" id="ev-image-alt" class="form-control" placeholder="Describe the image for SEO">
             </div>
@@ -785,6 +796,7 @@
             document.getElementById('ev-location').value = ev.location;
             document.getElementById('ev-image').value = ev.image_url;
             document.getElementById('ev-image-alt').value = ev.image_alt || '';
+            document.getElementById('ev-category').value = ev.category || 'events';
         } else {
             modalTitle.innerText = "New Event";
             document.getElementById('ev-title').value = '';
@@ -793,6 +805,7 @@
             document.getElementById('ev-location').value = '';
             document.getElementById('ev-image').value = 'images/event1.jpg';
             document.getElementById('ev-image-alt').value = '';
+            document.getElementById('ev-category').value = 'events';
         }
         
         document.getElementById('event-modal').classList.add('active');
@@ -809,6 +822,7 @@
         const location = document.getElementById('ev-location').value;
         const image = document.getElementById('ev-image').value || "images/event1.jpg";
         const imageAlt = document.getElementById('ev-image-alt').value;
+        const category = document.getElementById('ev-category').value || 'events';
 
         if (!title || !date) return alert("Title and Date are required.");
 
@@ -820,6 +834,7 @@
             eventsData[editingIndex].location = location;
             eventsData[editingIndex].image_url = image;
             eventsData[editingIndex].image_alt = imageAlt;
+            eventsData[editingIndex].category = category;
         } else {
             // Add new
             eventsData.unshift({
@@ -827,6 +842,7 @@
                 title, date, time, location,
                 image_url: image,
                 image_alt: imageAlt,
+                category,
                 link: "/contact",
                 is_hidden: false
             });

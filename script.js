@@ -224,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dynamic Events Loading
     // ==========================================================================
     const eventsContainer = document.getElementById('events-container');
+    const categoryPillsContainer = document.getElementById('event-category-pills');
     
     if (eventsContainer) {
         fetch('data/events.json')
@@ -232,7 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const now = new Date();
                 now.setHours(0,0,0,0);
                 
-                let renderedCount = 0;
+                let activeEvents = [];
+                const availableCategories = new Set();
                 
                 events.forEach(event => {
                     if (event.is_hidden) return;
@@ -245,41 +247,106 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (diffDays < 0) return; // Expired
                     
-                    renderedCount++;
+                    const category = event.category || 'events'; // Default to 'events' if missing
+                    availableCategories.add(category.toLowerCase());
                     
-                    const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-                    const monthStr = monthNames[eventDate.getMonth()];
-                    const dayStr = String(eventDate.getDate()).padStart(2, '0');
-                    
-                    let highlightHtml = '';
-                    if (diffDays >= 0 && diffDays <= 7) {
-                        highlightHtml = `<div style="position:absolute; top:-10px; right:20px; background:var(--gold); color:#000; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.8rem; box-shadow:0 0 10px rgba(201,160,42,0.5); z-index:10;">${diffDays === 0 ? 'TODAY!' : diffDays + ' Days Left!'}</div>`;
-                    }
-                    
-                    const eventHtml = `
-                        <div class="event-item" style="position:relative;">
-                            ${highlightHtml}
-                            <div class="event-date">
-                                <span class="day">${dayStr}</span>
-                                <span class="month">${monthStr}</span>
-                            </div>
-                            <div class="event-image-wrapper">
-                                <img src="${event.image_url}" alt="${event.image_alt || event.title}" class="event-img" onerror="this.src='images/hero.jpg'">
-                            </div>
-                            <div class="event-details">
-                                <h3>${event.title}</h3>
-                                <p>${event.location} • ${event.time}</p>
-                            </div>
-                            <div class="event-action">
-                                <a href="${event.link}" class="btn btn-secondary">Get Tickets</a>
-                            </div>
-                        </div>
-                    `;
-                    eventsContainer.insertAdjacentHTML('beforeend', eventHtml);
+                    activeEvents.push({...event, diffDays, category: category.toLowerCase()});
                 });
                 
-                if (renderedCount === 0) {
+                if (activeEvents.length === 0) {
                     eventsContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-style:italic;">No upcoming events at the moment. Stay tuned!</p>';
+                    return;
+                }
+                
+                function renderEventsList(filterCategory) {
+                    eventsContainer.innerHTML = '';
+                    let renderedCount = 0;
+                    
+                    activeEvents.forEach(event => {
+                        if (filterCategory && filterCategory !== 'all' && event.category !== filterCategory) {
+                            return;
+                        }
+                        
+                        renderedCount++;
+                        const eventDate = new Date(event.date);
+                        const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+                        const monthStr = monthNames[eventDate.getMonth()];
+                        const dayStr = String(eventDate.getDate()).padStart(2, '0');
+                        
+                        let highlightHtml = '';
+                        if (event.diffDays >= 0 && event.diffDays <= 7) {
+                            highlightHtml = `<div style="position:absolute; top:-10px; right:20px; background:var(--gold); color:#000; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.8rem; box-shadow:0 0 10px rgba(201,160,42,0.5); z-index:10;">${event.diffDays === 0 ? 'TODAY!' : event.diffDays + ' Days Left!'}</div>`;
+                        }
+                        
+                        const eventHtml = `
+                            <div class="event-item" style="position:relative;">
+                                ${highlightHtml}
+                                <div class="event-date">
+                                    <span class="day">${dayStr}</span>
+                                    <span class="month">${monthStr}</span>
+                                </div>
+                                <div class="event-image-wrapper">
+                                    <img src="${event.image_url}" alt="${event.image_alt || event.title}" class="event-img" onerror="this.src='images/hero.jpg'">
+                                </div>
+                                <div class="event-details">
+                                    <h3>${event.title}</h3>
+                                    <p>${event.location} • ${event.time}</p>
+                                </div>
+                                <div class="event-action">
+                                    <a href="${event.link}" class="btn btn-secondary">Get Tickets</a>
+                                </div>
+                            </div>
+                        `;
+                        eventsContainer.insertAdjacentHTML('beforeend', eventHtml);
+                    });
+                    
+                    if (renderedCount === 0) {
+                        eventsContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-style:italic;">No upcoming items found in this category.</p>';
+                    }
+                }
+                
+                if (categoryPillsContainer) {
+                    categoryPillsContainer.style.display = 'flex';
+                    
+                    const pills = categoryPillsContainer.querySelectorAll('.btn-pill');
+                    let activeCategory = 'events';
+                    
+                    // Check if default active category exists, otherwise use first available
+                    if (!availableCategories.has(activeCategory) && availableCategories.size > 0) {
+                        activeCategory = Array.from(availableCategories)[0];
+                    }
+                    
+                    pills.forEach(pill => {
+                        const pillCat = pill.getAttribute('data-category');
+                        if (!availableCategories.has(pillCat)) {
+                            pill.style.display = 'none'; // Auto-hide if no events
+                        } else {
+                            pill.style.display = 'inline-block';
+                            
+                            // Set initial active state
+                            if (pillCat === activeCategory) {
+                                pill.classList.add('active');
+                            } else {
+                                pill.classList.remove('active');
+                            }
+                            
+                            pill.addEventListener('click', () => {
+                                pills.forEach(p => p.classList.remove('active'));
+                                pill.classList.add('active');
+                                renderEventsList(pillCat);
+                            });
+                        }
+                    });
+                    
+                    // Hide entire container if multiple tabs aren't needed, but per request we "auto hide the pil".
+                    // If only 1 pill is shown, maybe we still show it or hide the container? Let's just leave it as pills.
+                    if (availableCategories.size === 0) {
+                        categoryPillsContainer.style.display = 'none';
+                    }
+                    
+                    renderEventsList(activeCategory);
+                } else {
+                    renderEventsList('all');
                 }
             })
             .catch(err => {
