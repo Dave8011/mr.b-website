@@ -23,7 +23,7 @@
       "id": "client-1",
       "name": "Panasonic",
       "logoUrl": "images/brands/panasonic.jpg",
-      "hidden": true
+      "hidden": false
     },
     {
       "id": "client-2",
