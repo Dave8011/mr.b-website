@@ -213,6 +213,48 @@ document.addEventListener('DOMContentLoaded', () => {
                             }, 5000);
                         }
                     }
+                    
+                    // ==========================================================================
+                    // Dynamic Clients/Brands Configuration
+                    // ==========================================================================
+                    const clientsSection = document.getElementById('dynamic-clients-section');
+                    if (clientsSection) {
+                        if (config.showClientsSection === false || !config.clients || config.clients.filter(c => !c.hidden).length === 0) {
+                            clientsSection.style.display = 'none';
+                        } else {
+                            clientsSection.style.display = 'block';
+                            
+                            const visibleClients = config.clients.filter(c => !c.hidden);
+                            const sectionTitle = config.clientsSectionTitle || "Our happy and satisfied Clients :";
+                            
+                            let clientsHtml = `
+                                <div class="container">
+                                    <div class="section-slide-header text-center fade-in visible">
+                                        <div class="slide-num">05 // TRUSTED BY</div>
+                                        <h2 class="slide-subtitle">${sectionTitle}</h2>
+                                    </div>
+                                    <div class="clients-grid fade-in visible">
+                            `;
+                            
+                            visibleClients.forEach(client => {
+                                clientsHtml += `
+                                    <div class="client-card">
+                                        <div class="client-logo-wrapper">
+                                            <img src="${client.logoUrl}" alt="${client.name}" class="client-logo">
+                                        </div>
+                                        <div class="client-name">${client.name}</div>
+                                    </div>
+                                `;
+                            });
+                            
+                            clientsHtml += `
+                                    </div>
+                                </div>
+                            `;
+                            
+                            clientsSection.innerHTML = clientsHtml;
+                        }
+                    }
                 }
             })
             .catch(err => {

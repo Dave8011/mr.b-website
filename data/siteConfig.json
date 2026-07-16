@@ -15,5 +15,21 @@
   "activeBannerUrls": [
     "images/banners/banner_1783946392870.jpg",
     "images/banners/banner_1783946419617.jpg"
+  ],
+  "showClientsSection": true,
+  "clientsSectionTitle": "Our happy and satisfied Clients :",
+  "clients": [
+    {
+      "id": "client-1",
+      "name": "Panasonic",
+      "logoUrl": "images/brands/panasonic.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-2",
+      "name": "Mahindra",
+      "logoUrl": "images/brands/mahindra.jpg",
+      "hidden": false
+    }
   ]
 }

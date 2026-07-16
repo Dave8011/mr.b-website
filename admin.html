@@ -275,6 +275,7 @@
         <div class="tabs">
             <button class="tab-btn" onclick="switchTab('tab-hero')" id="btn-tab-hero">Hero Banner</button>
             <button class="tab-btn active" onclick="switchTab('tab-events')" id="btn-tab-events">Events Management</button>
+            <button class="tab-btn" onclick="switchTab('tab-clients')" id="btn-tab-clients">Clients / Brands</button>
         </div>
 
         <!-- HERO BANNER TAB -->
@@ -331,6 +332,38 @@
 
             <div id="event-list">
                 <!-- Events injected here -->
+            </div>
+        </div>
+
+        <!-- CLIENTS TAB -->
+        <div id="tab-clients" class="tab-content">
+            <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Clients & Brands</h1>
+                    <p class="text-muted text-sm">Manage the logos displayed in the Past Collaborations section.</p>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <label class="toggle-switch">
+                        <span class="toggle-label">Show Section</span>
+                        <input type="checkbox" id="clients-visibility-toggle" onchange="toggleClientsVisibility()">
+                        <div class="switch"></div>
+                    </label>
+                    <button class="btn btn-primary" onclick="openClientModal()">
+                        <i class="fa-solid fa-plus"></i> Add Brand
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group" style="max-width: 500px; margin-bottom: 2rem;">
+                <label>Section Header Title</label>
+                <div class="flex gap-2">
+                    <input type="text" id="clients-section-title" class="form-control" placeholder="Our happy and satisfied Clients">
+                    <button class="btn btn-outline" onclick="saveClientsTitle()">Save Title</button>
+                </div>
+            </div>
+
+            <div id="clients-list" class="banner-library">
+                <!-- Clients injected here -->
             </div>
         </div>
     </div>
@@ -390,6 +423,39 @@
         <div class="flex justify-between items-center" style="margin-top: 2.5rem;">
             <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
             <button class="btn btn-primary" onclick="saveEvent()">Save Event</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Add/Edit Client -->
+<div class="modal-overlay" id="client-modal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center" style="margin-bottom: 1.5rem;">
+            <h2 id="client-modal-title" style="font-size: 1.25rem;">Add Brand</h2>
+            <button class="btn-icon" onclick="closeClientModal()" style="border:none;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="form-group">
+            <label>Brand Name</label>
+            <input type="text" id="client-name" class="form-control" placeholder="e.g. Panasonic">
+        </div>
+        
+        <div class="form-group">
+            <label>Upload Logo</label>
+            <div class="upload-area" style="padding: 1.5rem;" onclick="document.getElementById('client-upload').click()">
+                <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                <h4 style="margin-bottom: 0.25rem;">Click to upload logo</h4>
+                <p class="text-muted text-sm">JPEG or PNG.</p>
+                <input type="file" id="client-upload" accept="image/*" style="display:none" onchange="handleClientUpload(event)">
+            </div>
+            <div id="client-preview-container" style="margin-top:1rem; display:none; text-align: center;">
+                <img id="client-preview" style="max-width:100%; max-height: 120px; object-fit: contain; border-radius:8px; border:1px solid var(--border); padding: 1rem; background: #fff;" />
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center" style="margin-top: 2.5rem;">
+            <button class="btn btn-outline" onclick="closeClientModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveClient()" id="save-client-btn">Save Brand</button>
         </div>
     </div>
 </div>
@@ -592,6 +658,7 @@
                 
                 document.getElementById('banner-visibility-toggle').checked = configData.showHeroBanner;
                 renderBanners();
+                renderClients();
             }
         } catch (e) {
             console.error("Failed to load config:", e);
@@ -897,6 +964,176 @@
         } finally {
             btn.innerHTML = origHtml;
             btn.disabled = false;
+        }
+    }
+
+    // --- Clients Logic ---
+    let pendingClientBase64 = null;
+
+    function renderClients() {
+        const grid = document.getElementById('clients-list');
+        if (!grid) return;
+        
+        grid.innerHTML = '';
+        
+        if (!configData.clients || configData.clients.length === 0) {
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; border: 1px dashed var(--border); border-radius: 12px; color: var(--text-muted);">No brands added yet.</div>';
+        } else {
+            configData.clients.forEach((client, idx) => {
+                const item = document.createElement('div');
+                item.className = `banner-item ${!client.hidden ? 'active' : ''}`;
+                item.style.background = '#fff'; // Usually logos look better on white
+                
+                const statusBadge = !client.hidden 
+                    ? `<div class="active-badge" style="background: var(--success); color:#fff;"><i class="fa-solid fa-eye"></i> Visible</div>`
+                    : `<div class="active-badge" style="background: var(--text-muted); color:#fff; display:block;"><i class="fa-solid fa-eye-slash"></i> Hidden</div>`;
+                    
+                item.innerHTML = `
+                    ${statusBadge}
+                    <div style="padding: 1.5rem; height: 120px; display: flex; align-items: center; justify-content: center;">
+                        <img src="${client.logoUrl}" onerror="this.src='images/hero-banner.jpg'" style="max-width:100%; max-height:100%; object-fit:contain; border:none; border-bottom:none;" />
+                    </div>
+                    <div style="background: var(--surface); border-top: 1px solid var(--border); padding: 0.5rem; text-align:center; color: var(--text-main); font-weight:500;">
+                        ${client.name}
+                    </div>
+                    <div class="banner-item-actions" style="background: var(--surface); display:flex; gap:0.5rem; padding-top:0;">
+                        <button class="btn btn-outline" style="flex:1; padding:0.5rem; font-size:0.8rem;" onclick="toggleClient(${idx})">${client.hidden ? 'Show' : 'Hide'}</button>
+                        <button class="btn btn-danger" style="flex:1; padding:0.5rem; font-size:0.8rem; background:rgba(220,53,69,0.1); border-color:var(--danger); color:var(--danger);" onclick="deleteClient(${idx})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+        
+        document.getElementById('clients-visibility-toggle').checked = configData.showClientsSection !== false;
+        document.getElementById('clients-section-title').value = configData.clientsSectionTitle || 'Our happy and satisfied Clients :';
+    }
+
+    function openClientModal() {
+        pendingClientBase64 = null;
+        document.getElementById('client-preview-container').style.display = 'none';
+        document.getElementById('client-upload').value = '';
+        document.getElementById('client-name').value = '';
+        document.getElementById('client-modal').classList.add('active');
+    }
+
+    function closeClientModal() {
+        document.getElementById('client-modal').classList.remove('active');
+    }
+
+    function handleClientUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const MAX_WIDTH = 800;
+                
+                if (width > MAX_WIDTH) {
+                    height = Math.round((height * MAX_WIDTH) / width);
+                    width = MAX_WIDTH;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                pendingClientBase64 = canvas.toDataURL('image/jpeg', 0.9);
+                
+                document.getElementById('client-preview').src = pendingClientBase64;
+                document.getElementById('client-preview-container').style.display = 'block';
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function saveClient() {
+        const name = document.getElementById('client-name').value;
+        if (!name) return alert("Brand Name is required");
+        if (!pendingClientBase64) return alert("Please upload a logo image");
+        
+        const btn = document.getElementById('save-client-btn');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+        btn.disabled = true;
+        
+        try {
+            const res = await fetch('/api/uploadImage', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ base64Image: pendingClientBase64, folder: 'brands' })
+            });
+            
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || 'Upload failed');
+            
+            if (!configData.clients) configData.clients = [];
+            
+            configData.clients.push({
+                id: 'client-' + Date.now(),
+                name: name,
+                logoUrl: data.imageUrl,
+                hidden: false
+            });
+            
+            await saveConfigOnly("Brand added successfully!");
+            closeClientModal();
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+        } finally {
+            btn.innerHTML = origText;
+            btn.disabled = false;
+        }
+    }
+
+    async function toggleClient(idx) {
+        configData.clients[idx].hidden = !configData.clients[idx].hidden;
+        await saveConfigOnly(configData.clients[idx].hidden ? "Brand hidden." : "Brand is now visible.");
+    }
+
+    async function deleteClient(idx) {
+        if(confirm("Delete this brand?")) {
+            configData.clients.splice(idx, 1);
+            await saveConfigOnly("Brand deleted.");
+        }
+    }
+
+    async function toggleClientsVisibility() {
+        configData.showClientsSection = document.getElementById('clients-visibility-toggle').checked;
+        await saveConfigOnly("Section visibility updated on live site!");
+    }
+    
+    async function saveClientsTitle() {
+        configData.clientsSectionTitle = document.getElementById('clients-section-title').value;
+        await saveConfigOnly("Section title updated!");
+    }
+
+    async function saveConfigOnly(successMsg) {
+        if (!sessionToken) return;
+        try {
+            const res = await fetch('/api/saveConfig', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ configData: configData, sha: configSha })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                configSha = data.newSha;
+                showToast('fa-check', successMsg);
+                renderClients();
+            } else {
+                throw new Error(data.error || 'Failed to save configuration');
+            }
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+            throw e; // rethrow for caller
         }
     }
 </script>

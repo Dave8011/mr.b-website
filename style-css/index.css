@@ -136,35 +136,72 @@
     font-size: 0.85rem;
 }
 
-/* Collaborations Grid */
-.collab-grid {
+/* Dynamic Clients Grid */
+.clients-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 2rem;
-    align-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 2.5rem;
+    align-items: start;
+    margin-top: 3rem;
 }
 
-.collab-logo {
+.client-card {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100px;
-    font-family: 'Cinzel', serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--text-light);
-    opacity: 0.25;
+    text-align: center;
     transition: var(--transition-smooth);
-    border: 1px solid transparent;
-    border-radius: 8px;
-    letter-spacing: 2px;
+    opacity: 0.7;
 }
 
-.collab-logo:hover {
+.client-card:hover {
     opacity: 1;
-    color: #fff;
-    border-color: var(--glass-border);
-    transform: translateY(-2px);
+    transform: translateY(-5px);
+}
+
+.client-logo-wrapper {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: var(--transition-smooth);
+}
+
+.client-card:hover .client-logo-wrapper {
+    box-shadow: 0 15px 40px rgba(201, 160, 42, 0.2);
+    border-color: rgba(201, 160, 42, 0.3);
+}
+
+.client-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(20%);
+    transition: var(--transition-smooth);
+}
+
+.client-card:hover .client-logo {
+    filter: grayscale(0%);
+}
+
+.client-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+}
+
+.client-card:hover .client-name {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* Category Pills */
@@ -199,8 +236,8 @@
     .video-grid, .testimonials-grid {
         grid-template-columns: 1fr;
     }
-    .collab-grid {
-        grid-template-columns: repeat(3, 1fr);
+    .clients-grid {
+        gap: 1.5rem;
     }
     .event-item {
         flex-direction: column;
@@ -249,7 +286,8 @@
     }
 }
 @media (max-width: 768px) {
-    .collab-grid {
+    .clients-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 }
