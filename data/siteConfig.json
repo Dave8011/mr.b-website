@@ -30,6 +30,12 @@
       "name": "Mahindra",
       "logoUrl": "images/brands/mahindra.jpg",
       "hidden": false
+    },
+    {
+      "id": "client-1784186717835",
+      "name": "Test0.1",
+      "logoUrl": "images/brands/img_1784186718539.jpg",
+      "hidden": false
     }
   ]
 }
