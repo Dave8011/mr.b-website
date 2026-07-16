@@ -208,6 +208,16 @@
         .banner-item-actions { padding: 1rem; text-align: center; }
         .active-badge { position: absolute; top: 10px; right: 10px; background: var(--gold); color: #000; font-size: 0.75rem; font-weight: bold; padding: 4px 10px; border-radius: 20px; display: none; }
         .banner-item.active .active-badge { display: block; }
+        
+        /* Clients Library Specific */
+        .clients-library { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .client-item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; position: relative; transition: 0.3s; background: var(--surface); display: flex; flex-direction: column; }
+        .client-item.active { border-color: rgba(255,255,255,0.2); }
+        .client-item-logo { padding: 1rem; height: 90px; display: flex; align-items: center; justify-content: center; background: #fff; }
+        .client-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .client-item-name { padding: 0.5rem; text-align: center; font-size: 0.8rem; font-weight: 500; border-top: 1px solid var(--border); background: var(--surface); color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .client-item-actions { display: flex; gap: 4px; padding: 0.5rem; background: var(--surface); border-top: 1px solid var(--border-light); }
+        .client-item-actions .btn { flex: 1; padding: 0.35rem; font-size: 0.75rem; border-radius: 4px; }
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -362,7 +372,7 @@
                 </div>
             </div>
 
-            <div id="clients-list" class="banner-library">
+            <div id="clients-list" class="clients-library">
                 <!-- Clients injected here -->
             </div>
         </div>
@@ -429,33 +439,33 @@
 
 <!-- Modal for Add/Edit Client -->
 <div class="modal-overlay" id="client-modal">
-    <div class="modal-content">
-        <div class="flex justify-between items-center" style="margin-bottom: 1.5rem;">
-            <h2 id="client-modal-title" style="font-size: 1.25rem;">Add Brand</h2>
-            <button class="btn-icon" onclick="closeClientModal()" style="border:none;"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-content" style="max-width: 450px; padding: 2.5rem 2rem;">
+        <div class="flex justify-between items-center" style="margin-bottom: 2rem;">
+            <h2 id="client-modal-title" style="font-size: 1.4rem; font-weight: 600;">Add Brand</h2>
+            <button class="btn-icon" onclick="closeClientModal()" style="border:none; background:rgba(255,255,255,0.05);"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
-        <div class="form-group">
-            <label>Brand Name</label>
-            <input type="text" id="client-name" class="form-control" placeholder="e.g. Panasonic">
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label style="color: var(--text-main);">Brand Name</label>
+            <input type="text" id="client-name" class="form-control" placeholder="e.g. Panasonic" style="background: rgba(255,255,255,0.03);">
         </div>
         
-        <div class="form-group">
-            <label>Upload Logo</label>
-            <div class="upload-area" style="padding: 1.5rem;" onclick="document.getElementById('client-upload').click()">
-                <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                <h4 style="margin-bottom: 0.25rem;">Click to upload logo</h4>
-                <p class="text-muted text-sm" style="line-height: 1.5;">JPEG or PNG.<br>Recommended size: <strong>400 x 200 px</strong> (Transparent PNG preferred).</p>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label style="color: var(--text-main);">Upload Logo</label>
+            <div class="upload-area" style="padding: 2rem 1.5rem; border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; background: rgba(0,0,0,0.2);" onclick="document.getElementById('client-upload').click()">
+                <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.8;"></i>
+                <h4 style="margin-bottom: 0.5rem; font-weight: 500; font-size: 1.05rem;">Click to upload logo</h4>
+                <p class="text-muted text-sm" style="line-height: 1.5; font-size: 0.8rem;">JPEG or PNG.<br>Recommended: <strong>400 x 200 px</strong> (Transparent PNG).</p>
                 <input type="file" id="client-upload" accept="image/*" style="display:none" onchange="handleClientUpload(event)">
             </div>
             <div id="client-preview-container" style="margin-top:1rem; display:none; text-align: center;">
-                <img id="client-preview" style="max-width:100%; max-height: 120px; object-fit: contain; border-radius:8px; border:1px solid var(--border); padding: 1rem; background: #fff;" />
+                <img id="client-preview" style="max-width:100%; max-height: 100px; object-fit: contain; border-radius:8px; border:1px solid rgba(255,255,255,0.1); padding: 0.5rem; background: #fff;" />
             </div>
         </div>
 
-        <div class="flex justify-between items-center" style="margin-top: 2.5rem;">
-            <button class="btn btn-outline" onclick="closeClientModal()">Cancel</button>
-            <button class="btn btn-primary" onclick="saveClient()" id="save-client-btn">Save Brand</button>
+        <div class="flex gap-2" style="margin-top: 2rem;">
+            <button class="btn btn-outline" style="flex: 1;" onclick="closeClientModal()">Cancel</button>
+            <button class="btn btn-primary" style="flex: 2;" onclick="saveClient()" id="save-client-btn">Save Brand</button>
         </div>
     </div>
 </div>
@@ -981,24 +991,27 @@
         } else {
             configData.clients.forEach((client, idx) => {
                 const item = document.createElement('div');
-                item.className = `banner-item ${!client.hidden ? 'active' : ''}`;
-                item.style.background = '#fff'; // Usually logos look better on white
+                item.className = `client-item ${!client.hidden ? 'active' : ''}`;
                 
-                const statusBadge = !client.hidden 
-                    ? `<div class="active-badge" style="background: var(--success); color:#fff;"><i class="fa-solid fa-eye"></i> Visible</div>`
-                    : `<div class="active-badge" style="background: var(--text-muted); color:#fff; display:block;"><i class="fa-solid fa-eye-slash"></i> Hidden</div>`;
+                const statusIcon = !client.hidden 
+                    ? `<div style="position:absolute; top:4px; right:4px; font-size:10px; color:var(--success); background:rgba(0,0,0,0.6); padding:2px 6px; border-radius:10px; z-index:10;"><i class="fa-solid fa-eye"></i></div>`
+                    : `<div style="position:absolute; top:4px; right:4px; font-size:10px; color:var(--text-muted); background:rgba(0,0,0,0.6); padding:2px 6px; border-radius:10px; z-index:10;"><i class="fa-solid fa-eye-slash"></i></div>`;
                     
                 item.innerHTML = `
-                    ${statusBadge}
-                    <div style="padding: 1.5rem; height: 120px; display: flex; align-items: center; justify-content: center;">
-                        <img src="${client.logoUrl}" onerror="this.src='images/hero-banner.jpg'" style="max-width:100%; max-height:100%; object-fit:contain; border:none; border-bottom:none;" />
+                    ${statusIcon}
+                    <div class="client-item-logo">
+                        <img src="${client.logoUrl}" onerror="this.src='images/hero-banner.jpg'" />
                     </div>
-                    <div style="background: var(--surface); border-top: 1px solid var(--border); padding: 0.5rem; text-align:center; color: var(--text-main); font-weight:500;">
+                    <div class="client-item-name">
                         ${client.name}
                     </div>
-                    <div class="banner-item-actions" style="background: var(--surface); display:flex; gap:0.5rem; padding-top:0;">
-                        <button class="btn btn-outline" style="flex:1; padding:0.5rem; font-size:0.8rem;" onclick="toggleClient(${idx})">${client.hidden ? 'Show' : 'Hide'}</button>
-                        <button class="btn btn-danger" style="flex:1; padding:0.5rem; font-size:0.8rem; background:rgba(220,53,69,0.1); border-color:var(--danger); color:var(--danger);" onclick="deleteClient(${idx})"><i class="fa-solid fa-trash"></i></button>
+                    <div class="client-item-actions">
+                        <button class="btn btn-outline" onclick="toggleClient(${idx})" title="${client.hidden ? 'Show' : 'Hide'}">
+                            <i class="fa-solid ${client.hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
+                        </button>
+                        <button class="btn btn-danger" style="background:rgba(220,53,69,0.1); border-color:rgba(220,53,69,0.3); color:var(--danger);" onclick="deleteClient(${idx})" title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 `;
                 grid.appendChild(item);

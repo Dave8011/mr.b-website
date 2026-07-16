@@ -228,16 +228,18 @@ document.addEventListener('DOMContentLoaded', () => {
                             const sectionTitle = config.clientsSectionTitle || "Our happy and satisfied Clients :";
                             
                             let clientsHtml = `
-                                <div class="container">
+                                <div class="container" style="max-width: 100%; padding: 0;">
                                     <div class="section-slide-header text-center fade-in visible">
                                         <div class="slide-num">05 // TRUSTED BY</div>
                                         <h2 class="slide-subtitle">${sectionTitle}</h2>
                                     </div>
-                                    <div class="clients-grid fade-in visible">
+                                    <div class="marquee-container fade-in visible">
+                                        <div class="marquee-content">
                             `;
                             
+                            let cardsHtml = '';
                             visibleClients.forEach(client => {
-                                clientsHtml += `
+                                cardsHtml += `
                                     <div class="client-card">
                                         <div class="client-logo-wrapper">
                                             <img src="${client.logoUrl}" alt="${client.name}" class="client-logo">
@@ -247,7 +249,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 `;
                             });
                             
+                            // Duplicate cards for seamless infinite scroll
+                            clientsHtml += cardsHtml + cardsHtml;
+                            
                             clientsHtml += `
+                                        </div>
                                     </div>
                                 </div>
                             `;
