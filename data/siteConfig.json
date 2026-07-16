@@ -36,6 +36,12 @@
       "name": "Test0.1",
       "logoUrl": "images/brands/img_1784186718539.jpg",
       "hidden": false
+    },
+    {
+      "id": "client-1784186735515",
+      "name": "Test0.2",
+      "logoUrl": "images/brands/img_1784186736228.jpg",
+      "hidden": false
     }
   ]
 }
