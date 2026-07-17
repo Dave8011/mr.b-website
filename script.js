@@ -275,13 +275,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         // 2. Render for Contact Page (if exists)
                         const contactShortsContainer = document.getElementById('dynamic-shorts-contact');
                         if (contactShortsContainer) {
-                            const sectionTitle = contactShortsContainer.previousElementSibling; // <h3 class="shorts-title">
+                            const shortsSection = contactShortsContainer.closest('.contact-shorts-section');
                             if (visibleShorts.length === 0) {
-                                contactShortsContainer.style.display = 'none';
-                                if (sectionTitle) sectionTitle.style.display = 'none';
+                                // Hide entire column when no videos
+                                if (shortsSection) shortsSection.style.display = 'none';
                             } else {
-                                contactShortsContainer.style.display = 'flex'; // .shorts-grid-contact uses flex column
-                                if (sectionTitle) sectionTitle.style.display = 'block';
+                                // Show column
+                                if (shortsSection) shortsSection.style.display = 'flex';
+                                contactShortsContainer.style.display = 'flex';
                                 
                                 let shortsHtml = '';
                                 visibleShorts.forEach(short => {

@@ -67,18 +67,56 @@
 
 .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1.5fr;
+    grid-template-rows: auto;
     gap: 3rem;
-    align-items: stretch;
+    align-items: start;
+}
+
+/* Info panel spans full width across top */
+.contact-info-panel {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.contact-info-panel .info-header {
+    flex: 1;
+    min-width: 200px;
+}
+
+.contact-info-panel .info-list {
+    flex: 2;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.contact-info-panel .info-item {
+    flex: 1;
+    min-width: 150px;
+}
+
+.contact-info-panel .social-connect {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Videos and form sit side-by-side below */
+.contact-shorts-section {
+    grid-column: 1;
+}
+
+.contact-form-panel {
+    grid-column: 2;
 }
 
 /* ==========================================================================
-   Premium Contact Information Panel (Left Side)
+   Premium Contact Information Panel (Top Banner)
    ========================================================================== */
-.contact-info-panel {
-    display: flex;
-    flex-direction: column;
-}
 
 .premium-glass-panel {
     background: rgba(12, 12, 30, 0.5);
@@ -451,45 +489,27 @@
 /* ==========================================================================
    Responsive Adjustments — Contact & Page Hero
    ========================================================================== */
-@media (max-width: 1100px) {
-    .contact-grid {
-        grid-template-columns: 1fr 1.5fr;
-        gap: 2.5rem;
-    }
-    /* Shorts move below form on tablet */
-    .contact-shorts-section {
-        grid-column: 1 / -1;
-        flex-direction: row;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
-    .shorts-grid-contact {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-    .shorts-grid-contact .video-wrapper {
-        flex: 1 1 280px;
-        padding-bottom: 0;
-        height: 200px;
-    }
-    .shorts-grid-contact .video-wrapper iframe {
-        position: static;
-        width: 100%;
-        height: 100%;
-    }
-}
-
 @media (max-width: 992px) {
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
     }
-    
+
+    .contact-info-panel {
+        grid-column: 1;
+        flex-direction: column;
+    }
+
+    .contact-info-panel .info-list {
+        flex-direction: column;
+    }
+
     .contact-shorts-section {
-        grid-column: unset;
+        grid-column: 1;
     }
-    
+
     .contact-form-panel {
+        grid-column: 1;
         padding: 2.5rem;
     }
 
