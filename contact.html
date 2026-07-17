@@ -43,60 +43,59 @@
     <!-- Main Contact Section -->
     <section class="contact-main section">
         <div class="container">
-            <div class="contact-grid">
-                
-                <!-- Contact Information (Left Side) -->
-                <div class="contact-info-panel premium-glass-panel fade-in">
-                    <div class="info-header">
-                        <h2>Direct Connect</h2>
-                        <p>For urgent bookings, press inquiries, or Academy details, reach out to our team.</p>
-                    </div>
-                    
-                    <div class="info-list">
-                        <div class="info-item">
-                            <div class="icon-glow-box"><i class="fa-solid fa-location-dot"></i></div>
-                            <div class="info-content">
-                                <h3>Headquarters</h3>
-                                <p>Daves Academy, Moti Bhuvan<br>Dr. D’Silva Road, Dadar West<br>Mumbai - 400028</p>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item">
-                            <div class="icon-glow-box"><i class="fa-solid fa-phone"></i></div>
-                            <div class="info-content">
-                                <h3>Phone Enquiries</h3>
-                                <p><a href="tel:+919820038976">+91 98200 38976</a></p>
-                            </div>
-                        </div>
 
-                        <div class="info-item">
-                            <div class="icon-glow-box"><i class="fa-solid fa-envelope"></i></div>
-                            <div class="info-content">
-                                <h3>Email Address</h3>
-                                <p><a href="mailto:bhupeshdave@gmail.com">bhupeshdave@gmail.com</a></p>
-                            </div>
-                        </div>
+            <!-- Quick Info Strip -->
+            <div class="contact-info-strip fade-in">
+                <div class="info-strip-item">
+                    <div class="icon-glow-box"><i class="fa-solid fa-location-dot"></i></div>
+                    <div>
+                        <h4>Headquarters</h4>
+                        <p>Daves Academy, Moti Bhuvan<br>Dr. D'Silva Road, Dadar West, Mumbai - 400028</p>
                     </div>
-                    
-                    <div class="social-connect">
-                        <h3>Follow Mr. B</h3>
-                        <div class="social-icons">
+                </div>
+                <div class="info-strip-item">
+                    <div class="icon-glow-box"><i class="fa-solid fa-phone"></i></div>
+                    <div>
+                        <h4>Phone</h4>
+                        <p><a href="tel:+919820038976">+91 98200 38976</a></p>
+                    </div>
+                </div>
+                <div class="info-strip-item">
+                    <div class="icon-glow-box"><i class="fa-solid fa-envelope"></i></div>
+                    <div>
+                        <h4>Email</h4>
+                        <p><a href="mailto:bhupeshdave@gmail.com">bhupeshdave@gmail.com</a></p>
+                    </div>
+                </div>
+                <div class="info-strip-item">
+                    <div class="icon-glow-box"><i class="fa-solid fa-share-nodes"></i></div>
+                    <div>
+                        <h4>Follow Mr. B</h4>
+                        <div class="social-icons-inline">
                             <a href="https://instagram.com/bhupeshdave._" target="_blank" class="social-circle"><i class="fa-brands fa-instagram"></i></a>
                             <a href="#" class="social-circle"><i class="fa-brands fa-youtube"></i></a>
                             <a href="#" class="social-circle"><i class="fa-brands fa-facebook-f"></i></a>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Past Event Glimpses (Center) -->
-                <div class="contact-shorts-section">
-                    <h3 class="shorts-title">Past Event Glimpses</h3>
+            <!-- Two Column: Videos Left | Form Right -->
+            <div class="contact-body-grid">
+
+                <!-- Past Event Glimpses (LEFT) -->
+                <div class="contact-shorts-section" id="contact-shorts-wrapper">
+                    <h3 class="shorts-title"><i class="fa-brands fa-youtube" style="color:var(--gold); margin-right:8px;"></i>Past Event Glimpses</h3>
                     <div id="dynamic-shorts-contact" class="shorts-grid-contact">
-                        <!-- Dynamic Shorts Injected Here -->
+                        <!-- Dynamic Shorts Injected Here by script.js -->
+                        <div class="shorts-placeholder">
+                            <i class="fa-solid fa-film"></i>
+                            <p>Loading videos...</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Contact Form (Right) -->
+                <!-- Contact Form (RIGHT) -->
                 <div class="contact-form-panel">
                     <div class="form-header">
                         <h2>SEND A MESSAGE</h2>
@@ -131,10 +130,10 @@
                             <div class="select-wrapper">
                                 <select id="interest" name="interest" required>
                                     <option value="" disabled selected>Select an option...</option>
-                                    <option value="corporate">Corporate Keynote & Training</option>
+                                    <option value="corporate">Corporate Keynote &amp; Training</option>
                                     <option value="show">Sixth Sense Mentalism Show</option>
                                     <option value="academy">Magic Academy Enrollment</option>
-                                    <option value="workshop">Student & Parent Workshop</option>
+                                    <option value="workshop">Student &amp; Parent Workshop</option>
                                     <option value="other">Other Inquiry</option>
                                 </select>
                                 <i class="fa-solid fa-chevron-down select-icon"></i>
@@ -160,7 +159,7 @@
     <!-- Global Footer Placeholder -->
     <div id="footer-placeholder"></div>
 
-    <!-- Form Submit Script Simulation -->
+    <!-- Form Submit Script -->
     <script>
         document.getElementById('new-contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -183,6 +182,7 @@
             }, 1500);
         });
     </script>
+    <script src="script.js"></script>
     <script src="components.js"></script>
 </body>
 </html>
