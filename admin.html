@@ -1329,12 +1329,26 @@
         }
     }
 
-    async function toggleShortVisibility(id) {
+    async function toggleShortPage(id, page) {
         if (!configData.shorts) return;
         const short = configData.shorts.find(s => s.id === id);
         if (short) {
-            short.hidden = !short.hidden;
-            await saveConfigOnly(short.hidden ? "Video hidden" : "Video visible");
+            // Migrate legacy hidden flag if present
+            if (short.hidden !== undefined) {
+                if (short.hidden) {
+                    short.hideHome = true;
+                    short.hideContact = true;
+                }
+                delete short.hidden;
+            }
+            
+            if (page === 'home') {
+                short.hideHome = !short.hideHome;
+            } else if (page === 'contact') {
+                short.hideContact = !short.hideContact;
+            }
+            
+            await saveConfigOnly("Video visibility updated!");
             renderShorts();
         }
     }
@@ -1368,20 +1382,31 @@
         }
         
         configData.shorts.forEach(short => {
+            // Apply legacy state for admin UI rendering
+            const isHiddenHome = short.hideHome || (short.hidden === true);
+            const isHiddenContact = short.hideContact || (short.hidden === true);
+            const isHiddenEverywhere = isHiddenHome && isHiddenContact;
+
             const div = document.createElement('div');
-            div.className = 'banner-item ' + (short.hidden ? '' : 'active');
+            div.className = 'banner-item ' + (isHiddenEverywhere ? '' : 'active');
             
             div.innerHTML = `
                 <div style="position:relative; padding-top:56.25%;"> <!-- 16:9 Aspect ratio -->
                     <iframe src="${short.url}?controls=0" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;" loading="lazy"></iframe>
-                    ${short.hidden ? '<div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:10;"><span style="background:var(--danger); padding:4px 8px; border-radius:4px; font-size:0.8rem;">HIDDEN</span></div>' : '<div class="active-badge">VISIBLE</div>'}
+                    ${isHiddenEverywhere ? '<div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:10;"><span style="background:var(--danger); padding:4px 8px; border-radius:4px; font-size:0.8rem; font-weight:bold;">HIDDEN</span></div>' : '<div class="active-badge" style="background:var(--success);">VISIBLE</div>'}
                 </div>
-                <div class="banner-item-actions flex gap-2">
-                    <button class="btn btn-outline" style="flex:1; padding:0.5rem; font-size:0.85rem;" onclick="toggleShortVisibility('${short.id}')">
-                        ${short.hidden ? '<i class="fa-solid fa-eye"></i> Show' : '<i class="fa-solid fa-eye-slash"></i> Hide'}
-                    </button>
-                    <button class="btn btn-outline" style="border-color:var(--danger); color:var(--danger); padding:0.5rem; width:40px;" onclick="deleteShort('${short.id}')">
-                        <i class="fa-solid fa-trash"></i>
+                <div class="banner-item-actions" style="display:flex; flex-direction:column; gap:0.5rem; padding: 0.75rem;">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: -0.2rem;">Visibility</div>
+                    <div style="display:flex; gap:0.5rem;">
+                        <button class="btn btn-outline" style="flex:1; padding:0.4rem; font-size:0.75rem; background: ${isHiddenHome ? 'rgba(255,255,255,0.05)' : 'var(--gold)'}; color: ${isHiddenHome ? 'var(--text-muted)' : '#000'}; border-color: ${isHiddenHome ? 'rgba(255,255,255,0.1)' : 'var(--gold)'};" onclick="toggleShortPage('${short.id}', 'home')">
+                            <i class="fa-solid fa-home"></i> ${isHiddenHome ? 'Off' : 'Home'}
+                        </button>
+                        <button class="btn btn-outline" style="flex:1; padding:0.4rem; font-size:0.75rem; background: ${isHiddenContact ? 'rgba(255,255,255,0.05)' : 'var(--gold)'}; color: ${isHiddenContact ? 'var(--text-muted)' : '#000'}; border-color: ${isHiddenContact ? 'rgba(255,255,255,0.1)' : 'var(--gold)'};" onclick="toggleShortPage('${short.id}', 'contact')">
+                            <i class="fa-solid fa-address-book"></i> ${isHiddenContact ? 'Off' : 'Contact'}
+                        </button>
+                    </div>
+                    <button class="btn btn-outline" style="border-color:var(--danger); color:var(--danger); padding:0.4rem; width:100%; font-size:0.75rem; margin-top: 0.2rem;" onclick="deleteShort('${short.id}')">
+                        <i class="fa-solid fa-trash"></i> Delete Video
                     </button>
                 </div>
             `;

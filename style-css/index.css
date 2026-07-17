@@ -123,14 +123,34 @@
     text-align: right;
 }
 
-/* Videos Grid */
+/* Videos Grid (Slider) */
 .video-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     gap: 2.5rem;
+    padding-bottom: 1.5rem; /* space for scrollbar */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) rgba(255,255,255,0.05);
+}
+
+.video-grid::-webkit-scrollbar {
+    height: 6px;
+}
+.video-grid::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+.video-grid::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 10px;
 }
 
 .video-wrapper {
+    flex: 0 0 calc(33.333% - 1.66rem);
+    min-width: 280px;
+    scroll-snap-align: start;
     border-radius: 12px;
     overflow: hidden;
     position: relative;
@@ -299,7 +319,7 @@
 
 /* Responsive Overrides */
 @media (max-width: 992px) {
-    .video-grid, .testimonials-grid {
+    .testimonials-grid {
         grid-template-columns: 1fr;
     }
     .marquee-content {
@@ -470,10 +490,6 @@
 
 /* --- Tablet (992px) --- */
 @media (max-width: 992px) {
-    .video-grid {
-        grid-template-columns: 1fr;
-    }
-
     .testimonials-grid {
         grid-template-columns: 1fr;
     }

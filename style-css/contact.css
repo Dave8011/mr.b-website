@@ -191,14 +191,33 @@
 
 .shorts-grid-contact {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     gap: 1.5rem;
+    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) rgba(255,255,255,0.05);
+}
+
+.shorts-grid-contact::-webkit-scrollbar {
+    height: 6px;
+}
+.shorts-grid-contact::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+.shorts-grid-contact::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 10px;
 }
 
 .shorts-grid-contact .video-wrapper {
     position: relative;
-    width: 100%;
-    padding-bottom: 56.25%; /* 16:9 */
+    flex: 0 0 90%;
+    scroll-snap-align: start;
+    padding-bottom: calc(56.25% * 0.9); /* 16:9 ratio maintained based on width */
     height: 0;
     overflow: hidden;
     border-radius: 12px;

@@ -219,16 +219,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // ── Shorts / Videos (Home & Contact pages) ────────────────────
             if (config.shorts && Array.isArray(config.shorts)) {
-                const visibleShorts = config.shorts.filter(s => !s.hidden);
-                
                 // Home page
                 const homeShortsContainer = document.getElementById('dynamic-shorts-home');
                 if (homeShortsContainer) {
-                    if (visibleShorts.length === 0) {
+                    const homeShorts = config.shorts.filter(s => !(s.hideHome || s.hidden === true));
+                    if (homeShorts.length === 0) {
                         homeShortsContainer.style.display = 'none';
                     } else {
-                        homeShortsContainer.style.display = 'grid';
-                        homeShortsContainer.innerHTML = visibleShorts.map(short => `
+                        homeShortsContainer.style.display = 'flex';
+                        homeShortsContainer.innerHTML = homeShorts.map(short => `
                             <div class="video-wrapper image-frame-glow">
                                 <iframe width="100%" height="315"
                                     src="${short.url}"
@@ -244,12 +243,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const contactShortsContainer = document.getElementById('dynamic-shorts-contact');
                 if (contactShortsContainer) {
                     const shortsSection = contactShortsContainer.closest('.contact-shorts-section');
-                    if (visibleShorts.length === 0) {
+                    const contactShorts = config.shorts.filter(s => !(s.hideContact || s.hidden === true));
+                    if (contactShorts.length === 0) {
                         if (shortsSection) shortsSection.style.display = 'none';
                     } else {
                         if (shortsSection) shortsSection.style.display = 'flex';
                         contactShortsContainer.style.display = 'flex';
-                        contactShortsContainer.innerHTML = visibleShorts.map(short => `
+                        contactShortsContainer.innerHTML = contactShorts.map(short => `
                             <div class="video-wrapper">
                                 <iframe src="${short.url}"
                                     title="YouTube video player" frameborder="0"
