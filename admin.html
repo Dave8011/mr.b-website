@@ -376,6 +376,7 @@
             <button class="tab-btn" onclick="switchTab('tab-hero')" id="btn-tab-hero">Hero Banner</button>
             <button class="tab-btn active" onclick="switchTab('tab-events')" id="btn-tab-events">Events Management</button>
             <button class="tab-btn" onclick="switchTab('tab-clients')" id="btn-tab-clients">Clients / Brands</button>
+            <button class="tab-btn" onclick="switchTab('tab-shorts')" id="btn-tab-shorts">Shorts / Glimpses</button>
         </div>
 
         <!-- HERO BANNER TAB -->
@@ -464,6 +465,25 @@
 
             <div id="clients-list" class="clients-library">
                 <!-- Clients injected here -->
+            </div>
+        </div>
+
+        <!-- SHORTS TAB -->
+        <div id="tab-shorts" class="tab-content">
+            <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Shorts & Videos</h1>
+                    <p class="text-muted text-sm">Add YouTube Shorts or standard videos to display on the Home and Contact pages.</p>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <button class="btn btn-primary" onclick="openShortModal()">
+                        <i class="fa-solid fa-video"></i> Add Video
+                    </button>
+                </div>
+            </div>
+
+            <div id="shorts-list" class="banner-library" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+                <!-- Shorts injected here -->
             </div>
         </div>
     </div>
@@ -556,6 +576,27 @@
         <div class="flex gap-2" style="margin-top: 2rem;">
             <button class="btn btn-outline" style="flex: 1;" onclick="closeClientModal()">Cancel</button>
             <button class="btn btn-primary" style="flex: 2;" onclick="saveClient()" id="save-client-btn">Save Brand</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Add Short -->
+<div class="modal-overlay" id="short-modal">
+    <div class="modal-content" style="max-width: 450px; padding: 2.5rem 2rem;">
+        <div class="flex justify-between items-center" style="margin-bottom: 2rem;">
+            <h2 style="font-size: 1.4rem; font-weight: 600;">Add YouTube Video</h2>
+            <button class="btn-icon" onclick="closeShortModal()" style="border:none; background:rgba(255,255,255,0.05);"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label style="color: var(--text-main);">YouTube URL</label>
+            <input type="text" id="short-url" class="form-control" placeholder="youtube.com/shorts/... or youtube.com/watch?v=..." style="background: rgba(255,255,255,0.03);">
+            <p class="text-muted text-sm" style="margin-top: 0.5rem;">Supports standard videos and Shorts.</p>
+        </div>
+        
+        <div class="flex gap-2" style="margin-top: 2rem;">
+            <button class="btn btn-outline" style="flex: 1;" onclick="closeShortModal()">Cancel</button>
+            <button class="btn btn-primary" style="flex: 2;" onclick="saveShort()" id="save-short-btn">Save Video</button>
         </div>
     </div>
 </div>
@@ -759,6 +800,7 @@
                 document.getElementById('banner-visibility-toggle').checked = configData.showHeroBanner;
                 renderBanners();
                 renderClients();
+                if (typeof renderShorts === 'function') renderShorts();
             }
         } catch (e) {
             console.error("Failed to load config:", e);
@@ -1216,6 +1258,135 @@
     async function saveClientsTitle() {
         configData.clientsSectionTitle = document.getElementById('clients-section-title').value;
         await saveConfigOnly("Section title updated!");
+    }
+
+    // ==========================================
+    // SHORTS LOGIC
+    // ==========================================
+    function openShortModal() {
+        document.getElementById('short-url').value = '';
+        document.getElementById('short-modal').classList.add('active');
+    }
+
+    function closeShortModal() {
+        document.getElementById('short-modal').classList.remove('active');
+    }
+
+    function parseYouTubeUrl(url) {
+        let videoId = '';
+        if (url.includes('youtu.be/')) {
+            videoId = url.split('youtu.be/')[1].split('?')[0];
+        } else if (url.includes('youtube.com/shorts/')) {
+            videoId = url.split('youtube.com/shorts/')[1].split('?')[0];
+        } else if (url.includes('youtube.com/watch')) {
+            const urlParams = new URLSearchParams(new URL(url).search);
+            videoId = urlParams.get('v');
+        } else if (url.includes('youtube.com/embed/')) {
+            videoId = url.split('youtube.com/embed/')[1].split('?')[0];
+        } else {
+            return null;
+        }
+        return `https://www.youtube.com/embed/${videoId}`;
+    }
+
+    async function saveShort() {
+        const urlInput = document.getElementById('short-url').value.trim();
+        if (!urlInput) {
+            showToast('fa-triangle-exclamation', 'Please enter a YouTube URL', true);
+            return;
+        }
+
+        const embedUrl = parseYouTubeUrl(urlInput);
+        if (!embedUrl) {
+            showToast('fa-triangle-exclamation', 'Invalid YouTube URL format', true);
+            return;
+        }
+
+        const btn = document.getElementById('save-short-btn');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+        btn.disabled = true;
+
+        if (!configData.shorts) configData.shorts = [];
+
+        const newShort = {
+            id: Date.now().toString(),
+            url: embedUrl,
+            hidden: false
+        };
+
+        configData.shorts.unshift(newShort);
+
+        try {
+            await saveConfigOnly("Video added successfully!");
+            closeShortModal();
+            renderShorts();
+        } catch (e) {
+            configData.shorts.shift();
+        } finally {
+            btn.innerHTML = origText;
+            btn.disabled = false;
+        }
+    }
+
+    async function toggleShortVisibility(id) {
+        if (!configData.shorts) return;
+        const short = configData.shorts.find(s => s.id === id);
+        if (short) {
+            short.hidden = !short.hidden;
+            await saveConfigOnly(short.hidden ? "Video hidden" : "Video visible");
+            renderShorts();
+        }
+    }
+
+    async function deleteShort(id) {
+        if (!confirm('Are you sure you want to delete this video?')) return;
+        
+        if (!configData.shorts) return;
+        const index = configData.shorts.findIndex(s => s.id === id);
+        if (index > -1) {
+            configData.shorts.splice(index, 1);
+            await saveConfigOnly("Video deleted!");
+            renderShorts();
+        }
+    }
+
+    function renderShorts() {
+        const container = document.getElementById('shorts-list');
+        if (!container) return;
+        container.innerHTML = '';
+        
+        if (!configData.shorts || configData.shorts.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1;">
+                    <i class="fa-solid fa-video"></i>
+                    <h3>No videos yet</h3>
+                    <p class="text-muted">Click 'Add Video' to add a YouTube video or short.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        configData.shorts.forEach(short => {
+            const div = document.createElement('div');
+            div.className = 'banner-item ' + (short.hidden ? '' : 'active');
+            
+            div.innerHTML = `
+                <div style="position:relative; padding-top:56.25%;"> <!-- 16:9 Aspect ratio -->
+                    <iframe src="${short.url}?controls=0" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;" loading="lazy"></iframe>
+                    ${short.hidden ? '<div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:10;"><span style="background:var(--danger); padding:4px 8px; border-radius:4px; font-size:0.8rem;">HIDDEN</span></div>' : '<div class="active-badge">VISIBLE</div>'}
+                </div>
+                <div class="banner-item-actions flex gap-2">
+                    <button class="btn btn-outline" style="flex:1; padding:0.5rem; font-size:0.85rem;" onclick="toggleShortVisibility('${short.id}')">
+                        ${short.hidden ? '<i class="fa-solid fa-eye"></i> Show' : '<i class="fa-solid fa-eye-slash"></i> Hide'}
+                    </button>
+                    <button class="btn btn-outline" style="border-color:var(--danger); color:var(--danger); padding:0.5rem; width:40px;" onclick="deleteShort('${short.id}')">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
     }
 
     async function saveConfigOnly(successMsg) {

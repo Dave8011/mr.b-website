@@ -242,6 +242,59 @@ document.addEventListener('DOMContentLoaded', () => {
                             clientsSection.innerHTML = clientsHtml;
                         }
                     }
+
+                    // ==========================================================================
+                    // Dynamic Shorts Configuration
+                    // ==========================================================================
+                    if (config.shorts && Array.isArray(config.shorts)) {
+                        const visibleShorts = config.shorts.filter(s => !s.hidden);
+                        
+                        // 1. Render for Home Page (if exists)
+                        const homeShortsContainer = document.getElementById('dynamic-shorts-home');
+                        if (homeShortsContainer) {
+                            if (visibleShorts.length === 0) {
+                                homeShortsContainer.style.display = 'none';
+                            } else {
+                                homeShortsContainer.style.display = 'grid'; // .video-grid uses grid
+                                let shortsHtml = '';
+                                visibleShorts.forEach(short => {
+                                    shortsHtml += `
+                                        <div class="video-wrapper image-frame-glow">
+                                            <iframe width="100%" height="315"
+                                                src="${short.url}"
+                                                title="YouTube video player" frameborder="0"
+                                                allowfullscreen loading="lazy"
+                                                sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                                        </div>
+                                    `;
+                                });
+                                homeShortsContainer.innerHTML = shortsHtml;
+                            }
+                        }
+
+                        // 2. Render for Contact Page (if exists)
+                        const contactShortsContainer = document.getElementById('dynamic-shorts-contact');
+                        if (contactShortsContainer) {
+                            const sectionTitle = contactShortsContainer.previousElementSibling; // <h3 class="shorts-title">
+                            if (visibleShorts.length === 0) {
+                                contactShortsContainer.style.display = 'none';
+                                if (sectionTitle) sectionTitle.style.display = 'none';
+                            } else {
+                                contactShortsContainer.style.display = 'flex'; // .shorts-grid-contact uses flex column
+                                if (sectionTitle) sectionTitle.style.display = 'block';
+                                
+                                let shortsHtml = '';
+                                visibleShorts.forEach(short => {
+                                    shortsHtml += `
+                                        <div class="video-wrapper">
+                                            <iframe src="${short.url}" title="YouTube video player" frameborder="0" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                                        </div>
+                                    `;
+                                });
+                                contactShortsContainer.innerHTML = shortsHtml;
+                            }
+                        }
+                    }
                 }
             })
             .catch(err => {

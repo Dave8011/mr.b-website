@@ -397,6 +397,66 @@
 }
 
 /* ==========================================================================
+   Contact Form & Shorts Split Layout
+   ========================================================================== */
+.contact-form-split {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.contact-form-split form {
+    flex: 1.5;
+}
+
+.contact-shorts-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.shorts-title {
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: 'Inter', sans-serif;
+}
+
+.shorts-grid-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.shorts-grid-contact .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shorts-grid-contact .video-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(201, 160, 42, 0.2);
+    border-color: rgba(201, 160, 42, 0.4);
+}
+
+.shorts-grid-contact .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ==========================================================================
    Responsive Adjustments — Contact & Page Hero
    ========================================================================== */
 @media (max-width: 992px) {
@@ -437,6 +497,11 @@
     .premium-form .form-row {
         grid-template-columns: 1fr;
         gap: 0;
+    }
+
+    .contact-form-split {
+        flex-direction: column-reverse; /* Puts shorts above the form */
+        gap: 2.5rem;
     }
 
     .contact-form-panel {
