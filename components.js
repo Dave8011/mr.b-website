@@ -6,7 +6,9 @@ const globalHeader = `
             <span class="sub-logo">MR. B · INDIAN SUPER BRAIN</span>
         </a>
         <nav class="nav-links">
-            <a href="/contact" class="nav-link active">Contact Us</a>
+            <a href="/" class="nav-link">Home</a>
+            <a href="/about" class="nav-link">About Us</a>
+            <a href="/contact" class="nav-link">Contact Us</a>
         </nav>
         <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
             <i class="fa-solid fa-bars"></i>
@@ -53,4 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (footerPlaceholder) {
         footerPlaceholder.innerHTML = globalFooter;
     }
+
+    // Highlight active nav link
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPath || (currentPath === '' && link.getAttribute('href') === '/')) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
 });
