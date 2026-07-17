@@ -130,178 +130,140 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // Dynamic Hero Banner Configuration
+    // Dynamic Site Configuration (runs on EVERY page)
     // ==========================================================================
-    const bannerContainer = document.getElementById('dynamic-banner-container');
-    if (bannerContainer) {
-        fetch('data/siteConfig.json?v=' + new Date().getTime())
-            .then(res => res.json())
-            .then(config => {
-                if (config) {
-                    if (config.showHeroBanner === false) {
-                        bannerContainer.style.display = 'none';
-                        const mainHero = document.getElementById('about-intro-section');
-                        if (mainHero) mainHero.style.paddingTop = '120px';
-                    } else if (config.activeBannerUrls && config.activeBannerUrls.length > 0) {
-                        // Force display block in case onerror hid it previously
-                        bannerContainer.style.display = 'block';
-                        const mainHero = document.getElementById('about-intro-section');
-                        if (mainHero) mainHero.style.paddingTop = '4rem'; // Reset padding
+    fetch('data/siteConfig.json?v=' + new Date().getTime())
+        .then(res => res.json())
+        .then(config => {
+            if (!config) return;
 
-                        const urls = config.activeBannerUrls;
-                        
-                        if (urls.length === 1) {
-                            // Single image mode
-                            const bannerImg = document.getElementById('dynamic-hero-banner');
-                            if (bannerImg) bannerImg.src = urls[0] + '?v=' + new Date().getTime();
-                        } else {
-                            // Slideshow mode
-                            bannerContainer.innerHTML = '';
-                            
-                            // Placeholder to maintain responsive height
-                            const placeholder = document.createElement('img');
-                            placeholder.src = urls[0];
-                            placeholder.style.width = '100%';
-                            placeholder.style.height = 'auto';
-                            placeholder.style.maxHeight = '70vh';
-                            placeholder.style.objectFit = 'cover';
-                            placeholder.style.visibility = 'hidden';
-                            placeholder.style.display = 'block';
-                            bannerContainer.appendChild(placeholder);
-                            
-                            const slides = [];
-                            urls.forEach((url, i) => {
-                                const slide = document.createElement('div');
-                                slide.style.position = 'absolute';
-                                slide.style.top = '80px';
-                                slide.style.left = '0';
-                                slide.style.width = '100%';
-                                slide.style.height = 'calc(100% - 80px)';
-                                slide.style.backgroundImage = `url(${url})`;
-                                slide.style.backgroundSize = 'cover';
-                                slide.style.backgroundPosition = 'center';
-                                slide.style.opacity = i === 0 ? '1' : '0';
-                                slide.style.transition = 'opacity 1s ease-in-out';
-                                bannerContainer.appendChild(slide);
-                                slides.push(slide);
-                            });
-                            
-                            let currentSlide = 0;
-                            setInterval(() => {
-                                slides[currentSlide].style.opacity = '0';
-                                currentSlide = (currentSlide + 1) % slides.length;
-                                slides[currentSlide].style.opacity = '1';
-                            }, 5000);
-                        }
-                    }
+            // ── Hero Banner (index.html only) ─────────────────────────────
+            const bannerContainer = document.getElementById('dynamic-banner-container');
+            if (bannerContainer) {
+                if (config.showHeroBanner === false) {
+                    bannerContainer.style.display = 'none';
+                    const mainHero = document.getElementById('about-intro-section');
+                    if (mainHero) mainHero.style.paddingTop = '120px';
+                } else if (config.activeBannerUrls && config.activeBannerUrls.length > 0) {
+                    bannerContainer.style.display = 'block';
+                    const mainHero = document.getElementById('about-intro-section');
+                    if (mainHero) mainHero.style.paddingTop = '4rem';
+
+                    const urls = config.activeBannerUrls;
                     
-                    // ==========================================================================
-                    // Dynamic Clients/Brands Configuration
-                    // ==========================================================================
-                    const clientsSection = document.getElementById('dynamic-clients-section');
-                    if (clientsSection) {
-                        if (config.showClientsSection === false || !config.clients || config.clients.filter(c => !c.hidden).length === 0) {
-                            clientsSection.style.display = 'none';
-                        } else {
-                            clientsSection.style.display = 'block';
-                            
-                            const visibleClients = config.clients.filter(c => !c.hidden);
-                            const sectionTitle = config.clientsSectionTitle || "Our happy and satisfied Clients :";
-                            
-                            let clientsHtml = `
-                                <div class="container" style="max-width: 100%; padding: 0;">
-                                    <div class="section-slide-header text-center fade-in visible">
-                                        <div class="slide-num">05 // TRUSTED BY</div>
-                                        <h2 class="slide-subtitle">${sectionTitle}</h2>
-                                    </div>
-                                    <div class="marquee-container fade-in visible">
-                                        <div class="marquee-content">
-                            `;
-                            
-                            let cardsHtml = '';
-                            visibleClients.forEach(client => {
-                                cardsHtml += `
-                                    <div class="client-card">
-                                        <div class="client-logo-wrapper">
-                                            <img src="${client.logoUrl}" alt="${client.name}" class="client-logo">
-                                        </div>
-                                        <div class="client-name">${client.name}</div>
-                                    </div>
-                                `;
-                            });
-                            
-                            // Duplicate cards for seamless infinite scroll
-                            clientsHtml += cardsHtml + cardsHtml;
-                            
-                            clientsHtml += `
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            
-                            clientsSection.innerHTML = clientsHtml;
-                        }
-                    }
-
-                    // ==========================================================================
-                    // Dynamic Shorts Configuration
-                    // ==========================================================================
-                    if (config.shorts && Array.isArray(config.shorts)) {
-                        const visibleShorts = config.shorts.filter(s => !s.hidden);
+                    if (urls.length === 1) {
+                        const bannerImg = document.getElementById('dynamic-hero-banner');
+                        if (bannerImg) bannerImg.src = urls[0] + '?v=' + new Date().getTime();
+                    } else {
+                        bannerContainer.innerHTML = '';
+                        const placeholder = document.createElement('img');
+                        placeholder.src = urls[0];
+                        placeholder.style.cssText = 'width:100%;height:auto;max-height:70vh;object-fit:cover;visibility:hidden;display:block;';
+                        bannerContainer.appendChild(placeholder);
                         
-                        // 1. Render for Home Page (if exists)
-                        const homeShortsContainer = document.getElementById('dynamic-shorts-home');
-                        if (homeShortsContainer) {
-                            if (visibleShorts.length === 0) {
-                                homeShortsContainer.style.display = 'none';
-                            } else {
-                                homeShortsContainer.style.display = 'grid'; // .video-grid uses grid
-                                let shortsHtml = '';
-                                visibleShorts.forEach(short => {
-                                    shortsHtml += `
-                                        <div class="video-wrapper image-frame-glow">
-                                            <iframe width="100%" height="315"
-                                                src="${short.url}"
-                                                title="YouTube video player" frameborder="0"
-                                                allowfullscreen loading="lazy"
-                                                sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
-                                        </div>
-                                    `;
-                                });
-                                homeShortsContainer.innerHTML = shortsHtml;
-                            }
-                        }
-
-                        // 2. Render for Contact Page (if exists)
-                        const contactShortsContainer = document.getElementById('dynamic-shorts-contact');
-                        if (contactShortsContainer) {
-                            const shortsSection = contactShortsContainer.closest('.contact-shorts-section');
-                            if (visibleShorts.length === 0) {
-                                // Hide entire column when no videos
-                                if (shortsSection) shortsSection.style.display = 'none';
-                            } else {
-                                // Show column
-                                if (shortsSection) shortsSection.style.display = 'flex';
-                                contactShortsContainer.style.display = 'flex';
-                                
-                                let shortsHtml = '';
-                                visibleShorts.forEach(short => {
-                                    shortsHtml += `
-                                        <div class="video-wrapper">
-                                            <iframe src="${short.url}" title="YouTube video player" frameborder="0" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
-                                        </div>
-                                    `;
-                                });
-                                contactShortsContainer.innerHTML = shortsHtml;
-                            }
-                        }
+                        const slideEls = [];
+                        urls.forEach((url, i) => {
+                            const slide = document.createElement('div');
+                            slide.style.cssText = `position:absolute;top:80px;left:0;width:100%;height:calc(100% - 80px);background-image:url(${url});background-size:cover;background-position:center;opacity:${i === 0 ? '1' : '0'};transition:opacity 1s ease-in-out;`;
+                            bannerContainer.appendChild(slide);
+                            slideEls.push(slide);
+                        });
+                        
+                        let cur = 0;
+                        setInterval(() => {
+                            slideEls[cur].style.opacity = '0';
+                            cur = (cur + 1) % slideEls.length;
+                            slideEls[cur].style.opacity = '1';
+                        }, 5000);
                     }
                 }
-            })
-            .catch(err => {
-                console.log("No config found or error loading, defaulting to showing banner");
-            });
-    }
+            }
+
+            // ── Clients / Brands ──────────────────────────────────────────
+            const clientsSection = document.getElementById('dynamic-clients-section');
+            if (clientsSection) {
+                if (config.showClientsSection === false || !config.clients || config.clients.filter(c => !c.hidden).length === 0) {
+                    clientsSection.style.display = 'none';
+                } else {
+                    clientsSection.style.display = 'block';
+                    const visibleClients = config.clients.filter(c => !c.hidden);
+                    const sectionTitle = config.clientsSectionTitle || "Our happy and satisfied Clients :";
+                    
+                    let clientsHtml = `
+                        <div class="container" style="max-width: 100%; padding: 0;">
+                            <div class="section-slide-header text-center fade-in visible">
+                                <div class="slide-num">05 // TRUSTED BY</div>
+                                <h2 class="slide-subtitle">${sectionTitle}</h2>
+                            </div>
+                            <div class="marquee-container fade-in visible">
+                                <div class="marquee-content">
+                    `;
+                    
+                    let cardsHtml = '';
+                    visibleClients.forEach(client => {
+                        cardsHtml += `
+                            <div class="client-card">
+                                <div class="client-logo-wrapper">
+                                    <img src="${client.logoUrl}" alt="${client.name}" class="client-logo">
+                                </div>
+                                <div class="client-name">${client.name}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    clientsHtml += cardsHtml + cardsHtml; // duplicate for infinite scroll
+                    clientsHtml += `</div></div></div>`;
+                    clientsSection.innerHTML = clientsHtml;
+                }
+            }
+
+            // ── Shorts / Videos (Home & Contact pages) ────────────────────
+            if (config.shorts && Array.isArray(config.shorts)) {
+                const visibleShorts = config.shorts.filter(s => !s.hidden);
+                
+                // Home page
+                const homeShortsContainer = document.getElementById('dynamic-shorts-home');
+                if (homeShortsContainer) {
+                    if (visibleShorts.length === 0) {
+                        homeShortsContainer.style.display = 'none';
+                    } else {
+                        homeShortsContainer.style.display = 'grid';
+                        homeShortsContainer.innerHTML = visibleShorts.map(short => `
+                            <div class="video-wrapper image-frame-glow">
+                                <iframe width="100%" height="315"
+                                    src="${short.url}"
+                                    title="YouTube video player" frameborder="0"
+                                    allowfullscreen loading="lazy"
+                                    sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                // Contact page
+                const contactShortsContainer = document.getElementById('dynamic-shorts-contact');
+                if (contactShortsContainer) {
+                    const shortsSection = contactShortsContainer.closest('.contact-shorts-section');
+                    if (visibleShorts.length === 0) {
+                        if (shortsSection) shortsSection.style.display = 'none';
+                    } else {
+                        if (shortsSection) shortsSection.style.display = 'flex';
+                        contactShortsContainer.style.display = 'flex';
+                        contactShortsContainer.innerHTML = visibleShorts.map(short => `
+                            <div class="video-wrapper">
+                                <iframe src="${short.url}"
+                                    title="YouTube video player" frameborder="0"
+                                    allowfullscreen loading="lazy"
+                                    sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                            </div>
+                        `).join('');
+                    }
+                }
+            }
+        })
+        .catch(err => {
+            console.log("Config load error:", err);
+        });
 
     // ==========================================================================
     // Dynamic Events Loading
