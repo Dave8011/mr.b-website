@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     }
 
     const owner = process.env.GITHUB_OWNER;
-    const repo = process.env.GITHUB_REPO;
+    const repo = (process.env.GITHUB_REPO || '').replace('mr-b-website', 'mr.b-website');
     const githubToken = process.env.GITHUB_TOKEN;
     const path = 'data/events.json';
 
