@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bhupesh Dave (Mr. B) - Indian Super Brain. Experience the art of psychological illusion, mind reading, and corporate mentalism.">
+    <meta name="description"
+        content="Bhupesh Dave (Mr. B) - Indian Super Brain. Experience the art of psychological illusion, mind reading, and corporate mentalism.">
     <title>Bhupesh Dave | Mr. B - Indian Super Brain</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet">
+
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Global Styles -->
     <link rel="stylesheet" href="style-css/style.css">
-    
+
     <!-- Page Specific Styles -->
     <link rel="stylesheet" href="style-css/index.css">
 </head>
+
 <body>
-    
+
     <!-- Background Ambient Glows -->
     <div class="bg-glow"></div>
-    <div style="position:fixed; top:20%; right:10%; width:60vw; height:60vw; background:radial-gradient(circle, rgba(15,118,110,0.05) 0%, rgba(12,12,30,0) 60%); z-index:-2; pointer-events:none;"></div>
+    <div
+        style="position:fixed; top:20%; right:10%; width:60vw; height:60vw; background:radial-gradient(circle, rgba(15,118,110,0.05) 0%, rgba(12,12,30,0) 60%); z-index:-2; pointer-events:none;">
+    </div>
 
     <!-- Global Navigation Placeholder -->
     <div id="header-placeholder"></div>
@@ -32,7 +39,9 @@
     <!-- Dynamic Admin Hero Banner -->
     <section id="dynamic-banner-container" style="width: 100%; padding-top: 80px; position: relative;">
         <!-- Single fallback image (removed by JS if multiple banners are active) -->
-        <img id="dynamic-hero-banner" src="images/hero-banner.jpg" alt="Mr. B - Indian Super Brain" style="width: 100%; height: auto; max-height: 70vh; object-fit: cover; display: block;" onerror="if(this.src !== 'images/hero-banner.jpg') this.src='images/hero-banner.jpg'; else { document.getElementById('dynamic-banner-container').style.display='none'; document.getElementById('main-hero-section').style.paddingTop='120px'; }">
+        <img id="dynamic-hero-banner" src="images/hero-banner.jpg" alt="Mr. B - Indian Super Brain"
+            style="width: 100%; height: auto; max-height: 70vh; object-fit: cover; display: block;"
+            onerror="if(this.src !== 'images/hero-banner.jpg') this.src='images/hero-banner.jpg'; else { document.getElementById('dynamic-banner-container').style.display='none'; document.getElementById('main-hero-section').style.paddingTop='120px'; }">
     </section>
 
     <!-- Hero Section -->
@@ -40,9 +49,12 @@
         <div class="container hero-container">
             <div class="hero-card-wrapper fade-in">
                 <div class="about-tag">INDIAN SUPER BRAIN</div>
-                <h1 class="hero-quote-title">He doesn't just read minds.<br><span class="gold-text">He changes them.</span></h1>
-                <p style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.8;">
-                    The greatest magic trick is transforming your own reality. Welcome to the world of Mr. B, where the impossible becomes the incredible.
+                <h1 class="hero-quote-title">He doesn't just read minds.<br><span class="gold-text">He changes
+                        them.</span></h1>
+                <p
+                    style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.8;">
+                    The greatest magic trick is transforming your own reality. Welcome to the world of Mr. B, where the
+                    impossible becomes the incredible.
                 </p>
                 <div class="hero-actions">
                     <a href="/contact" class="btn btn-primary">Book an Event</a>
@@ -51,9 +63,52 @@
             </div>
             <div class="purple-intro-card fade-in">
                 <div class="hero-stage-image image-frame-glow">
-                    <img src="images/hero.jpg" alt="Bhupesh Dave on Stage" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    <img src="images/hero.jpg" alt="Bhupesh Dave on Stage"
+                        style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Event Promo Section -->
+    <section class="section promo-event-section fade-in" style="padding-top: 0; padding-bottom: 2rem;">
+        <div class="container">
+            <div class="promo-grid">
+                <!-- Left Column -->
+                <div class="promo-sidebar">
+                    <div class="promo-card">
+                        <h3 class="promo-card-title">Artist</h3>
+                        <div class="artist-profile">
+                            <img src="images/about.jpg" alt="Bhupesh Dave" class="artist-avatar"
+                                onerror="this.src='images/hero.jpg'">
+                            <span class="artist-name">Bhupesh Dave</span>
+                        </div>
+                    </div>
+                    <div class="promo-card">
+                        <h3 class="promo-card-title">Address</h3>
+                        <p class="promo-text text-sm">Daves Academy, moti Bhvan , Dr. D’Silva Road, Dadar – West Mumbai
+                            - 400028 </p>
+                    </div>
+                </div>
+                <!-- Right Column -->
+                <div class="promo-main">
+                    <div class="promo-card">
+                        <h3 class="promo-card-title">Why should you attend?</h3>
+                        <ul class="promo-list">
+                            <li>Experience Motivational Speaker like nowhere else</li>
+                            <li>Bhupesh Dave</li>
+                            <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda, pariatur.</li>
+                            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</li>
+                            <li>Lorem ipsum dolor sit amet consectetur.</li>
+                        </ul>
+                        <h3 class="promo-card-title mt-2">About</h3>
+                        <p class="promo-text">If you are looking for something that will stand-out and create a stunning
+                            impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect
+                            outcome for your event.</p>
+                    </div>
+                </div>
+            </div>
+            <a href="/contact" class="btn-block promo-book-btn">Book Now</a>
         </div>
     </section>
 
@@ -88,15 +143,24 @@
             </div>
             <div class="academy-container">
                 <div class="academy-image-wrapper fade-in">
-                    <img src="images/about.jpg" alt="Bhupesh Dave Portrait" class="academy-img image-frame-glow" style="width: 100%; border-radius: 8px;">
+                    <img src="images/about.jpg" alt="Bhupesh Dave Portrait" class="academy-img image-frame-glow"
+                        style="width: 100%; border-radius: 8px;">
                 </div>
                 <div class="fade-in">
-                    <h3 style="font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 1.5rem;">Unlocking the <span class="gold-text">Untapped Potential</span></h3>
-                    <p style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.8;">
-                        Bhupesh Dave, renowned as Mr. B, is not just a mentalist; he is a psychological illusionist who pushes the boundaries of human cognition. With an innate ability to read subtle cues and a deep understanding of human psychology, he creates experiences that leave audiences questioning reality.
+                    <h3 style="font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 1.5rem;">Unlocking the
+                        <span class="gold-text">Untapped Potential</span>
+                    </h3>
+                    <p
+                        style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.8;">
+                        Bhupesh Dave, renowned as Mr. B, is not just a mentalist; he is a psychological illusionist who
+                        pushes the boundaries of human cognition. With an innate ability to read subtle cues and a deep
+                        understanding of human psychology, he creates experiences that leave audiences questioning
+                        reality.
                     </p>
-                    <p style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.8;">
-                        His journey began with a simple curiosity about the human mind and evolved into a lifelong mastery of perception, influence, and the art of the impossible.
+                    <p
+                        style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.8;">
+                        His journey began with a simple curiosity about the human mind and evolved into a lifelong
+                        mastery of perception, influence, and the art of the impossible.
                     </p>
                     <a href="/contact" class="btn btn-primary">Connect with Mr. B</a>
                 </div>
@@ -120,7 +184,8 @@
                     </div>
                     <div class="pillar-body">
                         <div class="pillar-divider"></div>
-                        <p class="pillar-desc">Elevate your corporate events with mind-bending psychological entertainment tailored for professionals and executives.</p>
+                        <p class="pillar-desc">Elevate your corporate events with mind-bending psychological
+                            entertainment tailored for professionals and executives.</p>
                         <div class="pillar-tags">Mind Reading • Influence • Engagement</div>
                     </div>
                     <div class="pillar-audience">FOR BUSINESSES</div>
@@ -133,7 +198,8 @@
                     </div>
                     <div class="pillar-body">
                         <div class="pillar-divider"></div>
-                        <p class="pillar-desc">Intimate, unforgettable experiences designed for private parties, VIP gatherings, and elite celebrations.</p>
+                        <p class="pillar-desc">Intimate, unforgettable experiences designed for private parties, VIP
+                            gatherings, and elite celebrations.</p>
                         <div class="pillar-tags">Interactive • Personal • Astonishing</div>
                     </div>
                     <div class="pillar-audience">FOR INDIVIDUALS</div>
@@ -146,7 +212,8 @@
                     </div>
                     <div class="pillar-body">
                         <div class="pillar-divider"></div>
-                        <p class="pillar-desc">Unlock your own potential through specialized sessions on body language, memory enhancement, and perception.</p>
+                        <p class="pillar-desc">Unlock your own potential through specialized sessions on body language,
+                            memory enhancement, and perception.</p>
                         <div class="pillar-tags">Education • Psychology • Growth</div>
                     </div>
                     <div class="pillar-audience">FOR LEARNERS</div>
@@ -162,9 +229,10 @@
                 <div class="slide-num">03 // LIVE EXPERIENCES</div>
                 <h2 class="slide-subtitle">Upcoming Events & More</h2>
             </div>
-            
+
             <!-- Category Pills -->
-            <div class="event-categories fade-in" id="event-category-pills" style="display: none; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap;">
+            <div class="event-categories fade-in" id="event-category-pills"
+                style="display: none; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap;">
                 <button class="btn-pill active" data-category="events">Events</button>
                 <button class="btn-pill" data-category="shows">Shows</button>
                 <button class="btn-pill" data-category="classes">Classes</button>
@@ -183,28 +251,49 @@
                 <div class="slide-num">04 // GLIMPSES</div>
                 <h2 class="slide-subtitle">Past Events & Testimonials</h2>
             </div>
-            
+
             <div class="video-grid fade-in">
                 <div class="video-wrapper image-frame-glow">
-                    <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/ehV57DbtS78?si=QiDPw7xz2ZczV97m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                    <iframe width="100%" height="315"
+                        src="https://www.youtube-nocookie.com/embed/ehV57DbtS78?si=QiDPw7xz2ZczV97m"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen loading="lazy"
+                        sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
                 </div>
                 <div class="video-wrapper image-frame-glow">
-                    <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/Zc3pqzQnSBA?si=0WugAt4IZHpKtfiq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                    <iframe width="100%" height="315"
+                        src="https://www.youtube-nocookie.com/embed/Zc3pqzQnSBA?si=0WugAt4IZHpKtfiq"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen loading="lazy"
+                        sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
                 </div>
                 <div class="video-wrapper image-frame-glow">
-                    <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/Vml9WCxED6k?si=m4gpSM5HNC63qxD9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                    <iframe width="100%" height="315"
+                        src="https://www.youtube-nocookie.com/embed/Vml9WCxED6k?si=m4gpSM5HNC63qxD9"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen loading="lazy"
+                        sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
                 </div>
             </div>
-            
+
             <div class="testimonials-grid fade-in" style="margin-top: 4rem;">
                 <div class="testimonial-card">
                     <i class="fa-solid fa-quote-left gold-text" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                    <p style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); line-height: 1.6;">"Absolutely mind-blowing. I've never seen anything like it. He knew exactly what I was thinking before I even knew it myself."</p>
+                    <p
+                        style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); line-height: 1.6;">
+                        "Absolutely mind-blowing. I've never seen anything like it. He knew exactly what I was thinking
+                        before I even knew it myself."</p>
                     <div class="testimonial-author">- Corporate Executive, Mumbai</div>
                 </div>
                 <div class="testimonial-card">
                     <i class="fa-solid fa-quote-left gold-text" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                    <p style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); line-height: 1.6;">"Mr. B brought an unmatched level of sophistication and astonishment to our annual gala. Highly recommended for any premium event."</p>
+                    <p
+                        style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); line-height: 1.6;">
+                        "Mr. B brought an unmatched level of sophistication and astonishment to our annual gala. Highly
+                        recommended for any premium event."</p>
                     <div class="testimonial-author">- Event Organizer, Delhi</div>
                 </div>
             </div>
@@ -215,10 +304,13 @@
     <section id="dynamic-clients-section" class="section fade-in" style="display: none;"></section>
 
     <!-- Contact + CTA -->
-    <section class="section fade-in" style="background: linear-gradient(to bottom, var(--background-navy), var(--background));">
+    <section class="section fade-in"
+        style="background: linear-gradient(to bottom, var(--background-navy), var(--background));">
         <div class="container text-center">
-            <h2 style="font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 1.5rem;">Ready for the <span class="gold-text">Impossible?</span></h2>
-            <p style="font-family: 'Lora', serif; font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem;">
+            <h2 style="font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 1.5rem;">Ready for the <span
+                    class="gold-text">Impossible?</span></h2>
+            <p
+                style="font-family: 'Lora', serif; font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem;">
                 Elevate your next event with an unforgettable experience of psychological illusion and mind reading.
             </p>
             <a href="/contact" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 3rem;">Book Mr. B Now</a>
@@ -231,4 +323,5 @@
     <script src="components.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
