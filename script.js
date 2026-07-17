@@ -140,9 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (config) {
                     if (config.showHeroBanner === false) {
                         bannerContainer.style.display = 'none';
-                        const mainHero = document.getElementById('main-hero-section');
+                        const mainHero = document.getElementById('about-intro-section');
                         if (mainHero) mainHero.style.paddingTop = '120px';
                     } else if (config.activeBannerUrls && config.activeBannerUrls.length > 0) {
+                        // Force display block in case onerror hid it previously
+                        bannerContainer.style.display = 'block';
+                        const mainHero = document.getElementById('about-intro-section');
+                        if (mainHero) mainHero.style.paddingTop = '4rem'; // Reset padding
+
                         const urls = config.activeBannerUrls;
                         
                         if (urls.length === 1) {
