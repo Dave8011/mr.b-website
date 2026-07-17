@@ -1385,7 +1385,7 @@ p {
         flex-direction: column;
         text-align: center;
         gap: 2rem;
-        padding: 2.5rem 1.5rem;
+        padding: 4rem 1.5rem;
     }
     .footer-seo-links {
         flex-wrap: wrap;
