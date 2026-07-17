@@ -219,25 +219,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         const marqueeContent = clientsSection.querySelector('.marquee-content');
                         if (marqueeContent) {
-                            let isPaused = false;
+                            let isHovered = false;
+                            let interactionTimeout;
+                            let isInteracting = false;
                             
-                            // Pause on hover or touch
-                            marqueeContent.addEventListener('mouseenter', () => isPaused = true);
-                            marqueeContent.addEventListener('mouseleave', () => isPaused = false);
-                            marqueeContent.addEventListener('touchstart', () => isPaused = true);
-                            marqueeContent.addEventListener('touchend', () => isPaused = false);
+                            // Desktop hover pause
+                            marqueeContent.addEventListener('mouseenter', () => isHovered = true);
+                            marqueeContent.addEventListener('mouseleave', () => isHovered = false);
+                            
+                            // Mobile touch & scroll pause (allows momentum scrolling to finish)
+                            const handleInteraction = () => {
+                                isInteracting = true;
+                                clearTimeout(interactionTimeout);
+                                interactionTimeout = setTimeout(() => {
+                                    isInteracting = false;
+                                }, 1000); // Resume 1s after last interaction/scroll
+                            };
+
+                            marqueeContent.addEventListener('touchstart', handleInteraction, {passive: true});
+                            marqueeContent.addEventListener('touchmove', handleInteraction, {passive: true});
+                            marqueeContent.addEventListener('scroll', handleInteraction, {passive: true});
+                            marqueeContent.addEventListener('wheel', handleInteraction, {passive: true});
 
                             let scrollPos = 0;
-                            
-                            // If user scrolls manually, update internal scroll position
-                            marqueeContent.addEventListener('scroll', () => {
-                                if (isPaused) {
-                                    scrollPos = marqueeContent.scrollLeft;
-                                }
-                            });
 
                             setInterval(() => {
-                                if (!isPaused) {
+                                if (!isHovered && !isInteracting) {
                                     scrollPos += 1; // Auto-scroll speed
                                     
                                     const halfWidth = marqueeContent.scrollWidth / 2;
@@ -247,6 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                     }
                                     
                                     marqueeContent.scrollLeft = scrollPos;
+                                } else {
+                                    // Sync internal position so it doesn't jump when resuming
+                                    scrollPos = marqueeContent.scrollLeft;
                                 }
                             }, 20); // ~50fps
                         }
