@@ -848,7 +848,7 @@
             
             item.innerHTML = `
                 <div class="active-badge"><i class="fa-solid fa-star"></i> Active</div>
-                <img src="${banner.url}" onerror="this.src='images/hero-banner.jpg'" />
+                <img src="${banner.url}" onerror="this.onerror=null; this.src='images/hero-banner.jpg'" />
                 <div class="banner-item-actions">
                     ${isActive 
                         ? `<button class="btn btn-danger" style="width: 100%; font-size: 0.8rem; padding: 0.5rem; background: rgba(220,53,69,0.1); border: 1px solid var(--danger); color: var(--danger);" onclick="toggleBannerActive('${banner.url}')">Remove from Slideshow</button>`
@@ -1090,7 +1090,7 @@
                 item.innerHTML = `
                     ${statusIcon}
                     <div class="client-item-logo">
-                        <img src="${client.logoUrl}" onerror="this.src='images/hero-banner.jpg'" />
+                        <img src="${client.logoUrl}" onerror="this.onerror=null; this.src='images/hero-banner.jpg'" />
                     </div>
                     <div class="client-item-name">
                         ${client.name}
