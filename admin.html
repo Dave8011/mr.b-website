@@ -779,7 +779,7 @@
             const data = await res.json();
             if (res.ok && data.success) {
                 configSha = data.newSha;
-                showToast('fa-check', 'Banner visibility updated on live site!');
+                showToast('fa-check', isChecked ? 'Banner is now visible on the live site!' : 'Banner is now hidden from the live site!');
             } else {
                 throw new Error(data.error || 'Failed to update visibility');
             }
