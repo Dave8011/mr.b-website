@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions | Mr. B</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Global and Page specific styles -->
+    <link rel="stylesheet" href="style-css/style.css">
+    <link rel="stylesheet" href="style-css/contact.css">
+    <style>
+        .policy-content {
+            padding: 4rem 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .policy-content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--gold);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .policy-content p {
+            font-family: 'Lora', serif;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .policy-content ul {
+            font-family: 'Lora', serif;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+        .policy-content li {
+            margin-bottom: 0.5rem;
+        }
+        .policy-content li::marker {
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body class="contact-page">
+
+    <!-- Background Ambient Glow -->
+    <div class="bg-glow-purple"></div>
+
+    <!-- Global Navigation Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Page Header -->
+    <section class="page-hero">
+        <div class="container page-hero-container">
+            <h1 class="hero-title">TERMS & CONDITIONS</h1>
+            <div class="title-underline"></div>
+            <p class="hero-subtitle">Please read these terms carefully before using our services.</p>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="section">
+        <div class="container">
+            <div class="policy-content fade-in">
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using this website's particular services, you shall be subject to any posted guidelines or rules applicable to such services.</p>
+                
+                <h2>2. Booking and Payments</h2>
+                <p>All bookings for events, shows, and training sessions are subject to availability. <strong>Payment Processing:</strong> We are in the process of integrating a secure payment gateway. Once active, all payments must be made through our designated platform. Payments are non-refundable unless stated otherwise in our cancellation policy.</p>
+                
+                <h2>3. Cancellation Policy</h2>
+                <p>Cancellations made 30 days prior to the event will receive a full refund minus processing fees. Cancellations made within 30 days are non-refundable but may be rescheduled at our discretion.</p>
+                
+                <h2>4. Intellectual Property</h2>
+                <p>All content on this website, including texts, graphics, logos, images, and software, is the property of Bhupesh Dave (Mr. B) or its content suppliers and is protected by international copyright laws. You may not reproduce, duplicate, copy, sell, resell or exploit any portion of the Service without express written permission.</p>
+                
+                <h2>5. Disclaimer of Warranties</h2>
+                <p>The materials on this website are provided "as is". We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+                
+                <h2>6. Changes to Terms</h2>
+                <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. What constitutes a material change will be determined at our sole discretion.</p>
+                
+                <h2>7. Contact Information</h2>
+                <p>If you have any questions about these Terms, please contact us at bhupeshdave@gmail.com.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <script src="components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

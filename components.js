@@ -31,8 +31,8 @@ const globalFooter = `
             <a href="/" class="seo-link">Home</a>
             <a href="/about" class="seo-link">About Us</a>
             <a href="/contact" class="seo-link">Contact Us</a>
-            <a href="#" class="seo-link">Privacy Policy</a>
-            <a href="#" class="seo-link">Terms of Service</a>
+            <a href="/privacy.html" class="seo-link">Privacy Policy</a>
+            <a href="/terms.html" class="seo-link">Terms of Service</a>
             <a href="/admin.html" class="seo-link"><i class="fa-solid fa-lock" style="font-size: 0.7rem; margin-right: 0.3rem;"></i>Admin</a>
         </div>
         
