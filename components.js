@@ -28,6 +28,9 @@ const globalFooter = `
         </div>
         
         <div class="footer-seo-links">
+            <a href="/" class="seo-link">Home</a>
+            <a href="/about" class="seo-link">About Us</a>
+            <a href="/contact" class="seo-link">Contact Us</a>
             <a href="#" class="seo-link">Privacy Policy</a>
             <a href="#" class="seo-link">Terms of Service</a>
             <a href="/admin.html" class="seo-link"><i class="fa-solid fa-lock" style="font-size: 0.7rem; margin-right: 0.3rem;"></i>Admin</a>
@@ -65,4 +68,30 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.remove('active');
         }
     });
+
+    // Mobile Navigation Menu Toggle
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (mobileNavToggle && navLinks) {
+        mobileNavToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileNavToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.className = 'fa-solid fa-xmark';
+            } else {
+                icon.className = 'fa-solid fa-bars';
+            }
+        });
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-link, .btn-nav').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                if (mobileNavToggle.querySelector('i')) {
+                    mobileNavToggle.querySelector('i').className = 'fa-solid fa-bars';
+                }
+            });
+        });
+    }
 });
