@@ -214,6 +214,43 @@ document.addEventListener('DOMContentLoaded', () => {
                     clientsHtml += cardsHtml + cardsHtml; // duplicate for infinite scroll
                     clientsHtml += `</div></div></div>`;
                     clientsSection.innerHTML = clientsHtml;
+
+                    // Initialize JS scrolling for marquee
+                    setTimeout(() => {
+                        const marqueeContent = clientsSection.querySelector('.marquee-content');
+                        if (marqueeContent) {
+                            let isPaused = false;
+                            
+                            // Pause on hover or touch
+                            marqueeContent.addEventListener('mouseenter', () => isPaused = true);
+                            marqueeContent.addEventListener('mouseleave', () => isPaused = false);
+                            marqueeContent.addEventListener('touchstart', () => isPaused = true);
+                            marqueeContent.addEventListener('touchend', () => isPaused = false);
+
+                            let scrollPos = 0;
+                            
+                            // If user scrolls manually, update internal scroll position
+                            marqueeContent.addEventListener('scroll', () => {
+                                if (isPaused) {
+                                    scrollPos = marqueeContent.scrollLeft;
+                                }
+                            });
+
+                            setInterval(() => {
+                                if (!isPaused) {
+                                    scrollPos += 1; // Auto-scroll speed
+                                    
+                                    const halfWidth = marqueeContent.scrollWidth / 2;
+                                    
+                                    if (scrollPos >= halfWidth) {
+                                        scrollPos = 0; // Seamless infinite loop
+                                    }
+                                    
+                                    marqueeContent.scrollLeft = scrollPos;
+                                }
+                            }, 20); // ~50fps
+                        }
+                    }, 100);
                 }
             }
 

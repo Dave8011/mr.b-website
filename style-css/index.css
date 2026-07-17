@@ -216,20 +216,21 @@
 }
 
 .marquee-content {
-    display: inline-flex;
+    display: flex;
     gap: 3rem;
     padding-left: 3rem; /* match gap */
-    animation: scroll 35s linear infinite;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    -webkit-overflow-scrolling: touch;
 }
 
-.marquee-container:hover .marquee-content {
-    animation-play-state: paused;
+.marquee-content::-webkit-scrollbar {
+    display: none;
 }
 
-@keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
+
 
 .client-card {
     display: flex;
@@ -238,6 +239,7 @@
     text-align: center;
     transition: var(--transition-smooth);
     opacity: 0.7;
+    flex-shrink: 0;
 }
 
 .client-card:hover {
