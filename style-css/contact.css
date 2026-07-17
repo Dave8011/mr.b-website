@@ -305,7 +305,7 @@
 }
 
 /* ==========================================================================
-   Responsive Adjustments
+   Responsive Adjustments — Contact & Page Hero
    ========================================================================== */
 @media (max-width: 992px) {
     .contact-grid {
@@ -316,20 +316,86 @@
     .contact-form-panel {
         padding: 2.5rem;
     }
+
+    .info-card:hover {
+        transform: none; /* disable slide-right on touch */
+    }
 }
 
 @media (max-width: 768px) {
+    .page-hero {
+        padding-top: 110px;
+        padding-bottom: 50px;
+    }
+
+    .hero-title {
+        font-size: clamp(2rem, 10vw, 3rem);
+        letter-spacing: 2px;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .title-underline {
+        width: 70px;
+        margin-bottom: 1.5rem;
+    }
+
     .premium-form .form-row {
         grid-template-columns: 1fr;
         gap: 0;
     }
-    
-    .hero-title {
-        font-size: clamp(2rem, 10vw, 3rem);
+
+    .contact-form-panel {
+        padding: 2rem 1.5rem;
     }
-    
-    .page-hero {
-        padding-top: 120px;
-        padding-bottom: 50px;
+
+    .contact-main {
+        padding: 4rem 0;
+    }
+
+    .info-card {
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+
+    .icon-box {
+        font-size: 1.5rem;
+    }
+
+    .submit-btn {
+        padding: 1rem;
+        font-size: 0.95rem;
     }
 }
+
+@media (max-width: 480px) {
+    .page-hero {
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+
+    .hero-title {
+        font-size: clamp(1.8rem, 12vw, 2.5rem);
+        letter-spacing: 1px;
+    }
+
+    .contact-grid {
+        gap: 2rem;
+    }
+
+    .contact-form-panel {
+        padding: 1.5rem 1rem;
+        border-radius: 10px;
+    }
+
+    .form-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .input-group {
+        margin-bottom: 1.2rem;
+    }
+}
+
