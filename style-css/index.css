@@ -186,22 +186,27 @@
     font-size: 0.85rem;
 }
 
-/* Dynamic Clients Marquee */
+/* Dynamic Clients Marquee — pure CSS, GPU-accelerated */
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
 .marquee-container {
     overflow: hidden;
-    white-space: nowrap;
     position: relative;
     width: 100%;
     margin-top: 3rem;
     padding: 1.5rem 0;
 }
 
+/* Fade-out edges */
 .marquee-container::before,
 .marquee-container::after {
     content: '';
     position: absolute;
     top: 0;
-    width: 150px;
+    width: 120px;
     height: 100%;
     z-index: 2;
     pointer-events: none;
@@ -215,81 +220,91 @@
     background: linear-gradient(to left, var(--background-navy) 0%, transparent 100%);
 }
 
-.marquee-content {
+/* The scrolling track — two identical groups side-by-side */
+.marquee-track {
     display: flex;
-    gap: 3rem;
-    padding-left: 3rem; /* match gap */
-    width: 100%;
-    overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    -webkit-overflow-scrolling: touch;
+    width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+    will-change: transform;
 }
 
-.marquee-content::-webkit-scrollbar {
-    display: none;
+.marquee-track:hover {
+    animation-play-state: paused;
 }
 
+/* Each group is a flex row of cards */
+.marquee-group {
+    display: flex;
+    gap: 2rem;
+    padding: 0 1rem;
+    flex-shrink: 0;
+}
 
-
+/* Individual brand card */
 .client-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    transition: var(--transition-smooth);
-    opacity: 0.7;
+    gap: 0.75rem;
     flex-shrink: 0;
+    cursor: default;
 }
 
-.client-card:hover {
-    opacity: 1;
-    transform: translateY(-5px);
-}
-
+/* Logo container — clean frosted glass pill */
 .client-logo-wrapper {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 1.5rem;
-    width: 200px;
-    height: 120px;
+    width: 180px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: var(--transition-smooth);
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.18),
+        0 0 0 1px rgba(255, 255, 255, 0.12);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+    overflow: hidden;
+    position: relative;
 }
 
 .client-card:hover .client-logo-wrapper {
-    box-shadow: 0 15px 40px rgba(201, 160, 42, 0.2);
-    border-color: rgba(201, 160, 42, 0.3);
+    box-shadow:
+        0 8px 32px rgba(201, 160, 42, 0.25),
+        0 0 0 1.5px rgba(201, 160, 42, 0.4);
+    transform: translateY(-4px) scale(1.04);
 }
 
 .client-logo {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    filter: grayscale(20%);
-    transition: var(--transition-smooth);
+    filter: grayscale(15%) saturate(0.9);
+    transition: filter 0.35s ease;
+    display: block;
 }
 
 .client-card:hover .client-logo {
-    filter: grayscale(0%);
+    filter: grayscale(0%) saturate(1);
 }
 
+/* Brand name under card */
 .client-name {
     font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 1px;
-    transition: var(--transition-smooth);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
 }
 
 .client-card:hover .client-name {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.75);
 }
 
 /* Category Pills */
@@ -324,9 +339,8 @@
     .testimonials-grid {
         grid-template-columns: 1fr;
     }
-    .marquee-content {
-        gap: 1.5rem;
-        padding-left: 1.5rem;
+    .marquee-track {
+        animation-duration: 30s;
     }
     .event-item {
         flex-direction: column;
@@ -375,13 +389,13 @@
     }
 }
 @media (max-width: 768px) {
-    .marquee-content {
-        gap: 1rem;
-        padding-left: 1rem;
-    }
     .client-logo-wrapper {
-        width: 150px;
-        height: 100px;
+        width: 140px;
+        height: 85px;
+        padding: 0.75rem 1rem;
+    }
+    .marquee-group {
+        gap: 1.25rem;
     }
 }
 
@@ -496,11 +510,6 @@
         grid-template-columns: 1fr;
     }
 
-    .marquee-content {
-        gap: 1.5rem;
-        padding-left: 1.5rem;
-    }
-
     .event-item {
         flex-direction: column;
         text-align: left;
@@ -586,14 +595,13 @@
     }
 
     /* Marquee */
-    .marquee-content {
-        gap: 1rem;
-        padding-left: 1rem;
-    }
-
     .client-logo-wrapper {
-        width: 140px;
-        height: 90px;
+        width: 130px;
+        height: 80px;
+        padding: 0.6rem 0.9rem;
+    }
+    .marquee-group {
+        gap: 1rem;
     }
 
     /* Promo section */
@@ -624,14 +632,15 @@
     }
 
     .client-logo-wrapper {
-        width: 120px;
-        height: 80px;
-        padding: 0.8rem;
+        width: 110px;
+        height: 70px;
+        padding: 0.6rem 0.8rem;
+        border-radius: 10px;
     }
 
     .marquee-container::before,
     .marquee-container::after {
-        width: 60px;
+        width: 50px;
     }
 
     .testimonial-card {

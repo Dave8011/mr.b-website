@@ -56,37 +56,37 @@
     {
       "id": "client-1784360516706",
       "name": "Thane Mahanagar Palika",
-      "logoUrl": "images/brands/brand_thane_mahanagar_palika.jpg",
+      "logoUrl": "images/brands/brand_thane_mahanagar_palika.png",
       "hidden": false
     },
     {
       "id": "client-1784360516794",
       "name": "Brihanmumbai Police",
-      "logoUrl": "images/brands/brand_brihanmumbai_police.jpg",
+      "logoUrl": "images/brands/brand_brihanmumbai_police.png",
       "hidden": false
     },
     {
       "id": "client-1784360516842",
       "name": "ABP Majha",
-      "logoUrl": "images/brands/brand_abp_majha.jpg",
+      "logoUrl": "images/brands/brand_abp_majha.png",
       "hidden": false
     },
     {
       "id": "client-1784360516902",
       "name": "Hindustan Unilever Limited",
-      "logoUrl": "images/brands/brand_hindustan_unilever.jpg",
+      "logoUrl": "images/brands/brand_hindustan_unilever.png",
       "hidden": false
     },
     {
       "id": "client-1784360516990",
       "name": "ICSI",
-      "logoUrl": "images/brands/brand_icsi.jpg",
+      "logoUrl": "images/brands/brand_icsi.png",
       "hidden": false
     },
     {
       "id": "client-1784360649169",
       "name": "LIC",
-      "logoUrl": "images/brands/brand_lic.jpg",
+      "logoUrl": "images/brands/brand_lic.png",
       "hidden": false
     },
     {
@@ -110,13 +110,13 @@
     {
       "id": "client-1784360649331",
       "name": "7Cs Group",
-      "logoUrl": "images/brands/brand_7cs_group.jpg",
+      "logoUrl": "images/brands/brand_7cs_group.png",
       "hidden": false
     },
     {
       "id": "client-1784365147117",
       "name": "SKC School & Jr. College",
-      "logoUrl": "images/brands/brand_skc_school.jpg",
+      "logoUrl": "images/brands/brand_skc_school.png",
       "hidden": false
     },
     {
@@ -128,7 +128,7 @@
     {
       "id": "client-1784365147255",
       "name": "Bahwan International Group",
-      "logoUrl": "images/brands/brand_bahwan_group.jpg",
+      "logoUrl": "images/brands/brand_bahwan_group.png",
       "hidden": false
     }
   ],

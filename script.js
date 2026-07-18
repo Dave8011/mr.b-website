@@ -189,78 +189,34 @@ document.addEventListener('DOMContentLoaded', () => {
                     const visibleClients = config.clients.filter(c => !c.hidden);
                     const sectionTitle = config.clientsSectionTitle || "Our happy and satisfied Clients :";
                     
-                    let clientsHtml = `
+                    let cardsHtml = '';
+                    visibleClients.forEach(client => {
+                        cardsHtml += `
+                            <div class="client-card">
+                                <div class="client-logo-wrapper">
+                                    <img src="${client.logoUrl}" alt="${client.name}" class="client-logo" loading="lazy">
+                                </div>
+                                <div class="client-name">${client.name}</div>
+                            </div>
+                        `;
+                    });
+
+                    // Pure CSS marquee — no JS scroll, no lag, GPU-accelerated
+                    const clientsHtml = `
                         <div class="container" style="max-width: 100%; padding: 0;">
                             <div class="section-slide-header text-center fade-in visible">
                                 <div class="slide-num">05 // TRUSTED BY</div>
                                 <h2 class="slide-subtitle">${sectionTitle}</h2>
                             </div>
                             <div class="marquee-container fade-in visible">
-                                <div class="marquee-content">
-                    `;
-                    
-                    let cardsHtml = '';
-                    visibleClients.forEach(client => {
-                        cardsHtml += `
-                            <div class="client-card">
-                                <div class="client-logo-wrapper">
-                                    <img src="${client.logoUrl}" alt="${client.name}" class="client-logo">
+                                <div class="marquee-track">
+                                    <div class="marquee-group">${cardsHtml}</div>
+                                    <div class="marquee-group" aria-hidden="true">${cardsHtml}</div>
                                 </div>
-                                <div class="client-name">${client.name}</div>
                             </div>
-                        `;
-                    });
-                    
-                    clientsHtml += cardsHtml + cardsHtml; // duplicate for infinite scroll
-                    clientsHtml += `</div></div></div>`;
+                        </div>
+                    `;
                     clientsSection.innerHTML = clientsHtml;
-
-                    // Initialize JS scrolling for marquee
-                    setTimeout(() => {
-                        const marqueeContent = clientsSection.querySelector('.marquee-content');
-                        if (marqueeContent) {
-                            let isHovered = false;
-                            let interactionTimeout;
-                            let isInteracting = false;
-                            
-                            // Desktop hover pause
-                            marqueeContent.addEventListener('mouseenter', () => isHovered = true);
-                            marqueeContent.addEventListener('mouseleave', () => isHovered = false);
-                            
-                            // Mobile touch & scroll pause (allows momentum scrolling to finish)
-                            const handleInteraction = () => {
-                                isInteracting = true;
-                                clearTimeout(interactionTimeout);
-                                interactionTimeout = setTimeout(() => {
-                                    isInteracting = false;
-                                }, 1000); // Resume 1s after last interaction/scroll
-                            };
-
-                            marqueeContent.addEventListener('touchstart', handleInteraction, {passive: true});
-                            marqueeContent.addEventListener('touchmove', handleInteraction, {passive: true});
-                            marqueeContent.addEventListener('scroll', handleInteraction, {passive: true});
-                            marqueeContent.addEventListener('wheel', handleInteraction, {passive: true});
-
-                            let scrollPos = 0;
-
-                            setInterval(() => {
-                                if (!isHovered && !isInteracting) {
-                                    scrollPos += 1; // Auto-scroll speed
-                                    
-                                    const halfWidth = marqueeContent.scrollWidth / 2;
-                                    
-                                    if (scrollPos >= halfWidth) {
-                                        scrollPos = 0; // Seamless infinite loop
-                                    }
-                                    
-                                    marqueeContent.scrollLeft = scrollPos;
-                                } else {
-                                    // Sync internal position so it doesn't jump when resuming
-                                    scrollPos = marqueeContent.scrollLeft;
-                                }
-                            }, 20); // ~50fps
-                        }
-                    }, 100);
                 }
             }
 
