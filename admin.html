@@ -1240,15 +1240,19 @@
 
     async function toggleClient(idx) {
         configData.clients[idx].hidden = !configData.clients[idx].hidden;
+        renderClients(); // Immediate visual feedback
         await saveConfigOnly(configData.clients[idx].hidden ? "Brand hidden." : "Brand is now visible.");
     }
+    window.toggleClient = toggleClient;
 
     async function deleteClient(idx) {
         if(confirm("Delete this brand?")) {
             configData.clients.splice(idx, 1);
+            renderClients(); // Immediate visual feedback
             await saveConfigOnly("Brand deleted.");
         }
     }
+    window.deleteClient = deleteClient;
 
     async function toggleClientsVisibility() {
         configData.showClientsSection = document.getElementById('clients-visibility-toggle').checked;

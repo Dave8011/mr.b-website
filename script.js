@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <h2 class="slide-subtitle">${sectionTitle}</h2>
                             </div>
                             <div class="marquee-container fade-in visible">
-                                <div class="marquee-track">
+                                <div class="marquee-track" id="marquee-track">
                                     <div class="marquee-group">${cardsHtml}</div>
                                     <div class="marquee-group" aria-hidden="true">${cardsHtml}</div>
                                 </div>
@@ -217,6 +217,74 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                     clientsSection.innerHTML = clientsHtml;
+
+                    // Touch/drag scroll support
+                    const track = clientsSection.querySelector('.marquee-track');
+                    if (track) {
+                        let isDragging = false;
+                        let startX = 0;
+                        let currentOffset = 0;
+                        let animOffset = 0;
+
+                        const getTranslateX = (el) => {
+                            const style = window.getComputedStyle(el);
+                            const matrix = new DOMMatrix(style.transform);
+                            return matrix.m41;
+                        };
+
+                        const pauseAnim = () => {
+                            animOffset = getTranslateX(track);
+                            track.style.animationPlayState = 'paused';
+                            track.style.transform = `translateX(${animOffset}px)`;
+                            track.style.animation = 'none';
+                        };
+
+                        const resumeAnim = () => {
+                            // Calculate % progress to resume animation at correct point
+                            const halfW = track.scrollWidth / 2;
+                            const pct = (Math.abs(currentOffset) % halfW) / halfW;
+                            const dur = 40; // seconds
+                            track.style.transform = '';
+                            track.style.animation = `marquee-scroll ${dur}s linear infinite`;
+                            track.style.animationDelay = `-${pct * dur}s`;
+                        };
+
+                        // Mouse drag
+                        track.addEventListener('mousedown', (e) => {
+                            isDragging = true;
+                            startX = e.clientX;
+                            pauseAnim();
+                            currentOffset = animOffset;
+                            track.style.cursor = 'grabbing';
+                        });
+                        window.addEventListener('mousemove', (e) => {
+                            if (!isDragging) return;
+                            const dx = e.clientX - startX;
+                            currentOffset = animOffset + dx;
+                            track.style.transform = `translateX(${currentOffset}px)`;
+                        });
+                        window.addEventListener('mouseup', () => {
+                            if (!isDragging) return;
+                            isDragging = false;
+                            track.style.cursor = '';
+                            resumeAnim();
+                        });
+
+                        // Touch drag
+                        track.addEventListener('touchstart', (e) => {
+                            startX = e.touches[0].clientX;
+                            pauseAnim();
+                            currentOffset = animOffset;
+                        }, { passive: true });
+                        track.addEventListener('touchmove', (e) => {
+                            const dx = e.touches[0].clientX - startX;
+                            currentOffset = animOffset + dx;
+                            track.style.transform = `translateX(${currentOffset}px)`;
+                        }, { passive: true });
+                        track.addEventListener('touchend', () => {
+                            resumeAnim();
+                        }, { passive: true });
+                    }
                 }
             }
 
