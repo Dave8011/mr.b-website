@@ -27,13 +27,13 @@
       "id": "client-1784360248799",
       "name": "Lokmat",
       "logoUrl": "images/brands/brand_lokmat.png",
-      "hidden": false
+      "hidden": true
     },
     {
       "id": "client-1784360248896",
       "name": "Sakal",
       "logoUrl": "images/brands/brand_sakal.png",
-      "hidden": false
+      "hidden": true
     },
     {
       "id": "client-1784360249043",
