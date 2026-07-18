@@ -284,6 +284,47 @@ document.addEventListener('DOMContentLoaded', () => {
                         track.addEventListener('touchend', () => {
                             resumeAnim();
                         }, { passive: true });
+
+                        // ── Center Spotlight (auto-highlight nearest card) ──
+                        const container = clientsSection.querySelector('.marquee-container');
+                        let rafId = null;
+
+                        const updateSpotlight = () => {
+                            const cards = container.querySelectorAll('.client-card');
+                            const containerRect = container.getBoundingClientRect();
+                            const centerX = containerRect.left + containerRect.width / 2;
+
+                            let closestCard = null;
+                            let closestDist = Infinity;
+
+                            cards.forEach(card => {
+                                const rect = card.getBoundingClientRect();
+                                const cardCenterX = rect.left + rect.width / 2;
+                                const dist = Math.abs(cardCenterX - centerX);
+                                if (dist < closestDist) {
+                                    closestDist = dist;
+                                    closestCard = card;
+                                }
+                            });
+
+                            cards.forEach(card => card.classList.remove('is-center'));
+                            if (closestCard) closestCard.classList.add('is-center');
+
+                            rafId = requestAnimationFrame(updateSpotlight);
+                        };
+
+                        // Only run rAF when section is visible (saves CPU)
+                        const sectionObserver = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    if (!rafId) rafId = requestAnimationFrame(updateSpotlight);
+                                } else {
+                                    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                                    container.querySelectorAll('.client-card').forEach(c => c.classList.remove('is-center'));
+                                }
+                            });
+                        }, { threshold: 0.1 });
+                        sectionObserver.observe(clientsSection);
                     }
                 }
             }

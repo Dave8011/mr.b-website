@@ -258,7 +258,8 @@
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
-    transition: transform 0.35s ease;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+    border-radius: 12px;
 }
 
 .client-card:hover .client-logo-wrapper {
@@ -296,6 +297,22 @@
 
 .client-card:hover .client-name {
     color: rgba(255, 255, 255, 0.7);
+}
+
+/* Auto-spotlight: card in center of marquee */
+.client-card.is-center .client-logo-wrapper {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 12px 36px rgba(201, 160, 42, 0.3), 0 0 0 1.5px rgba(201, 160, 42, 0.35);
+    border-radius: 12px;
+}
+
+.client-card.is-center .client-logo {
+    filter: grayscale(0%) opacity(1) drop-shadow(0 2px 8px rgba(201, 160, 42, 0.4));
+}
+
+.client-card.is-center .client-name {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
 }
 
 /* Category Pills */
