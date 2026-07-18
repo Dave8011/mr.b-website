@@ -130,6 +130,12 @@
       "name": "Brihanmumbai Police",
       "logoUrl": "images/brands/img_1784367627608.jpg",
       "hidden": false
+    },
+    {
+      "id": "client-1784367894710",
+      "name": "ABP Majha",
+      "logoUrl": "images/brands/img_1784367895434.jpg",
+      "hidden": false
     }
   ],
   "shorts": [
