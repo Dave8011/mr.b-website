@@ -24,15 +24,111 @@
   "clientsSectionTitle": "Our happy and satisfied Clients :",
   "clients": [
     {
-      "id": "client-1784186717835",
-      "name": "Test0.1",
-      "logoUrl": "images/brands/img_1784186718539.jpg",
+      "id": "client-1784360248799",
+      "name": "Lokmat",
+      "logoUrl": "images/brands/brand_lokmat.png",
       "hidden": false
     },
     {
-      "id": "client-1784186735515",
-      "name": "Test0.2",
-      "logoUrl": "images/brands/img_1784186736228.jpg",
+      "id": "client-1784360248896",
+      "name": "Sakal",
+      "logoUrl": "images/brands/brand_sakal.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360249043",
+      "name": "Loksatta",
+      "logoUrl": "images/brands/brand_loksatta.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360249072",
+      "name": "Panasonic",
+      "logoUrl": "images/brands/brand_panasonic.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360249232",
+      "name": "BCAS",
+      "logoUrl": "images/brands/brand_bcas.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360516706",
+      "name": "Thane Mahanagar Palika",
+      "logoUrl": "images/brands/brand_thane_mahanagar_palika.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360516794",
+      "name": "Brihanmumbai Police",
+      "logoUrl": "images/brands/brand_brihanmumbai_police.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360516842",
+      "name": "ABP Majha",
+      "logoUrl": "images/brands/brand_abp_majha.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360516902",
+      "name": "Hindustan Unilever Limited",
+      "logoUrl": "images/brands/brand_hindustan_unilever.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360516990",
+      "name": "ICSI",
+      "logoUrl": "images/brands/brand_icsi.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649169",
+      "name": "LIC",
+      "logoUrl": "images/brands/brand_lic.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649202",
+      "name": "Total",
+      "logoUrl": "images/brands/brand_total.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649286",
+      "name": "Ambuja Cement",
+      "logoUrl": "images/brands/brand_ambuja_cement.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649308",
+      "name": "Hari Krishna Exports",
+      "logoUrl": "images/brands/brand_hari_krishna_exports.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649331",
+      "name": "7Cs Group",
+      "logoUrl": "images/brands/brand_7cs_group.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784365147117",
+      "name": "SKC School & Jr. College",
+      "logoUrl": "images/brands/brand_skc_school.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784365147238",
+      "name": "Mahindra",
+      "logoUrl": "images/brands/brand_mahindra.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784365147255",
+      "name": "Bahwan International Group",
+      "logoUrl": "images/brands/brand_bahwan_group.jpg",
       "hidden": false
     }
   ],
