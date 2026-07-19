@@ -63,53 +63,55 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // Stat Counter Animations (Scroll Triggered)
     // ==========================================================================
-    const statsSection = document.querySelector('.stats-bar-section');
-    const statNumbers = document.querySelectorAll('.stat-num');
-    let animated = false;
-    
-    const countUp = (element) => {
-        const targetAttr = element.getAttribute('data-target');
-        const suffix = element.getAttribute('data-suffix') || '+';
-        if (!targetAttr) return; // For non-numerical stats like "ISO"
+    const statsSection = document.getElementById('dynamic-stats-section');
+    window.initStatsAnimation = function() {
+        const statsSection = document.getElementById('dynamic-stats-section');
+        const statNumbers = document.querySelectorAll('.stat-num');
         
-        const target = +targetAttr;
-        const speed = 100;
-        const step = target / speed;
-        let current = 0;
+        if (!statsSection || statNumbers.length === 0) return;
         
-        const updateCount = () => {
-            current += step;
-            if (current < target) {
-                if (target >= 1000) {
-                    element.innerText = Math.floor(current / 1000) + 'k' + suffix;
-                } else {
+        // Ensure we don't attach multiple observers
+        if (statsSection._statsObserver) {
+            statsSection._statsObserver.disconnect();
+        }
+        
+        const countUp = (element) => {
+            const targetAttr = element.getAttribute('data-target');
+            const suffix = element.getAttribute('data-suffix') || '';
+            if (!targetAttr) return;
+            
+            const target = +targetAttr;
+            const frames = 60; // 60 steps for animation
+            const step = target / frames;
+            let current = 0;
+            
+            if (element._countInterval) clearInterval(element._countInterval);
+            
+            element._countInterval = setInterval(() => {
+                current += step;
+                if (current < target) {
                     element.innerText = Math.floor(current) + suffix;
-                }
-                setTimeout(updateCount, 15);
-            } else {
-                if (target >= 1000) {
-                    element.innerText = (target / 1000) + 'k' + suffix;
                 } else {
                     element.innerText = target + suffix;
+                    clearInterval(element._countInterval);
                 }
-            }
+            }, 35); // 35ms * 60 frames = ~2.1s duration
         };
-        
-        updateCount();
-    };
-    
-    if (statsSection && statNumbers.length > 0) {
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting && !animated) {
-                    statNumbers.forEach(num => countUp(num));
-                    animated = true;
+                if (entry.isIntersecting) {
+                    statNumbers.forEach(num => {
+                        num.innerText = "0" + (num.getAttribute('data-suffix') || '');
+                        countUp(num);
+                    });
                 }
             });
         }, { threshold: 0.3 });
         
         observer.observe(statsSection);
-    }
+        statsSection._statsObserver = observer;
+    };
     
     // ==========================================================================
     // Scroll Entrance Animations (Fade-in Class Trigger)
@@ -268,6 +270,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (elBtn) {
                         if (config.promoSection.btnText) elBtn.textContent = config.promoSection.btnText;
                         if (config.promoSection.btnLink) elBtn.href = config.promoSection.btnLink;
+                    }
+                }
+            }
+
+            // ── Stats Bar ─────────────────────────────────────────────────
+            const dynamicStatsSection = document.getElementById('dynamic-stats-section');
+            const statsGrid = document.getElementById('dynamic-stats-grid');
+            if (dynamicStatsSection && statsGrid) {
+                if (config.statsSection && config.statsSection.isVisible === false) {
+                    dynamicStatsSection.style.display = 'none';
+                } else {
+                    dynamicStatsSection.style.display = 'block';
+                    const statsData = (config.statsSection && config.statsSection.stats) ? config.statsSection.stats : [
+                        { number: "10", suffix: "+", text: "Years Experience", color: "#8B1E32" },
+                        { number: "500", suffix: "+", text: "Shows Worldwide", color: "#4B296B" },
+                        { number: "50000", suffix: "k+", text: "Minds Astonished", color: "#006D77" },
+                        { number: "100", suffix: "%", text: "Unforgettable", color: "#D4AF37" }
+                    ];
+                    
+                    statsGrid.innerHTML = '';
+                    statsData.forEach(stat => {
+                        const block = document.createElement('div');
+                        block.className = 'stat-block';
+                        block.style.backgroundColor = stat.color || '#000';
+                        block.innerHTML = `
+                            <div class="stat-num" data-target="${stat.number}" data-suffix="${stat.suffix}">0${stat.suffix}</div>
+                            <div class="stat-txt">${stat.text}</div>
+                        `;
+                        statsGrid.appendChild(block);
+                    });
+                    
+                    if (typeof window.initStatsAnimation === 'function') {
+                        window.initStatsAnimation();
                     }
                 }
             }
