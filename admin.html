@@ -213,6 +213,7 @@
         .clients-library { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
         .client-item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; position: relative; transition: 0.3s; background: var(--surface); display: flex; flex-direction: column; }
         .client-item.active { border-color: rgba(255,255,255,0.2); }
+        .client-item:not(.active) { opacity: 0.4; filter: grayscale(100%); }
         .client-item-logo { padding: 1rem; height: 90px; display: flex; align-items: center; justify-content: center; background: #fff; }
         .client-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .client-item-name { padding: 0.5rem; text-align: center; font-size: 0.8rem; font-weight: 500; border-top: 1px solid var(--border); background: var(--surface); color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1577,7 +1578,7 @@
                 : `<span class="text-sm"><span class="status-dot active"></span>Live</span>`;
 
             const html = `
-                <div class="event-row">
+                <div class="event-row" style="${ev.is_hidden ? 'opacity: 0.5; filter: grayscale(100%);' : ''}">
                     <div class="event-info-wrapper">
                         <div class="date-cube">
                             <span class="mon">${mon}</span>
@@ -1684,6 +1685,7 @@
     function toggleEvent(idx) {
         eventsData[idx].is_hidden = !eventsData[idx].is_hidden;
         renderEvents();
+        showToast('fa-info-circle', 'Event visibility changed. Click Publish Changes to save.');
     }
 
     function deleteEvent(idx) {
@@ -1859,9 +1861,10 @@
     }
 
     async function toggleClient(idx) {
-        configData.clients[idx].hidden = !configData.clients[idx].hidden;
+        const isHidden = !configData.clients[idx].hidden;
+        configData.clients[idx].hidden = isHidden;
         renderClients(); // Immediate visual feedback
-        await saveConfigOnly(configData.clients[idx].hidden ? "Brand hidden." : "Brand is now visible.");
+        await saveConfigOnly(isHidden ? "Brand hidden." : "Brand is now visible.");
     }
     window.toggleClient = toggleClient;
 
@@ -1966,13 +1969,16 @@
                 delete short.hidden;
             }
             
+            let msg = "Video visibility updated!";
             if (page === 'home') {
                 short.hideHome = !short.hideHome;
+                msg = short.hideHome ? "Video hidden on Home page." : "Video is now visible on Home page.";
             } else if (page === 'contact') {
                 short.hideContact = !short.hideContact;
+                msg = short.hideContact ? "Video hidden on Contact page." : "Video is now visible on Contact page.";
             }
             
-            await saveConfigOnly("Video visibility updated!");
+            await saveConfigOnly(msg);
             renderShorts();
         }
     }
