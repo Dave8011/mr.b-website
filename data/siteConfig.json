@@ -70,7 +70,7 @@
       "id": "client-1784360516990",
       "name": "ICSI",
       "logoUrl": "images/brands/brand_icsi.png",
-      "hidden": false
+      "hidden": true
     },
     {
       "id": "client-1784360649169",
