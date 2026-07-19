@@ -157,8 +157,6 @@
   },
   "promoSection": {
     "isVisible": true,
-    "artistName": "Bhupesh Dave",
-    "artistImage": "images/about.jpg",
     "addressTitle": "Address",
     "addressText": "Daves Academy, moti Bhvan , Dr. D’Silva Road, Dadar – West Mumbai - 400028",
     "attendTitle": "Why should you attend?",
@@ -166,6 +164,21 @@
     "aboutTitle": "About",
     "aboutDesc": "If you are looking for something that will stand-out and create a stunning impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect outcome for your event.",
     "btnText": "Book Now",
-    "btnLink": "/contact"
+    "btnLink": "/contact",
+    "artists": [
+      {
+        "name": "Bhupesh Dave",
+        "image": "images/about.jpg"
+      },
+      {
+        "name": "saurabh dave",
+        "image": ""
+      },
+      {
+        "name": "yash dave",
+        "image": ""
+      }
+    ],
+    "artistSectionTitle": "Artist"
   }
 }
