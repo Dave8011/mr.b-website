@@ -52,7 +52,7 @@
       "id": "client-1784360249232",
       "name": "BCAS",
       "logoUrl": "images/brands/brand_bcas.png",
-      "hidden": true
+      "hidden": false
     },
     {
       "id": "client-1784360516706",
