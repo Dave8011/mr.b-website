@@ -58,7 +58,7 @@
       "id": "client-1784360516706",
       "name": "Thane Mahanagar Palika",
       "logoUrl": "images/brands/brand_thane_mahanagar_palika.png",
-      "hidden": true
+      "hidden": false
     },
     {
       "id": "client-1784360516902",
@@ -172,5 +172,34 @@
       }
     ],
     "artistSectionTitle": "Artist"
+  },
+  "statsSection": {
+    "isVisible": true,
+    "stats": [
+      {
+        "number": "10",
+        "suffix": "+",
+        "text": "Years Experience",
+        "color": "#8B1E32"
+      },
+      {
+        "number": "500",
+        "suffix": "+",
+        "text": "Shows Worldwide",
+        "color": "#4B296B"
+      },
+      {
+        "number": "50000",
+        "suffix": "k+",
+        "text": "Minds Astonished",
+        "color": "#006D77"
+      },
+      {
+        "number": "100",
+        "suffix": "%",
+        "text": "Unforgettable",
+        "color": "#D4AF37"
+      }
+    ]
   }
 }
