@@ -46,7 +46,7 @@
       "id": "client-1784360249072",
       "name": "Panasonic",
       "logoUrl": "images/brands/brand_panasonic.png",
-      "hidden": true
+      "hidden": false
     },
     {
       "id": "client-1784360249232",
