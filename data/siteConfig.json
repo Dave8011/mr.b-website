@@ -147,12 +147,25 @@
     }
   ],
   "aboutSection": {
-    "isVisible": false,
+    "isVisible": true,
     "tag": "INDIAN SUPER BRAIN",
     "titleRegular": "ABOUT",
     "titleGold": "MR. B",
     "description": "Bhupesh Dave, renowned as Mr. B, is India's foremost Mentalist, Mind Reader, and Psychological Illusionist. He possesses an unmatchable ability to read thoughts, bend metal objects with his mind, and unlock the untapped potential of human cognition.",
     "btnText": "Know More",
     "btnLink": "/about"
+  },
+  "promoSection": {
+    "isVisible": true,
+    "artistName": "Bhupesh Dave",
+    "artistImage": "images/about.jpg",
+    "addressTitle": "Address",
+    "addressText": "Daves Academy, moti Bhvan , Dr. D’Silva Road, Dadar – West Mumbai - 400028",
+    "attendTitle": "Why should you attend?",
+    "attendList": "Experience Motivational Speaker like nowhere else\nBhupesh Dave\nLorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda, pariatur.\nLorem ipsum dolor sit amet consectetur, adipisicing elit.\nLorem ipsum dolor sit amet consectetur.",
+    "aboutTitle": "About",
+    "aboutDesc": "If you are looking for something that will stand-out and create a stunning impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect outcome for your event.",
+    "btnText": "Book Now",
+    "btnLink": "/contact"
   }
 }
