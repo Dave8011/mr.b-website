@@ -76,7 +76,7 @@
       "id": "client-1784360649169",
       "name": "LIC",
       "logoUrl": "images/brands/brand_lic.png",
-      "hidden": false
+      "hidden": true
     },
     {
       "id": "client-1784360649202",
