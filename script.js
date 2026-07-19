@@ -191,9 +191,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     const descEl = document.getElementById('about-dynamic-desc');
                     const btnEl = document.getElementById('about-dynamic-btn');
                     
-                    if (tagEl && config.aboutSection.tag) tagEl.innerHTML = config.aboutSection.tag;
-                    if (titleEl && config.aboutSection.title) titleEl.innerHTML = config.aboutSection.title;
-                    if (descEl && config.aboutSection.description) descEl.innerHTML = config.aboutSection.description;
+                    if (tagEl && config.aboutSection.tag) tagEl.textContent = config.aboutSection.tag;
+                    if (descEl && config.aboutSection.description) descEl.textContent = config.aboutSection.description;
+                    
+                    if (titleEl) {
+                        const regText = config.aboutSection.titleRegular || '';
+                        const goldText = config.aboutSection.titleGold || '';
+                        
+                        // Clear existing content safely
+                        titleEl.textContent = regText + (goldText ? ' ' : '');
+                        
+                        if (goldText) {
+                            const span = document.createElement('span');
+                            span.className = 'gold-text';
+                            span.textContent = goldText;
+                            titleEl.appendChild(span);
+                        }
+                    }
                     
                     if (btnEl) {
                         if (config.aboutSection.btnText) btnEl.innerHTML = config.aboutSection.btnText;

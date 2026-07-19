@@ -438,8 +438,12 @@
             
             <div class="form-row">
                 <div class="form-group">
-                    <label>Title (HTML allowed, e.g. for gold text)</label>
-                    <input type="text" id="about-input-title" class="form-control" placeholder="e.g. ABOUT <span class='gold-text'>MR. B</span>">
+                    <label>Title (Regular Text)</label>
+                    <input type="text" id="about-input-title-regular" class="form-control" placeholder="e.g. ABOUT">
+                </div>
+                <div class="form-group">
+                    <label>Title (Gold Text)</label>
+                    <input type="text" id="about-input-title-gold" class="form-control" placeholder="e.g. MR. B">
                 </div>
             </div>
             
@@ -455,9 +459,9 @@
                 </div>
                 <div class="form-group">
                     <label>Button Link</label>
-                    <select id="about-input-btn-link" class="form-control" style="appearance: none;">
-                        <option value="/about">About Page (/about)</option>
-                        <option value="/contact">Contact Page (/contact)</option>
+                    <select id="about-input-btn-link" class="form-control" style="cursor: pointer;">
+                        <option value="/about">About Page</option>
+                        <option value="/contact">Contact Page</option>
                     </select>
                 </div>
             </div>
@@ -857,15 +861,26 @@
                     configData.aboutSection = {
                         isVisible: true,
                         tag: "INDIAN SUPER BRAIN",
-                        title: "ABOUT <span class=\"gold-text\">MR. B</span>",
+                        titleRegular: "ABOUT",
+                        titleGold: "MR. B",
                         description: "Bhupesh Dave, renowned as Mr. B, is India's foremost Mentalist, Mind Reader, and Psychological Illusionist. He possesses an unmatchable ability to read thoughts, bend metal objects with his mind, and unlock the untapped potential of human cognition.",
                         btnText: "Know More",
                         btnLink: "/about"
                     };
                 }
+                
+                // Migrate old HTML title if it exists
+                if (configData.aboutSection.title) {
+                     // Try to extract if it was our default "ABOUT <span class=\"gold-text\">MR. B</span>"
+                     configData.aboutSection.titleRegular = "ABOUT";
+                     configData.aboutSection.titleGold = "MR. B";
+                     delete configData.aboutSection.title;
+                }
+                
                 document.getElementById('about-visibility-toggle').checked = configData.aboutSection.isVisible;
-                document.getElementById('about-input-tag').value = configData.aboutSection.tag;
-                document.getElementById('about-input-title').value = configData.aboutSection.title;
+                document.getElementById('about-input-tag').value = configData.aboutSection.tag || "";
+                document.getElementById('about-input-title-regular').value = configData.aboutSection.titleRegular || "";
+                document.getElementById('about-input-title-gold').value = configData.aboutSection.titleGold || "";
                 document.getElementById('about-input-desc').value = configData.aboutSection.description;
                 document.getElementById('about-input-btn-text').value = configData.aboutSection.btnText || "Know More";
                 document.getElementById('about-input-btn-link').value = configData.aboutSection.btnLink || "/about";
@@ -942,7 +957,8 @@
         if (!configData.aboutSection) configData.aboutSection = {};
         
         configData.aboutSection.tag = document.getElementById('about-input-tag').value;
-        configData.aboutSection.title = document.getElementById('about-input-title').value;
+        configData.aboutSection.titleRegular = document.getElementById('about-input-title-regular').value;
+        configData.aboutSection.titleGold = document.getElementById('about-input-title-gold').value;
         configData.aboutSection.description = document.getElementById('about-input-desc').value;
         configData.aboutSection.btnText = document.getElementById('about-input-btn-text').value;
         configData.aboutSection.btnLink = document.getElementById('about-input-btn-link').value;
