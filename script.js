@@ -179,6 +179,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // ── About Section (index.html only) ───────────────────────────
+            const aboutSection = document.getElementById('about-intro-section');
+            if (aboutSection && config.aboutSection) {
+                if (config.aboutSection.isVisible === false) {
+                    aboutSection.style.display = 'none';
+                } else {
+                    aboutSection.style.display = 'block';
+                    const tagEl = document.getElementById('about-dynamic-tag');
+                    const titleEl = document.getElementById('about-dynamic-title');
+                    const descEl = document.getElementById('about-dynamic-desc');
+                    const btnEl = document.getElementById('about-dynamic-btn');
+                    
+                    if (tagEl && config.aboutSection.tag) tagEl.innerHTML = config.aboutSection.tag;
+                    if (titleEl && config.aboutSection.title) titleEl.innerHTML = config.aboutSection.title;
+                    if (descEl && config.aboutSection.description) descEl.innerHTML = config.aboutSection.description;
+                    
+                    if (btnEl) {
+                        if (config.aboutSection.btnText) btnEl.innerHTML = config.aboutSection.btnText;
+                        if (config.aboutSection.btnLink) btnEl.href = config.aboutSection.btnLink;
+                    }
+                }
+            }
+
             // ── Clients / Brands ──────────────────────────────────────────
             const clientsSection = document.getElementById('dynamic-clients-section');
             if (clientsSection) {

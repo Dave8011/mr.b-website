@@ -374,6 +374,7 @@
         <!-- Tabs -->
         <div class="tabs">
             <button class="tab-btn" onclick="switchTab('tab-hero')" id="btn-tab-hero">Hero Banner</button>
+            <button class="tab-btn" onclick="switchTab('tab-about')" id="btn-tab-about">About Section</button>
             <button class="tab-btn active" onclick="switchTab('tab-events')" id="btn-tab-events">Events Management</button>
             <button class="tab-btn" onclick="switchTab('tab-clients')" id="btn-tab-clients">Clients / Brands</button>
             <button class="tab-btn" onclick="switchTab('tab-shorts')" id="btn-tab-shorts">Shorts / Glimpses</button>
@@ -411,6 +412,58 @@
                 <div id="banner-library-grid" class="banner-library">
                     <!-- Banners injected here -->
                 </div>
+            </div>
+        </div>
+
+        <!-- ABOUT SECTION TAB -->
+        <div id="tab-about" class="tab-content">
+            <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">About Section</h1>
+                    <p class="text-muted text-sm">Edit the "About Mr. B" intro section on the homepage.</p>
+                </div>
+                <label class="toggle-switch">
+                    <span class="toggle-label">Show About Section</span>
+                    <input type="checkbox" id="about-visibility-toggle" onchange="toggleAboutVisibility()">
+                    <div class="switch"></div>
+                </label>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tag Text (Small text above title)</label>
+                    <input type="text" id="about-input-tag" class="form-control" placeholder="e.g. INDIAN SUPER BRAIN">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Title (HTML allowed, e.g. for gold text)</label>
+                    <input type="text" id="about-input-title" class="form-control" placeholder="e.g. ABOUT <span class='gold-text'>MR. B</span>">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="about-input-desc" class="form-control" rows="4" placeholder="Description text here..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Button Text</label>
+                    <input type="text" id="about-input-btn-text" class="form-control" placeholder="e.g. Know More">
+                </div>
+                <div class="form-group">
+                    <label>Button Link</label>
+                    <select id="about-input-btn-link" class="form-control" style="appearance: none;">
+                        <option value="/about">About Page (/about)</option>
+                        <option value="/contact">Contact Page (/contact)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <button class="btn btn-gold" onclick="saveAboutSection()" id="save-about-btn">Save About Section</button>
             </div>
         </div>
 
@@ -798,6 +851,25 @@
                 if (!configData.activeBannerUrls) configData.activeBannerUrls = [];
                 
                 document.getElementById('banner-visibility-toggle').checked = configData.showHeroBanner;
+                
+                // Load About Section data
+                if (!configData.aboutSection) {
+                    configData.aboutSection = {
+                        isVisible: true,
+                        tag: "INDIAN SUPER BRAIN",
+                        title: "ABOUT <span class=\"gold-text\">MR. B</span>",
+                        description: "Bhupesh Dave, renowned as Mr. B, is India's foremost Mentalist, Mind Reader, and Psychological Illusionist. He possesses an unmatchable ability to read thoughts, bend metal objects with his mind, and unlock the untapped potential of human cognition.",
+                        btnText: "Know More",
+                        btnLink: "/about"
+                    };
+                }
+                document.getElementById('about-visibility-toggle').checked = configData.aboutSection.isVisible;
+                document.getElementById('about-input-tag').value = configData.aboutSection.tag;
+                document.getElementById('about-input-title').value = configData.aboutSection.title;
+                document.getElementById('about-input-desc').value = configData.aboutSection.description;
+                document.getElementById('about-input-btn-text').value = configData.aboutSection.btnText || "Know More";
+                document.getElementById('about-input-btn-link').value = configData.aboutSection.btnLink || "/about";
+
                 renderBanners();
                 renderClients();
                 if (typeof renderShorts === 'function') renderShorts();
@@ -830,6 +902,69 @@
             // Revert UI on failure
             document.getElementById('banner-visibility-toggle').checked = !isChecked;
             configData.showHeroBanner = !isChecked;
+        }
+    }
+
+    async function toggleAboutVisibility() {
+        if (!sessionToken) return;
+        const isChecked = document.getElementById('about-visibility-toggle').checked;
+        if (!configData.aboutSection) configData.aboutSection = {};
+        configData.aboutSection.isVisible = isChecked;
+        
+        try {
+            const res = await fetch('/api/saveConfig', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ configData: configData, sha: configSha })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                configSha = data.newSha;
+                showToast('fa-check', isChecked ? 'About Section is now visible!' : 'About Section is now hidden!');
+            } else {
+                throw new Error(data.error || 'Failed to update visibility');
+            }
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+            document.getElementById('about-visibility-toggle').checked = !isChecked;
+            configData.aboutSection.isVisible = !isChecked;
+        }
+    }
+
+    async function saveAboutSection() {
+        if (!sessionToken) return;
+        
+        const btn = document.getElementById('save-about-btn');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+        btn.disabled = true;
+
+        if (!configData.aboutSection) configData.aboutSection = {};
+        
+        configData.aboutSection.tag = document.getElementById('about-input-tag').value;
+        configData.aboutSection.title = document.getElementById('about-input-title').value;
+        configData.aboutSection.description = document.getElementById('about-input-desc').value;
+        configData.aboutSection.btnText = document.getElementById('about-input-btn-text').value;
+        configData.aboutSection.btnLink = document.getElementById('about-input-btn-link').value;
+        
+        try {
+            const res = await fetch('/api/saveConfig', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ configData: configData, sha: configSha })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                configSha = data.newSha;
+                showToast('fa-check', 'About Section saved successfully!');
+            } else {
+                throw new Error(data.error || 'Failed to save');
+            }
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+        } finally {
+            btn.innerHTML = origText;
+            btn.disabled = false;
         }
     }
 
