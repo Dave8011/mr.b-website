@@ -145,5 +145,14 @@
       "url": "https://www.youtube.com/embed/tQqOk4o6lY8",
       "hidden": false
     }
-  ]
+  ],
+  "aboutSection": {
+    "isVisible": false,
+    "tag": "INDIAN SUPER BRAIN",
+    "titleRegular": "ABOUT",
+    "titleGold": "MR. B",
+    "description": "Bhupesh Dave, renowned as Mr. B, is India's foremost Mentalist, Mind Reader, and Psychological Illusionist. He possesses an unmatchable ability to read thoughts, bend metal objects with his mind, and unlock the untapped potential of human cognition.",
+    "btnText": "Know More",
+    "btnLink": "/about"
+  }
 }
