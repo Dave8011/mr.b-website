@@ -82,7 +82,7 @@
       "id": "client-1784360649202",
       "name": "Total",
       "logoUrl": "images/brands/brand_total.png",
-      "hidden": false
+      "hidden": true
     },
     {
       "id": "client-1784360649286",
