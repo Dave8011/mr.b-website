@@ -112,7 +112,7 @@
       "id": "client-1784365147238",
       "name": "Mahindra",
       "logoUrl": "images/brands/brand_mahindra.png",
-      "hidden": false
+      "hidden": true
     },
     {
       "id": "client-1784365147255",
