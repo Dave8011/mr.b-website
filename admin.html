@@ -375,6 +375,7 @@
         <div class="tabs">
             <button class="tab-btn" onclick="switchTab('tab-hero')" id="btn-tab-hero">Hero Banner</button>
             <button class="tab-btn" onclick="switchTab('tab-about')" id="btn-tab-about">About Section</button>
+            <button class="tab-btn" onclick="switchTab('tab-promo')" id="btn-tab-promo">Event Promo</button>
             <button class="tab-btn active" onclick="switchTab('tab-events')" id="btn-tab-events">Events Management</button>
             <button class="tab-btn" onclick="switchTab('tab-clients')" id="btn-tab-clients">Clients / Brands</button>
             <button class="tab-btn" onclick="switchTab('tab-shorts')" id="btn-tab-shorts">Shorts / Glimpses</button>
@@ -468,6 +469,86 @@
             
             <div style="margin-top: 1.5rem; text-align: right;">
                 <button class="btn btn-gold" onclick="saveAboutSection()" id="save-about-btn">Save About Section</button>
+            </div>
+        </div>
+
+        <!-- PROMO SECTION TAB -->
+        <div id="tab-promo" class="tab-content">
+            <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Event Promo Section</h1>
+                    <p class="text-muted text-sm">Edit the Artist details and "Why Attend" info on the homepage.</p>
+                </div>
+                <label class="toggle-switch">
+                    <span class="toggle-label">Show Promo Section</span>
+                    <input type="checkbox" id="promo-visibility-toggle" onchange="togglePromoVisibility()">
+                    <div class="switch"></div>
+                </label>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group" style="flex: 1;">
+                    <label>Artist Name</label>
+                    <input type="text" id="promo-input-artist-name" class="form-control" placeholder="e.g. Bhupesh Dave">
+                    
+                    <label style="margin-top: 1rem; display: block;">Artist Avatar Image</label>
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem;">
+                        <img id="promo-artist-img-preview" src="" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); background: var(--surface);" alt="Preview">
+                        <button class="btn btn-outline" onclick="document.getElementById('promo-avatar-upload').click()">
+                            <i class="fa-solid fa-camera"></i> Change Avatar
+                        </button>
+                        <input type="file" id="promo-avatar-upload" accept="image/*" style="display:none" onchange="handlePromoAvatarUpload(event)">
+                    </div>
+                </div>
+                
+                <div class="form-group" style="flex: 1;">
+                    <label>Address Title</label>
+                    <input type="text" id="promo-input-address-title" class="form-control" placeholder="e.g. Address">
+                    <label style="margin-top: 1rem; display: block;">Address Details</label>
+                    <textarea id="promo-input-address-text" class="form-control" rows="2" placeholder="e.g. Daves Academy, Mumbai..."></textarea>
+                </div>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 2rem 0;">
+            
+            <div class="form-row">
+                <div class="form-group" style="flex: 1;">
+                    <label>"Why Attend" Title</label>
+                    <input type="text" id="promo-input-attend-title" class="form-control" placeholder="e.g. Why should you attend?">
+                    
+                    <label style="margin-top: 1rem; display: block;">Why Attend Points (One per line)</label>
+                    <textarea id="promo-input-attend-list" class="form-control" rows="6" placeholder="Point 1&#10;Point 2&#10;Point 3"></textarea>
+                    <p class="text-sm text-muted" style="margin-top: 0.25rem;">Each line will become a bullet point.</p>
+                </div>
+                
+                <div class="form-group" style="flex: 1;">
+                    <label>About Title</label>
+                    <input type="text" id="promo-input-about-title" class="form-control" placeholder="e.g. About">
+                    
+                    <label style="margin-top: 1rem; display: block;">About Description</label>
+                    <textarea id="promo-input-about-desc" class="form-control" rows="6" placeholder="Enter the description text here..."></textarea>
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 2rem 0;">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Book Now Button Text</label>
+                    <input type="text" id="promo-input-btn-text" class="form-control" placeholder="e.g. Book Now">
+                </div>
+                <div class="form-group">
+                    <label>Button Link Destination</label>
+                    <select id="promo-input-btn-link" class="form-control" style="cursor: pointer;">
+                        <option value="/about">About Us Page</option>
+                        <option value="/contact">Contact Us Page</option>
+                        <option value="/contact#new-contact-form">Direct to Contact Form</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <button class="btn btn-gold" onclick="savePromoSection()" id="save-promo-btn">Save Promo Section</button>
             </div>
         </div>
 
@@ -674,10 +755,17 @@
     };
 
     function showToast(icon, msg, isError = false) {
+        if (!isError && !msg.toLowerCase().includes('wait') && !msg.toLowerCase().includes('minute')) {
+            msg += ' (Please wait 1-2 mins to see changes on live site)';
+        }
+        if (isError) {
+            msg = `<strong>Error:</strong> ${msg} Please verify and try again.`;
+        }
+        
         const t = document.getElementById('toast');
         t.innerHTML = `<i class="fa-solid ${icon}" style="color: ${isError ? 'var(--danger)' : 'var(--success)'}"></i> ${msg}`;
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3000);
+        setTimeout(() => t.classList.remove('show'), 5000);
     }
 
     // --- Authentication ---
@@ -885,6 +973,35 @@
                 document.getElementById('about-input-btn-text').value = configData.aboutSection.btnText || "Know More";
                 document.getElementById('about-input-btn-link').value = configData.aboutSection.btnLink || "/about";
 
+                // Load Promo Section data
+                if (!configData.promoSection) {
+                    configData.promoSection = {
+                        isVisible: true,
+                        artistName: "Bhupesh Dave",
+                        artistImage: "images/about.jpg",
+                        addressTitle: "Address",
+                        addressText: "Daves Academy, moti Bhvan , Dr. D’Silva Road, Dadar – West Mumbai - 400028",
+                        attendTitle: "Why should you attend?",
+                        attendList: "Experience Motivational Speaker like nowhere else\nBhupesh Dave\nLorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda, pariatur.\nLorem ipsum dolor sit amet consectetur, adipisicing elit.\nLorem ipsum dolor sit amet consectetur.",
+                        aboutTitle: "About",
+                        aboutDesc: "If you are looking for something that will stand-out and create a stunning impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect outcome for your event.",
+                        btnText: "Book Now",
+                        btnLink: "/contact"
+                    };
+                }
+                
+                document.getElementById('promo-visibility-toggle').checked = configData.promoSection.isVisible;
+                document.getElementById('promo-input-artist-name').value = configData.promoSection.artistName || "";
+                document.getElementById('promo-artist-img-preview').src = configData.promoSection.artistImage || "";
+                document.getElementById('promo-input-address-title').value = configData.promoSection.addressTitle || "";
+                document.getElementById('promo-input-address-text').value = configData.promoSection.addressText || "";
+                document.getElementById('promo-input-attend-title').value = configData.promoSection.attendTitle || "";
+                document.getElementById('promo-input-attend-list').value = configData.promoSection.attendList || "";
+                document.getElementById('promo-input-about-title').value = configData.promoSection.aboutTitle || "";
+                document.getElementById('promo-input-about-desc').value = configData.promoSection.aboutDesc || "";
+                document.getElementById('promo-input-btn-text').value = configData.promoSection.btnText || "Book Now";
+                document.getElementById('promo-input-btn-link').value = configData.promoSection.btnLink || "/contact";
+
                 renderBanners();
                 renderClients();
                 if (typeof renderShorts === 'function') renderShorts();
@@ -973,6 +1090,112 @@
             if (res.ok && data.success) {
                 configSha = data.newSha;
                 showToast('fa-check', 'About Section saved successfully!');
+            } else {
+                throw new Error(data.error || 'Failed to save');
+            }
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+        } finally {
+            btn.innerHTML = origText;
+            btn.disabled = false;
+        }
+    }
+
+    async function handlePromoAvatarUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async (evt) => {
+            const base64 = evt.target.result;
+            document.getElementById('promo-artist-img-preview').src = base64;
+            
+            try {
+                // Instantly upload this image to backend to get a URL (like we do for hero banners)
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken}`
+                    },
+                    body: JSON.stringify({
+                        fileName: 'promo-avatar-' + Date.now() + '-' + file.name,
+                        fileContent: base64
+                    })
+                });
+                
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    if (!configData.promoSection) configData.promoSection = {};
+                    configData.promoSection.artistImage = data.bannerUrl; // reuse bannerUrl logic since it returns the file path
+                    showToast('fa-check', 'Avatar uploaded successfully! Don\'t forget to click Save Promo Section.');
+                } else {
+                    throw new Error(data.error || 'Failed to upload image');
+                }
+            } catch (err) {
+                showToast('fa-triangle-exclamation', err.message, true);
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function togglePromoVisibility() {
+        if (!sessionToken) return;
+        const isChecked = document.getElementById('promo-visibility-toggle').checked;
+        if (!configData.promoSection) configData.promoSection = {};
+        configData.promoSection.isVisible = isChecked;
+        
+        try {
+            const res = await fetch('/api/saveConfig', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ configData: configData, sha: configSha })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                configSha = data.newSha;
+                showToast('fa-check', isChecked ? 'Promo Section is now visible!' : 'Promo Section is now hidden!');
+            } else {
+                throw new Error(data.error || 'Failed to update visibility');
+            }
+        } catch (e) {
+            showToast('fa-triangle-exclamation', e.message, true);
+            document.getElementById('promo-visibility-toggle').checked = !isChecked;
+            configData.promoSection.isVisible = !isChecked;
+        }
+    }
+
+    async function savePromoSection() {
+        if (!sessionToken) return;
+        
+        const btn = document.getElementById('save-promo-btn');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+        btn.disabled = true;
+
+        if (!configData.promoSection) configData.promoSection = {};
+        
+        configData.promoSection.artistName = document.getElementById('promo-input-artist-name').value;
+        configData.promoSection.addressTitle = document.getElementById('promo-input-address-title').value;
+        configData.promoSection.addressText = document.getElementById('promo-input-address-text').value;
+        configData.promoSection.attendTitle = document.getElementById('promo-input-attend-title').value;
+        configData.promoSection.attendList = document.getElementById('promo-input-attend-list').value;
+        configData.promoSection.aboutTitle = document.getElementById('promo-input-about-title').value;
+        configData.promoSection.aboutDesc = document.getElementById('promo-input-about-desc').value;
+        configData.promoSection.btnText = document.getElementById('promo-input-btn-text').value;
+        configData.promoSection.btnLink = document.getElementById('promo-input-btn-link').value;
+        // note: artistImage is already set by handlePromoAvatarUpload
+        
+        try {
+            const res = await fetch('/api/saveConfig', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ configData: configData, sha: configSha })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                configSha = data.newSha;
+                showToast('fa-check', 'Promo Section saved successfully!');
             } else {
                 throw new Error(data.error || 'Failed to save');
             }

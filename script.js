@@ -216,6 +216,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // ── Event Promo Section (index.html only) ─────────────────────
+            const promoSection = document.getElementById('promo-section');
+            if (promoSection && config.promoSection) {
+                if (config.promoSection.isVisible === false) {
+                    promoSection.style.display = 'none';
+                } else {
+                    promoSection.style.display = 'block';
+                    
+                    const elArtistImg = document.getElementById('promo-artist-img');
+                    const elArtistName = document.getElementById('promo-artist-name');
+                    const elAddressTitle = document.getElementById('promo-address-title');
+                    const elAddressText = document.getElementById('promo-address-text');
+                    const elAttendTitle = document.getElementById('promo-attend-title');
+                    const elAttendList = document.getElementById('promo-attend-list');
+                    const elAboutTitle = document.getElementById('promo-about-title');
+                    const elAboutDesc = document.getElementById('promo-about-desc');
+                    const elBtn = document.getElementById('promo-btn');
+                    
+                    if (elArtistImg && config.promoSection.artistImage) elArtistImg.src = config.promoSection.artistImage;
+                    if (elArtistName && config.promoSection.artistName) elArtistName.textContent = config.promoSection.artistName;
+                    if (elAddressTitle && config.promoSection.addressTitle) elAddressTitle.textContent = config.promoSection.addressTitle;
+                    if (elAddressText && config.promoSection.addressText) elAddressText.textContent = config.promoSection.addressText;
+                    if (elAttendTitle && config.promoSection.attendTitle) elAttendTitle.textContent = config.promoSection.attendTitle;
+                    if (elAboutTitle && config.promoSection.aboutTitle) elAboutTitle.textContent = config.promoSection.aboutTitle;
+                    if (elAboutDesc && config.promoSection.aboutDesc) elAboutDesc.textContent = config.promoSection.aboutDesc;
+                    
+                    if (elAttendList && config.promoSection.attendList) {
+                        elAttendList.innerHTML = ''; // safely building elements
+                        const items = config.promoSection.attendList.split('\n').filter(i => i.trim() !== '');
+                        items.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            elAttendList.appendChild(li);
+                        });
+                    }
+                    
+                    if (elBtn) {
+                        if (config.promoSection.btnText) elBtn.textContent = config.promoSection.btnText;
+                        if (config.promoSection.btnLink) elBtn.href = config.promoSection.btnLink;
+                    }
+                }
+            }
+
             // ── Clients / Brands ──────────────────────────────────────────
             const clientsSection = document.getElementById('dynamic-clients-section');
             if (clientsSection) {
