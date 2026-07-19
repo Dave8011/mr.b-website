@@ -341,7 +341,10 @@
         </div>
         <div class="form-group" style="margin-bottom: 2rem;">
             <label>Password</label>
-            <input type="password" id="password" class="form-control">
+            <div style="position: relative;">
+                <input type="password" id="password" class="form-control" style="padding-right: 2.5rem;">
+                <i class="fa-solid fa-eye" id="toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted);" onclick="togglePasswordVisibility()"></i>
+            </div>
         </div>
         
         <button class="btn btn-primary" style="width: 100%;" onclick="login()" id="login-btn">
@@ -488,16 +491,17 @@
             
             <div class="form-row">
                 <div class="form-group" style="flex: 1;">
-                    <label>Artist Name</label>
-                    <input type="text" id="promo-input-artist-name" class="form-control" placeholder="e.g. Bhupesh Dave">
+                    <label>Artist Section Title</label>
+                    <input type="text" id="promo-input-artist-section-title" class="form-control" placeholder="e.g. Artist">
                     
-                    <label style="margin-top: 1rem; display: block;">Artist Avatar Image</label>
-                    <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem;">
-                        <img id="promo-artist-img-preview" src="" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); background: var(--surface);" alt="Preview">
-                        <button class="btn btn-outline" onclick="document.getElementById('promo-avatar-upload').click()">
-                            <i class="fa-solid fa-camera"></i> Change Avatar
+                    <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <label style="margin: 0;">Artists List</label>
+                        <button class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" onclick="addPromoArtist()">
+                            <i class="fa-solid fa-plus"></i> Add Artist
                         </button>
-                        <input type="file" id="promo-avatar-upload" accept="image/*" style="display:none" onchange="handlePromoAvatarUpload(event)">
+                    </div>
+                    <div id="promo-artists-list-ui" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- dynamic artist inputs generated here -->
                     </div>
                 </div>
                 
@@ -769,6 +773,20 @@
     }
 
     // --- Authentication ---
+    function togglePasswordVisibility() {
+        const passInput = document.getElementById('password');
+        const icon = document.getElementById('toggle-password');
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
     async function login() {
         const user = document.getElementById('username').value;
         const pass = document.getElementById('password').value;
@@ -977,8 +995,8 @@
                 if (!configData.promoSection) {
                     configData.promoSection = {
                         isVisible: true,
-                        artistName: "Bhupesh Dave",
-                        artistImage: "images/about.jpg",
+                        artistSectionTitle: "Artist",
+                        artists: [{ name: "Bhupesh Dave", image: "images/about.jpg" }],
                         addressTitle: "Address",
                         addressText: "Daves Academy, moti Bhvan , Dr. D’Silva Road, Dadar – West Mumbai - 400028",
                         attendTitle: "Why should you attend?",
@@ -990,9 +1008,25 @@
                     };
                 }
                 
+                // Migrate legacy string data to artists array
+                if (!configData.promoSection.artists && configData.promoSection.artistName) {
+                    configData.promoSection.artists = [];
+                    const names = configData.promoSection.artistName.split('\n').filter(n => n.trim() !== '');
+                    names.forEach((n, i) => {
+                        configData.promoSection.artists.push({
+                            name: n.trim(),
+                            image: i === 0 ? (configData.promoSection.artistImage || "images/about.jpg") : "images/about.jpg"
+                        });
+                    });
+                    delete configData.promoSection.artistName;
+                    delete configData.promoSection.artistImage;
+                }
+                if (!configData.promoSection.artists) configData.promoSection.artists = [];
+                
                 document.getElementById('promo-visibility-toggle').checked = configData.promoSection.isVisible;
-                document.getElementById('promo-input-artist-name').value = configData.promoSection.artistName || "";
-                document.getElementById('promo-artist-img-preview').src = configData.promoSection.artistImage || "";
+                document.getElementById('promo-input-artist-section-title').value = configData.promoSection.artistSectionTitle || "Artist";
+                
+                renderPromoArtists();
                 document.getElementById('promo-input-address-title').value = configData.promoSection.addressTitle || "";
                 document.getElementById('promo-input-address-text').value = configData.promoSection.addressText || "";
                 document.getElementById('promo-input-attend-title').value = configData.promoSection.attendTitle || "";
@@ -1101,33 +1135,81 @@
         }
     }
 
-    async function handlePromoAvatarUpload(e) {
+    function renderPromoArtists() {
+        const container = document.getElementById('promo-artists-list-ui');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        if (!configData.promoSection.artists) configData.promoSection.artists = [];
+        
+        configData.promoSection.artists.forEach((artist, index) => {
+            const div = document.createElement('div');
+            div.style.cssText = 'border: 1px solid var(--border); border-radius: 8px; padding: 1rem; background: rgba(255,255,255,0.02); display: flex; gap: 1rem; align-items: center;';
+            div.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                    <img id="promo-artist-img-preview-${index}" src="${artist.image || 'images/hero.jpg'}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); background: var(--surface);" alt="Preview">
+                    <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="document.getElementById('promo-avatar-upload-${index}').click()">
+                        <i class="fa-solid fa-camera"></i>
+                    </button>
+                    <input type="file" id="promo-avatar-upload-${index}" accept="image/*" style="display:none" onchange="handlePromoAvatarUpload(event, ${index})">
+                </div>
+                <div style="flex: 1;">
+                    <input type="text" class="form-control" placeholder="Artist Name" value="${artist.name || ''}" onchange="updatePromoArtistName(${index}, this.value)">
+                </div>
+                ${configData.promoSection.artists.length > 1 ? `
+                <button class="btn btn-outline" style="color: var(--danger); border-color: rgba(255,0,0,0.3);" onclick="removePromoArtist(${index})">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+                ` : ''}
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function addPromoArtist() {
+        if (!configData.promoSection.artists) configData.promoSection.artists = [];
+        configData.promoSection.artists.push({ name: '', image: '' });
+        renderPromoArtists();
+    }
+
+    function removePromoArtist(index) {
+        if (configData.promoSection.artists.length <= 1) {
+            showToast('fa-triangle-exclamation', 'You must have at least one artist.', true);
+            return;
+        }
+        configData.promoSection.artists.splice(index, 1);
+        renderPromoArtists();
+    }
+
+    function updatePromoArtistName(index, value) {
+        if (configData.promoSection.artists && configData.promoSection.artists[index]) {
+            configData.promoSection.artists[index].name = value;
+        }
+    }
+
+    async function handlePromoAvatarUpload(e, index) {
         const file = e.target.files[0];
         if (!file) return;
 
         const reader = new FileReader();
         reader.onload = async (evt) => {
             const base64 = evt.target.result;
-            document.getElementById('promo-artist-img-preview').src = base64;
+            document.getElementById('promo-artist-img-preview-' + index).src = base64;
             
             try {
-                // Instantly upload this image to backend to get a URL (like we do for hero banners)
                 const res = await fetch('/api/upload', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionToken}`
-                    },
-                    body: JSON.stringify({
-                        fileName: 'promo-avatar-' + Date.now() + '-' + file.name,
-                        fileContent: base64
-                    })
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionToken}` },
+                    body: JSON.stringify({ fileName: 'promo-avatar-' + Date.now() + '-' + file.name, fileContent: base64 })
                 });
                 
                 const data = await res.json();
                 if (res.ok && data.success) {
                     if (!configData.promoSection) configData.promoSection = {};
-                    configData.promoSection.artistImage = data.bannerUrl; // reuse bannerUrl logic since it returns the file path
+                    if (!configData.promoSection.artists) configData.promoSection.artists = [];
+                    if (configData.promoSection.artists[index]) {
+                        configData.promoSection.artists[index].image = data.bannerUrl;
+                    }
                     showToast('fa-check', 'Avatar uploaded successfully! Don\'t forget to click Save Promo Section.');
                 } else {
                     throw new Error(data.error || 'Failed to upload image');
@@ -1175,7 +1257,9 @@
 
         if (!configData.promoSection) configData.promoSection = {};
         
-        configData.promoSection.artistName = document.getElementById('promo-input-artist-name').value;
+        configData.promoSection.artistSectionTitle = document.getElementById('promo-input-artist-section-title').value;
+        // artists array is already mutated directly via updatePromoArtistName and add/remove buttons
+
         configData.promoSection.addressTitle = document.getElementById('promo-input-address-title').value;
         configData.promoSection.addressText = document.getElementById('promo-input-address-text').value;
         configData.promoSection.attendTitle = document.getElementById('promo-input-attend-title').value;

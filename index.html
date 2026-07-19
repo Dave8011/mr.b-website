@@ -94,11 +94,13 @@
                 <!-- Left Column -->
                 <div class="promo-sidebar">
                     <div class="promo-card">
-                        <h3 class="promo-card-title">Artist</h3>
-                        <div class="artist-profile">
-                            <img src="images/about.jpg" alt="Bhupesh Dave" class="artist-avatar" id="promo-artist-img"
-                                onerror="this.src='images/hero.jpg'">
-                            <span class="artist-name" id="promo-artist-name">Bhupesh Dave</span>
+                        <h3 class="promo-card-title" id="promo-artist-section-title">Artist</h3>
+                        <div id="promo-artists-container" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <!-- Fallback artist profile, replaced by script.js dynamically -->
+                            <div class="artist-profile">
+                                <img src="images/about.jpg" alt="Bhupesh Dave" class="artist-avatar" onerror="this.src='images/hero.jpg'">
+                                <span class="artist-name">Bhupesh Dave</span>
+                            </div>
                         </div>
                     </div>
                     <div class="promo-card">

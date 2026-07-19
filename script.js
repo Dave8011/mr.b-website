@@ -224,8 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     promoSection.style.display = 'block';
                     
-                    const elArtistImg = document.getElementById('promo-artist-img');
-                    const elArtistName = document.getElementById('promo-artist-name');
+                    const elArtistSectionTitle = document.getElementById('promo-artist-section-title');
+                    const elArtistsContainer = document.getElementById('promo-artists-container');
                     const elAddressTitle = document.getElementById('promo-address-title');
                     const elAddressText = document.getElementById('promo-address-text');
                     const elAttendTitle = document.getElementById('promo-attend-title');
@@ -234,8 +234,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     const elAboutDesc = document.getElementById('promo-about-desc');
                     const elBtn = document.getElementById('promo-btn');
                     
-                    if (elArtistImg && config.promoSection.artistImage) elArtistImg.src = config.promoSection.artistImage;
-                    if (elArtistName && config.promoSection.artistName) elArtistName.textContent = config.promoSection.artistName;
+                    if (elArtistSectionTitle && config.promoSection.artistSectionTitle) elArtistSectionTitle.textContent = config.promoSection.artistSectionTitle;
+                    
+                    if (elArtistsContainer && config.promoSection.artists && config.promoSection.artists.length > 0) {
+                        elArtistsContainer.innerHTML = '';
+                        config.promoSection.artists.forEach(artist => {
+                            const profileDiv = document.createElement('div');
+                            profileDiv.className = 'artist-profile';
+                            profileDiv.innerHTML = `
+                                <img src="${artist.image || 'images/hero.jpg'}" alt="${artist.name || 'Artist'}" class="artist-avatar" onerror="this.src='images/hero.jpg'">
+                                <span class="artist-name">${artist.name || ''}</span>
+                            `;
+                            elArtistsContainer.appendChild(profileDiv);
+                        });
+                    }
+                    
                     if (elAddressTitle && config.promoSection.addressTitle) elAddressTitle.textContent = config.promoSection.addressTitle;
                     if (elAddressText && config.promoSection.addressText) elAddressText.textContent = config.promoSection.addressText;
                     if (elAttendTitle && config.promoSection.attendTitle) elAttendTitle.textContent = config.promoSection.attendTitle;
