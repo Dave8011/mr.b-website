@@ -212,5 +212,42 @@
         "color": "#D4AF37"
       }
     ]
+  },
+  "expertiseSection": {
+    "isVisible": true,
+    "sectionName": "02 // EXPERTISE",
+    "subtitle": "Services Offered",
+    "cards": [
+      {
+        "id": "exp-1784560000001",
+        "title": "Corporate Mentalism",
+        "days": "High Impact",
+        "desc": "Elevate your corporate events with mind-bending psychological entertainment tailored for professionals and executives.",
+        "tags": "Mind Reading • Influence • Engagement",
+        "audience": "FOR BUSINESSES",
+        "colorClass": "bg-pillar-burgundy",
+        "hidden": false
+      },
+      {
+        "id": "exp-1784560000002",
+        "title": "Private Shows",
+        "days": "Exclusive",
+        "desc": "Intimate, unforgettable experiences designed for private parties, VIP gatherings, and elite celebrations.",
+        "tags": "Interactive • Personal • Astonishing",
+        "audience": "FOR INDIVIDUALS",
+        "colorClass": "bg-pillar-teal",
+        "hidden": false
+      },
+      {
+        "id": "exp-1784560000003",
+        "title": "Workshops",
+        "days": "Transformative",
+        "desc": "Unlock your own potential through specialized sessions on body language, memory enhancement, and perception.",
+        "tags": "Education • Psychology • Growth",
+        "audience": "FOR LEARNERS",
+        "colorClass": "bg-pillar-purple",
+        "hidden": false
+      }
+    ]
   }
 }

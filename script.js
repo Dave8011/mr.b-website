@@ -270,6 +270,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // ── Expertise Section (index.html only) ───────────────────────
+            const expertiseSection = document.getElementById('dynamic-expertise-section');
+            if (expertiseSection && config.expertiseSection) {
+                if (config.expertiseSection.isVisible === false || !config.expertiseSection.cards || config.expertiseSection.cards.filter(c => !c.hidden).length === 0) {
+                    expertiseSection.style.display = 'none';
+                } else {
+                    expertiseSection.style.display = 'block';
+                    const visibleCards = config.expertiseSection.cards.filter(c => !c.hidden);
+                    
+                    let cardsHtml = '';
+                    visibleCards.forEach((card, index) => {
+                        const cardIndex = String(index + 1).padStart(2, '0');
+                        cardsHtml += `
+                            <div class="pillar-card ${card.colorClass || 'bg-pillar-burgundy'}">
+                                <div class="pillar-top">
+                                    <div class="pillar-index">${cardIndex}</div>
+                                    <h3 class="pillar-title">${card.title || ''}</h3>
+                                    <div class="pillar-days">${card.days || ''}</div>
+                                </div>
+                                <div class="pillar-body">
+                                    <div class="pillar-divider"></div>
+                                    <p class="pillar-desc">${card.desc || ''}</p>
+                                    <div class="pillar-tags">${card.tags || ''}</div>
+                                </div>
+                                <div class="pillar-audience">${card.audience || ''}</div>
+                            </div>
+                        `;
+                    });
+
+                    expertiseSection.innerHTML = `
+                        <div class="container">
+                            <div class="section-slide-header text-center fade-in visible">
+                                <div class="slide-num">${config.expertiseSection.sectionName || '02 // EXPERTISE'}</div>
+                                <h2 class="slide-subtitle">${config.expertiseSection.subtitle || 'Services Offered'}</h2>
+                            </div>
+                            <div class="pillars-grid fade-in visible">
+                                ${cardsHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
             // ── Event Promo Section (index.html only) ─────────────────────
             const promoSection = document.getElementById('promo-section');
             if (promoSection && config.promoSection) {

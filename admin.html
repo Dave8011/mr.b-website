@@ -911,6 +911,7 @@
                 <button class="tab-btn" onclick="switchTab('tab-hero')" id="btn-tab-hero">Hero Banner</button>
                 <button class="tab-btn" onclick="switchTab('tab-about')" id="btn-tab-about">About Section</button>
                 <button class="tab-btn" onclick="switchTab('tab-story')" id="btn-tab-story">The Story</button>
+                <button class="tab-btn" onclick="switchTab('tab-expertise')" id="btn-tab-expertise">Expertise</button>
                 <button class="tab-btn" onclick="switchTab('tab-stats')" id="btn-tab-stats">Stats Bar</button>
                 <button class="tab-btn" onclick="switchTab('tab-promo')" id="btn-tab-promo">Event Promo</button>
                 <button class="tab-btn active" onclick="switchTab('tab-events')" id="btn-tab-events">Events
@@ -1134,6 +1135,44 @@
 
                 <div style="margin-top: 1.5rem; text-align: right;">
                     <button class="btn btn-gold" onclick="saveStorySection()" id="save-story-btn">Save Story Section</button>
+                </div>
+            </div>
+
+            <!-- EXPERTISE TAB -->
+            <div id="tab-expertise" class="tab-content">
+                <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                    <div>
+                        <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Expertise Section</h1>
+                        <p class="text-muted text-sm">Manage the Services Offered cards on the homepage.</p>
+                    </div>
+                    <div class="flex gap-4 items-center">
+                        <label class="toggle-switch">
+                            <span class="toggle-label">Show Section</span>
+                            <input type="checkbox" id="expertise-visibility-toggle" onchange="toggleExpertiseVisibility()">
+                            <div class="switch"></div>
+                        </label>
+                        <button class="btn btn-primary" onclick="openExpertiseModal()">
+                            <i class="fa-solid fa-plus"></i> Add Card
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-bottom: 2rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Section Header Title</label>
+                        <input type="text" id="expertise-section-title" class="form-control" placeholder="e.g. 02 // EXPERTISE">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Section Subtitle</label>
+                        <input type="text" id="expertise-section-subtitle" class="form-control" placeholder="e.g. Services Offered">
+                    </div>
+                    <div class="form-group" style="flex: 0; display: flex; align-items: flex-end;">
+                        <button class="btn btn-outline" onclick="saveExpertiseHeader()" style="height: 48px; white-space: nowrap;">Save Header</button>
+                    </div>
+                </div>
+
+                <div id="expertise-list" class="banner-library" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+                    <!-- Expertise cards injected here -->
                 </div>
             </div>
 
@@ -1385,6 +1424,53 @@
                 <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
                 <button class="btn btn-primary" onclick="saveEvent()">Save Event</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Expertise Card -->
+    <div class="modal-overlay" id="expertise-modal">
+        <div class="modal-content" style="max-width: 500px; padding: 2.5rem 2rem;">
+            <div class="flex justify-between items-center" style="margin-bottom: 2rem;">
+                <h2 id="expertise-modal-title" style="font-size: 1.4rem; font-weight: 600;">Add Expertise Card</h2>
+                <button class="btn-icon" onclick="closeExpertiseModal()" style="border:none; background:rgba(255,255,255,0.05);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Card Title</label>
+                <input type="text" id="exp-input-title" class="form-control" placeholder="e.g. Corporate Mentalism">
+            </div>
+
+            <div class="form-row" style="margin-bottom: 1.5rem;">
+                <div class="form-group">
+                    <label>Highlight Text (Top Right)</label>
+                    <input type="text" id="exp-input-days" class="form-control" placeholder="e.g. High Impact">
+                </div>
+                <div class="form-group">
+                    <label>Audience Label (Bottom)</label>
+                    <input type="text" id="exp-input-audience" class="form-control" placeholder="e.g. FOR BUSINESSES">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Description</label>
+                <textarea id="exp-input-desc" class="form-control" rows="3" placeholder="Enter description..."></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Tags (dot separated)</label>
+                <input type="text" id="exp-input-tags" class="form-control" placeholder="e.g. Mind Reading • Influence • Engagement">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label>Color Theme</label>
+                <select id="exp-input-color" class="form-control" style="appearance: none; cursor:pointer;">
+                    <option value="bg-pillar-burgundy">Burgundy</option>
+                    <option value="bg-pillar-teal">Teal</option>
+                    <option value="bg-pillar-purple">Purple</option>
+                </select>
+            </div>
+
+            <button class="btn btn-gold" style="width: 100%; padding: 1rem; font-size: 1rem; justify-content: center;" onclick="saveExpertiseCard()">Save Card</button>
         </div>
     </div>
 
@@ -1865,6 +1951,7 @@
                     renderClients();
                     if (typeof renderShorts === 'function') renderShorts();
                     if (typeof renderSocials === 'function') renderSocials();
+                    if (typeof renderExpertise === 'function') renderExpertise();
                 }
             } catch (e) {
                 console.error("Failed to load config:", e);
@@ -2960,6 +3047,7 @@
                     showToast('fa-check', successMsg);
                     renderClients();
                     if (typeof renderSocials === 'function') renderSocials();
+                    if (typeof renderExpertise === 'function') renderExpertise();
                 } else {
                     throw new Error(data.error || 'Failed to save configuration');
                 }
@@ -2967,6 +3055,167 @@
                 showToast('fa-triangle-exclamation', e.message, true);
                 throw e; // rethrow for caller
             }
+        }
+
+        // ==========================================
+        // EXPERTISE LOGIC
+        // ==========================================
+        let editingExpertiseIndex = -1;
+
+        function renderExpertise() {
+            if (!configData.expertiseSection) return;
+
+            document.getElementById('expertise-visibility-toggle').checked = configData.expertiseSection.isVisible;
+            document.getElementById('expertise-section-title').value = configData.expertiseSection.sectionName || '';
+            document.getElementById('expertise-section-subtitle').value = configData.expertiseSection.subtitle || '';
+
+            const container = document.getElementById('expertise-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!configData.expertiseSection.cards || configData.expertiseSection.cards.length === 0) {
+                container.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1;">
+                    <i class="fa-solid fa-list-check"></i>
+                    <h3>No Expertise Cards</h3>
+                    <p class="text-muted">Click 'Add Card' to add your services.</p>
+                </div>
+                `;
+                return;
+            }
+
+            configData.expertiseSection.cards.forEach((card, idx) => {
+                const isHidden = card.hidden === true;
+                const div = document.createElement('div');
+                div.className = 'banner-item ' + (isHidden ? '' : 'active');
+
+                // Extract color name for display
+                let colorName = "Burgundy";
+                if(card.colorClass === 'bg-pillar-teal') colorName = "Teal";
+                if(card.colorClass === 'bg-pillar-purple') colorName = "Purple";
+
+                div.innerHTML = `
+                <div style="padding: 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border); min-height:120px;">
+                    <div style="font-size:0.75rem; color:var(--gold); margin-bottom:0.5rem; font-weight:bold;">${String(idx + 1).padStart(2, '0')} // ${colorName}</div>
+                    <h3 style="margin-bottom:0.5rem; font-size:1.1rem;">${card.title || 'Untitled'}</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${card.desc || ''}</p>
+                    ${isHidden ? '<div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:10; pointer-events:none;"><span style="background:var(--danger); padding:4px 8px; border-radius:4px; font-size:0.8rem; font-weight:bold; color:#fff;">HIDDEN</span></div>' : '<div class="active-badge" style="background:var(--success);">VISIBLE</div>'}
+                </div>
+                <div class="banner-item-actions" style="display:flex; flex-direction:column; gap:0.5rem; padding: 0.75rem;">
+                    <div style="display:flex; gap:0.5rem;">
+                        <button class="btn btn-outline" style="flex:1; padding:0.4rem; font-size:0.75rem;" onclick="openExpertiseModal(${idx})">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <button class="btn btn-outline" style="flex:1; padding:0.4rem; font-size:0.75rem; background: ${isHidden ? 'rgba(255,255,255,0.05)' : 'var(--gold)'}; color: ${isHidden ? 'var(--text-muted)' : '#000'}; border-color: ${isHidden ? 'rgba(255,255,255,0.1)' : 'var(--gold)'};" onclick="toggleExpertiseCardVisibility(${idx})">
+                            <i class="fa-solid ${isHidden ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isHidden ? 'Hidden' : 'Visible'}
+                        </button>
+                    </div>
+                    <button class="btn btn-outline" style="border-color:var(--danger); color:var(--danger); padding:0.4rem; width:100%; font-size:0.75rem; margin-top: 0.2rem;" onclick="deleteExpertiseCard(${idx})">
+                        <i class="fa-solid fa-trash"></i> Delete Card
+                    </button>
+                </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        async function toggleExpertiseVisibility() {
+            const isVisible = document.getElementById('expertise-visibility-toggle').checked;
+            if (!configData.expertiseSection) configData.expertiseSection = {};
+            configData.expertiseSection.isVisible = isVisible;
+            await saveConfigOnly("Expertise section visibility updated");
+        }
+
+        async function saveExpertiseHeader() {
+            if (!configData.expertiseSection) configData.expertiseSection = {};
+            configData.expertiseSection.sectionName = document.getElementById('expertise-section-title').value;
+            configData.expertiseSection.subtitle = document.getElementById('expertise-section-subtitle').value;
+            await saveConfigOnly("Expertise header updated");
+        }
+
+        function openExpertiseModal(idx = -1) {
+            editingExpertiseIndex = idx;
+            const title = document.getElementById('expertise-modal-title');
+            
+            if (idx >= 0) {
+                title.innerText = "Edit Expertise Card";
+                const card = configData.expertiseSection.cards[idx];
+                document.getElementById('exp-input-title').value = card.title || '';
+                document.getElementById('exp-input-days').value = card.days || '';
+                document.getElementById('exp-input-audience').value = card.audience || '';
+                document.getElementById('exp-input-desc').value = card.desc || '';
+                document.getElementById('exp-input-tags').value = card.tags || '';
+                document.getElementById('exp-input-color').value = card.colorClass || 'bg-pillar-burgundy';
+            } else {
+                title.innerText = "Add Expertise Card";
+                document.getElementById('exp-input-title').value = '';
+                document.getElementById('exp-input-days').value = '';
+                document.getElementById('exp-input-audience').value = '';
+                document.getElementById('exp-input-desc').value = '';
+                document.getElementById('exp-input-tags').value = '';
+                document.getElementById('exp-input-color').value = 'bg-pillar-burgundy';
+            }
+            
+            document.getElementById('expertise-modal').classList.add('active');
+        }
+
+        function closeExpertiseModal() {
+            document.getElementById('expertise-modal').classList.remove('active');
+        }
+
+        async function saveExpertiseCard() {
+            const title = document.getElementById('exp-input-title').value.trim();
+            if (!title) return alert("Please enter a card title.");
+
+            if (!configData.expertiseSection) configData.expertiseSection = { cards: [] };
+            if (!configData.expertiseSection.cards) configData.expertiseSection.cards = [];
+
+            const cardData = {
+                title: title,
+                days: document.getElementById('exp-input-days').value.trim(),
+                audience: document.getElementById('exp-input-audience').value.trim(),
+                desc: document.getElementById('exp-input-desc').value.trim(),
+                tags: document.getElementById('exp-input-tags').value.trim(),
+                colorClass: document.getElementById('exp-input-color').value,
+                hidden: false
+            };
+
+            if (editingExpertiseIndex >= 0) {
+                cardData.id = configData.expertiseSection.cards[editingExpertiseIndex].id;
+                cardData.hidden = configData.expertiseSection.cards[editingExpertiseIndex].hidden;
+                configData.expertiseSection.cards[editingExpertiseIndex] = cardData;
+            } else {
+                cardData.id = 'exp-' + new Date().getTime();
+                configData.expertiseSection.cards.push(cardData);
+            }
+
+            closeExpertiseModal();
+            
+            try {
+                const btn = document.querySelector('#expertise-modal .btn-gold');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+                await saveConfigOnly(editingExpertiseIndex >= 0 ? "Card updated" : "Card added");
+                renderExpertise();
+                btn.innerHTML = orig;
+            } catch (e) {
+                // handle error visually if needed
+            }
+        }
+
+        async function deleteExpertiseCard(idx) {
+            if (confirm('Are you sure you want to delete this expertise card?')) {
+                configData.expertiseSection.cards.splice(idx, 1);
+                await saveConfigOnly("Expertise card deleted");
+                renderExpertise();
+            }
+        }
+
+        async function toggleExpertiseCardVisibility(idx) {
+            const card = configData.expertiseSection.cards[idx];
+            card.hidden = !card.hidden;
+            await saveConfigOnly(card.hidden ? "Card hidden" : "Card visible");
+            renderExpertise();
         }
 
         // ==========================================
