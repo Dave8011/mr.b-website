@@ -214,7 +214,7 @@
     ]
   },
   "expertiseSection": {
-    "isVisible": false,
+    "isVisible": true,
     "sectionName": "02 // EXPERTISE",
     "subtitle": "Services Offered",
     "cards": [
