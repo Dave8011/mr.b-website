@@ -217,6 +217,75 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+            
+            // ── About Us Page (about.html only) ───────────────────────────
+            const aboutUsHeroSubtitle = document.getElementById('about-us-hero-subtitle');
+            if (aboutUsHeroSubtitle && config.aboutUsPage) {
+                const data = config.aboutUsPage;
+                
+                if (data.heroSubtitle) {
+                    aboutUsHeroSubtitle.textContent = data.heroSubtitle;
+                }
+                
+                // Box 1
+                const box1Title = document.getElementById('about-us-box1-title');
+                if (box1Title && data.box1?.title) box1Title.textContent = data.box1.title;
+                
+                const box1Highlight = document.getElementById('about-us-box1-highlight');
+                if (box1Highlight && data.box1?.highlight) box1Highlight.textContent = data.box1.highlight;
+                
+                const box1List = document.getElementById('about-us-box1-list');
+                if (box1List && data.box1?.list) {
+                    box1List.innerHTML = '';
+                    data.box1.list.split('\n').filter(p => p.trim() !== '').forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        box1List.appendChild(li);
+                    });
+                }
+                
+                // Box 2
+                const box2Title = document.getElementById('about-us-box2-title');
+                if (box2Title && data.box2?.title) box2Title.textContent = data.box2.title;
+                
+                const box2Text = document.getElementById('about-us-box2-text');
+                if (box2Text && data.box2?.text) {
+                    box2Text.innerHTML = '';
+                    data.box2.text.split('\n').filter(p => p.trim() !== '').forEach(item => {
+                        const p = document.createElement('p');
+                        p.textContent = item;
+                        box2Text.appendChild(p);
+                    });
+                }
+                
+                // Box 3
+                const box3Title = document.getElementById('about-us-box3-title');
+                if (box3Title && data.box3?.title) box3Title.textContent = data.box3.title;
+                
+                const box3List = document.getElementById('about-us-box3-list');
+                if (box3List && data.box3?.list) {
+                    box3List.innerHTML = '';
+                    data.box3.list.split('\n').filter(p => p.trim() !== '').forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        box3List.appendChild(li);
+                    });
+                }
+                
+                // Box 4
+                const box4Title = document.getElementById('about-us-box4-title');
+                if (box4Title && data.box4?.title) box4Title.textContent = data.box4.title;
+                
+                const box4Text = document.getElementById('about-us-box4-text');
+                if (box4Text && data.box4?.text) {
+                    box4Text.innerHTML = '';
+                    data.box4.text.split('\n').filter(p => p.trim() !== '').forEach(item => {
+                        const p = document.createElement('p');
+                        p.innerHTML = item; // Using innerHTML to allow tags like <span class="highlight-text">
+                        box4Text.appendChild(p);
+                    });
+                }
+            }
 
             // ── Story Section (index.html only) ───────────────────────────
             const storySection = document.getElementById('dynamic-story-section');

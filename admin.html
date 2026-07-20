@@ -1117,6 +1117,81 @@
                     <button class="btn btn-gold" onclick="saveAboutSection()" id="save-about-btn">Save About
                         Section</button>
                 </div>
+
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+
+                <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;">About Us Page Content</h2>
+                        <p class="text-muted text-sm">Edit the content blocks shown on the dedicated About Us page.</p>
+                    </div>
+                </div>
+
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Controls the hero subtitle and the four informational boxes on the About Us page. Affects: <span class="page-badge">📄 About Us Page</span></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Hero Subtitle (Text below "ABOUT MR. B")</label>
+                    <textarea id="aboutus-input-hero-subtitle" class="form-control" rows="2" placeholder="e.g. India's One and only Mentalist..."></textarea>
+                </div>
+
+                <div style="background: rgba(201, 160, 42, 0.03); border: 1px solid rgba(201, 160, 42, 0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--gold); margin-bottom: 1rem;">Box 1: Main Profile (Gold Border)</h3>
+                    <div class="form-group">
+                        <label>Box Title</label>
+                        <input type="text" id="aboutus-box1-title" class="form-control" placeholder="e.g. MR. B @ BHUPESH DAVE">
+                    </div>
+                    <div class="form-group">
+                        <label>Highlight Text</label>
+                        <textarea id="aboutus-box1-highlight" class="form-control" rows="2" placeholder="Highlight text..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bullet Points (One per line)</label>
+                        <textarea id="aboutus-box1-list" class="form-control" rows="5" placeholder="Point 1&#10;Point 2..."></textarea>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 200, 200, 0.03); border: 1px solid rgba(0, 200, 200, 0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--teal); margin-bottom: 1rem;">Box 2: The Show (Teal Border)</h3>
+                    <div class="form-group">
+                        <label>Box Title</label>
+                        <input type="text" id="aboutus-box2-title" class="form-control" placeholder="e.g. THE SHOW - SIXTH SENSE">
+                    </div>
+                    <div class="form-group">
+                        <label>Description Paragraphs (Separate with newline)</label>
+                        <textarea id="aboutus-box2-text" class="form-control" rows="5" placeholder="Paragraph 1&#10;Paragraph 2..."></textarea>
+                    </div>
+                </div>
+
+                <div style="background: rgba(150, 0, 200, 0.03); border: 1px solid rgba(150, 0, 200, 0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--purple); margin-bottom: 1rem;">Box 3: Achievements (Purple Border)</h3>
+                    <div class="form-group">
+                        <label>Box Title</label>
+                        <input type="text" id="aboutus-box3-title" class="form-control" placeholder="e.g. ACHIEVEMENTS & EVENTS">
+                    </div>
+                    <div class="form-group">
+                        <label>Bullet Points (One per line)</label>
+                        <textarea id="aboutus-box3-list" class="form-control" rows="5" placeholder="Achievement 1&#10;Achievement 2..."></textarea>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255, 107, 107, 0.03); border: 1px solid rgba(255, 107, 107, 0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: #ff6b6b; margin-bottom: 1rem;">Box 4: Trainer (Red Border)</h3>
+                    <div class="form-group">
+                        <label>Box Title</label>
+                        <input type="text" id="aboutus-box4-title" class="form-control" placeholder="e.g. ABOUT MOTIVATIONAL TRAINER">
+                    </div>
+                    <div class="form-group">
+                        <label>Description Paragraphs (Separate with newline)</label>
+                        <textarea id="aboutus-box4-text" class="form-control" rows="5" placeholder="Paragraph 1&#10;Paragraph 2..."></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; text-align: right;">
+                    <button class="btn btn-primary" onclick="saveAboutUsPage()" id="save-aboutus-btn">Save About Us Page</button>
+                </div>
             </div>
 
             <!-- THE STORY SECTION TAB -->
@@ -2001,6 +2076,41 @@
                     document.getElementById('about-input-btn-text').value = configData.aboutSection.btnText || "Know More";
                     document.getElementById('about-input-btn-link').value = configData.aboutSection.btnLink || "/about";
 
+                    // Load About Us Page data
+                    if (!configData.aboutUsPage) {
+                        configData.aboutUsPage = {
+                            heroSubtitle: "India’s One and only Mentalist, Mind reader, Magician and Motivational trainer with ISO 9001:2008 accreditation.",
+                            box1: {
+                                title: "MR. B @ BHUPESH DAVE",
+                                highlight: "Mr.B is India’s One and only Mentalist, Mind reader, Magician and Motivational trainer with ISO 9001:2008 accreditation.",
+                                list: "Only mentalist awarded international Merlin medal.\nRecipient of Police mitra title by MUMBAI and Maharashtra Police.\nMr.B is considered to be the foremost experimentalist performing today in India. His unique mix of natural warmth with an unmatchable ability to read thoughts, bend metal objects with his mind, and scores of other amazing demonstrations of one’s mental ability, has made him one of the most sought-after corporate/Private entertainers in the world.\nHe has performed and trained all around the world for top corporate companies. High profile business personalities and celebrities choose Mr.B to perform at their private parties, wedding ceremonies and their corporate events.\nIf you are looking for something that will stand-out and create a stunning impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect outcome for your event.\nInteractive, Humorous, and total audience participation.\nPerforms in English, Hindi, Marathi and Gujarati with ease."
+                            },
+                            box2: {
+                                title: "THE SHOW - SIXTH SENSE",
+                                text: "A mind miracle and thrilling program of Mentalism by Mr.B, is an interactive and humorous Program which involves audience in total. Sixth sense is a program with difference where Mr.B will read peoples mind and through telepathy, prediction and telekinesis, will take the audience in a different world of experiences.\nSurprise, thrill and excitement, Mr.B will not only read peoples mind but also display effects like metal bending, blind fold which will eventually surprise the audience and fill them with a thought process of positivity and maximizing their potential."
+                            },
+                            box3: {
+                                title: "ACHIEVEMENTS & EVENTS",
+                                list: "Non Align Movement Act Award\nNavnirman Gaurav Puraskar\nMotivational Training Programs all over INDIA\nNavi Mumbai Police Training Program\nMumbai Police Crime Branch Training\nTraining Programs in Confidence building and memory development for Mentally Challenged Kids\nMentalism Shows for Cancer Patient.\nPerformed on invitation at Kargil to commemorate “Vijay Divas” on 26th July with actual Kargil warriors\nInvited by R.R. Rifles at Kashmir front and border villages to perform for military and civilians."
+                            },
+                            box4: {
+                                title: "ABOUT MOTIVATIONAL TRAINER",
+                                text: "<span class=\"highlight-text\">Bhupesh Dave</span> is a multidimensional personality, success coach, memory expert who has been trained by international trainers like Anthony Robbins, Stephen Covey, Zig Ziglar, Aporesh Acharya (trainer of Dale Carnegie institute), Rajesh Tagore, India’s one of the powerful & result oriented sales trainer.\nMr. Dave is the Managing Director of Yash Institute and principle of Dave’s Academy. Motivational speaker and trainer has been conducting power program since 1996 addressed over 3,00,000 of man and woman in public and private seminars in the field covering different topics like Memory enhancement, Positive attitude, Goal setting, Team building, Basic and Advanced public speaking, basic and professional selling skills, Art of marketing etc for multinational companies and success mind people.\nCEO of Event management Co., Mr. Dave has served companies like - LIC of India, Hindustan Lever limited, Mumbai Police, Lintas Advertising Agency, Indian Express Group, TV9 Chanel, Cello Group of Co., Mahavir Distributions (Karnataka) Nirlep, Bahwan Group Of co. (Muscat), Jain Jagruti Centers, Aurangabad co-op banks, Lions clubs, Rotary clubs and Rotract RYLA.\nHe has conducted his seminars, workshops and programs not only all over India but also in the countries like United Kingdom, East Africa, Dubai, Muscat, Kenya, Singapore, Thailand, Nepal and Hong Kong. Recipient of Gold Medal at non aligned movement youth festival and honored by the then president of India Giani Zail Singh."
+                            }
+                        };
+                    }
+
+                    document.getElementById('aboutus-input-hero-subtitle').value = configData.aboutUsPage.heroSubtitle || "";
+                    document.getElementById('aboutus-box1-title').value = configData.aboutUsPage.box1?.title || "";
+                    document.getElementById('aboutus-box1-highlight').value = configData.aboutUsPage.box1?.highlight || "";
+                    document.getElementById('aboutus-box1-list').value = configData.aboutUsPage.box1?.list || "";
+                    document.getElementById('aboutus-box2-title').value = configData.aboutUsPage.box2?.title || "";
+                    document.getElementById('aboutus-box2-text').value = configData.aboutUsPage.box2?.text || "";
+                    document.getElementById('aboutus-box3-title').value = configData.aboutUsPage.box3?.title || "";
+                    document.getElementById('aboutus-box3-list').value = configData.aboutUsPage.box3?.list || "";
+                    document.getElementById('aboutus-box4-title').value = configData.aboutUsPage.box4?.title || "";
+                    document.getElementById('aboutus-box4-text').value = configData.aboutUsPage.box4?.text || "";
+
                     // Load Story Section data
                     if (!configData.storySection) {
                         configData.storySection = {
@@ -2193,6 +2303,52 @@
                 if (res.ok && data.success) {
                     configSha = data.newSha;
                     showToast('fa-check', 'About Section saved successfully!');
+                } else {
+                    throw new Error(data.error || 'Failed to save');
+                }
+            } catch (e) {
+                showToast('fa-triangle-exclamation', e.message, true);
+            } finally {
+                btn.innerHTML = origText;
+                btn.disabled = false;
+            }
+        }
+
+        async function saveAboutUsPage() {
+            if (!sessionToken) return;
+
+            const btn = document.getElementById('save-aboutus-btn');
+            const origText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            if (!configData.aboutUsPage) configData.aboutUsPage = {};
+            if (!configData.aboutUsPage.box1) configData.aboutUsPage.box1 = {};
+            if (!configData.aboutUsPage.box2) configData.aboutUsPage.box2 = {};
+            if (!configData.aboutUsPage.box3) configData.aboutUsPage.box3 = {};
+            if (!configData.aboutUsPage.box4) configData.aboutUsPage.box4 = {};
+
+            configData.aboutUsPage.heroSubtitle = document.getElementById('aboutus-input-hero-subtitle').value;
+            configData.aboutUsPage.box1.title = document.getElementById('aboutus-box1-title').value;
+            configData.aboutUsPage.box1.highlight = document.getElementById('aboutus-box1-highlight').value;
+            configData.aboutUsPage.box1.list = document.getElementById('aboutus-box1-list').value;
+            configData.aboutUsPage.box2.title = document.getElementById('aboutus-box2-title').value;
+            configData.aboutUsPage.box2.text = document.getElementById('aboutus-box2-text').value;
+            configData.aboutUsPage.box3.title = document.getElementById('aboutus-box3-title').value;
+            configData.aboutUsPage.box3.list = document.getElementById('aboutus-box3-list').value;
+            configData.aboutUsPage.box4.title = document.getElementById('aboutus-box4-title').value;
+            configData.aboutUsPage.box4.text = document.getElementById('aboutus-box4-text').value;
+
+            try {
+                const res = await fetch('/api/saveConfig', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ configData: configData, sha: configSha })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    configSha = data.newSha;
+                    showToast('fa-check', 'About Us Page saved successfully!');
                 } else {
                     throw new Error(data.error || 'Failed to save');
                 }
