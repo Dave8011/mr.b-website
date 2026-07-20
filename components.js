@@ -36,7 +36,7 @@ const globalFooter = `
             <a href="/admin.html" class="seo-link"><i class="fa-solid fa-lock" style="font-size: 0.7rem; margin-right: 0.3rem;"></i>Admin</a>
         </div>
         
-        <div class="footer-socials-slim">
+        <div class="footer-socials-slim" id="dynamic-social-links">
             <a href="https://instagram.com/bhupeshdave._" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
             <a href="http://bhupeshdave.com" target="_blank" rel="noopener" aria-label="Website"><i class="fa-solid fa-globe"></i></a>
             <a href="mailto:bhupeshdave@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>

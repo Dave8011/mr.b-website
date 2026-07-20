@@ -457,6 +457,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // ── Social Media Links ──────────────────────────────────────────
+            const socialLinksContainer = document.getElementById('dynamic-social-links');
+            if (socialLinksContainer && config.socialMedia && config.socialMedia.length > 0) {
+                socialLinksContainer.innerHTML = '';
+                config.socialMedia.forEach(social => {
+                    const a = document.createElement('a');
+                    a.href = social.url;
+                    a.setAttribute('aria-label', social.label);
+                    // Add target and rel for external links
+                    if (!social.url.startsWith('mailto:') && !social.url.startsWith('tel:')) {
+                        a.target = '_blank';
+                        a.rel = 'noopener';
+                    }
+                    a.innerHTML = `<i class="${social.icon}"></i>`;
+                    socialLinksContainer.appendChild(a);
+                });
+            }
+            
+            const contactSocialLinks = document.getElementById('contact-social-links');
+            if (contactSocialLinks && config.socialMedia && config.socialMedia.length > 0) {
+                contactSocialLinks.innerHTML = '';
+                config.socialMedia.forEach(social => {
+                    const a = document.createElement('a');
+                    a.href = social.url;
+                    a.className = 'social-circle';
+                    a.setAttribute('aria-label', social.label);
+                    if (!social.url.startsWith('mailto:') && !social.url.startsWith('tel:')) {
+                        a.target = '_blank';
+                        a.rel = 'noopener';
+                    }
+                    a.innerHTML = `<i class="${social.icon}"></i>`;
+                    contactSocialLinks.appendChild(a);
+                });
+            }
+
             // ── Shorts / Videos (Home & Contact pages) ────────────────────
             if (config.shorts && Array.isArray(config.shorts)) {
                 // Home page

@@ -383,6 +383,7 @@
             <button class="tab-btn" onclick="switchTab('tab-promo')" id="btn-tab-promo">Event Promo</button>
             <button class="tab-btn active" onclick="switchTab('tab-events')" id="btn-tab-events">Events Management</button>
             <button class="tab-btn" onclick="switchTab('tab-clients')" id="btn-tab-clients">Clients / Brands</button>
+            <button class="tab-btn" onclick="switchTab('tab-social')" id="btn-tab-social">Social Media</button>
             <button class="tab-btn" onclick="switchTab('tab-shorts')" id="btn-tab-shorts">Shorts / Glimpses</button>
         </div>
 
@@ -642,6 +643,25 @@
             </div>
         </div>
 
+        <!-- SOCIAL MEDIA TAB -->
+        <div id="tab-social" class="tab-content">
+            <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Social Media</h1>
+                    <p class="text-muted text-sm">Manage the social media links displayed in the footer and across the site.</p>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <button class="btn btn-primary" onclick="openSocialModal()">
+                        <i class="fa-solid fa-plus"></i> Add Link
+                    </button>
+                </div>
+            </div>
+
+            <div id="social-list" class="banner-library" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                <!-- Social media items injected here -->
+            </div>
+        </div>
+
         <!-- SHORTS TAB -->
         <div id="tab-shorts" class="tab-content">
             <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
@@ -771,6 +791,41 @@
         <div class="flex gap-2" style="margin-top: 2rem;">
             <button class="btn btn-outline" style="flex: 1;" onclick="closeShortModal()">Cancel</button>
             <button class="btn btn-primary" style="flex: 2;" onclick="saveShort()" id="save-short-btn">Save Video</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Add/Edit Social Media -->
+<div class="modal-overlay" id="social-modal">
+    <div class="modal-content" style="max-width: 450px; padding: 2.5rem 2rem;">
+        <div class="flex justify-between items-center" style="margin-bottom: 2rem;">
+            <h2 id="social-modal-title" style="font-size: 1.4rem; font-weight: 600;">Add Social Link</h2>
+            <button class="btn-icon" onclick="closeSocialModal()" style="border:none; background:rgba(255,255,255,0.05);"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label style="color: var(--text-main);">Platform / Icon</label>
+            <select id="social-icon" class="form-control" style="background: rgba(255,255,255,0.03);">
+                <option value='{"icon":"fa-brands fa-instagram", "label":"Instagram"}'>Instagram</option>
+                <option value='{"icon":"fa-brands fa-facebook", "label":"Facebook"}'>Facebook</option>
+                <option value='{"icon":"fa-brands fa-x-twitter", "label":"X (Twitter)"}'>X (Twitter)</option>
+                <option value='{"icon":"fa-brands fa-youtube", "label":"YouTube"}'>YouTube</option>
+                <option value='{"icon":"fa-brands fa-linkedin", "label":"LinkedIn"}'>LinkedIn</option>
+                <option value='{"icon":"fa-solid fa-globe", "label":"Website"}'>Website (Globe)</option>
+                <option value='{"icon":"fa-solid fa-envelope", "label":"Email"}'>Email</option>
+                <option value='{"icon":"fa-solid fa-phone", "label":"Phone"}'>Phone</option>
+            </select>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label style="color: var(--text-main);">URL / Link</label>
+            <input type="text" id="social-url" class="form-control" placeholder="https://..." style="background: rgba(255,255,255,0.03);">
+            <p class="text-muted text-sm" style="margin-top: 0.5rem;">Use 'mailto:email@example.com' for email, and 'tel:+123456789' for phone.</p>
+        </div>
+
+        <div class="flex gap-2" style="margin-top: 2rem;">
+            <button class="btn btn-outline" style="flex: 1;" onclick="closeSocialModal()">Cancel</button>
+            <button class="btn btn-primary" style="flex: 2;" onclick="saveSocial()" id="save-social-btn">Save Link</button>
         </div>
     </div>
 </div>
@@ -1083,9 +1138,19 @@
                 document.getElementById('promo-input-btn-text').value = configData.promoSection.btnText || "Book Now";
                 document.getElementById('promo-input-btn-link').value = configData.promoSection.btnLink || "/contact";
 
+                if (!configData.socialMedia) {
+                    configData.socialMedia = [
+                        { icon: "fa-brands fa-instagram", label: "Instagram", url: "https://instagram.com/bhupeshdave._" },
+                        { icon: "fa-solid fa-globe", label: "Website", url: "http://bhupeshdave.com" },
+                        { icon: "fa-solid fa-envelope", label: "Email", url: "mailto:bhupeshdave@gmail.com" },
+                        { icon: "fa-solid fa-phone", label: "Phone", url: "tel:+919820038976" }
+                    ];
+                }
+
                 renderBanners();
                 renderClients();
                 if (typeof renderShorts === 'function') renderShorts();
+                if (typeof renderSocials === 'function') renderSocials();
             }
         } catch (e) {
             console.error("Failed to load config:", e);
@@ -2057,6 +2122,7 @@
                 configSha = data.newSha;
                 showToast('fa-check', successMsg);
                 renderClients();
+                if (typeof renderSocials === 'function') renderSocials();
             } else {
                 throw new Error(data.error || 'Failed to save configuration');
             }
@@ -2065,6 +2131,135 @@
             throw e; // rethrow for caller
         }
     }
+
+    // ==========================================
+    // SOCIAL MEDIA LOGIC
+    // ==========================================
+    let editingSocialIndex = -1;
+
+    function renderSocials() {
+        const container = document.getElementById('social-list');
+        if (!container) return;
+        container.innerHTML = '';
+        
+        if (!configData.socialMedia || configData.socialMedia.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1;">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <h3>No social links</h3>
+                    <p class="text-muted">Click 'Add Link' to add social media profiles.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        configData.socialMedia.forEach((social, idx) => {
+            const div = document.createElement('div');
+            div.className = 'client-item active'; // reusing style
+            
+            div.innerHTML = `
+                <div class="client-item-logo" style="height: 80px; font-size: 2.5rem; color: var(--gold); background: rgba(255,255,255,0.02);">
+                    <i class="${social.icon}"></i>
+                </div>
+                <div class="client-item-name" style="border-top: none; padding-bottom: 0;">
+                    ${social.label}
+                </div>
+                <div class="client-item-name text-muted" style="font-size: 0.7rem; border-top: none; padding-top: 2px;">
+                    ${social.url}
+                </div>
+                <div class="client-item-actions" style="margin-top: auto; border-top: 1px solid var(--border-light);">
+                    <button class="btn btn-outline" onclick="openSocialModal(${idx})" title="Edit">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="btn btn-danger" style="background:rgba(220,53,69,0.1); border-color:rgba(220,53,69,0.3); color:var(--danger);" onclick="deleteSocial(${idx})" title="Delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function openSocialModal(idx = -1) {
+        editingSocialIndex = idx;
+        const title = document.getElementById('social-modal-title');
+        const iconSelect = document.getElementById('social-icon');
+        const urlInput = document.getElementById('social-url');
+        
+        if (idx >= 0) {
+            title.innerText = "Edit Social Link";
+            const s = configData.socialMedia[idx];
+            
+            // Find option that matches icon and label
+            let matched = false;
+            for(let i=0; i<iconSelect.options.length; i++) {
+                const optVal = JSON.parse(iconSelect.options[i].value);
+                if (optVal.icon === s.icon && optVal.label === s.label) {
+                    iconSelect.selectedIndex = i;
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) iconSelect.selectedIndex = 0; // fallback
+            
+            urlInput.value = s.url;
+        } else {
+            title.innerText = "Add Social Link";
+            iconSelect.selectedIndex = 0;
+            urlInput.value = '';
+        }
+        
+        document.getElementById('social-modal').classList.add('active');
+    }
+
+    function closeSocialModal() {
+        document.getElementById('social-modal').classList.remove('active');
+    }
+
+    async function saveSocial() {
+        const urlInput = document.getElementById('social-url').value.trim();
+        if (!urlInput) return alert("Please enter a URL");
+        
+        const selectedVal = JSON.parse(document.getElementById('social-icon').value);
+        
+        if (!configData.socialMedia) configData.socialMedia = [];
+        
+        if (editingSocialIndex >= 0) {
+            configData.socialMedia[editingSocialIndex].icon = selectedVal.icon;
+            configData.socialMedia[editingSocialIndex].label = selectedVal.label;
+            configData.socialMedia[editingSocialIndex].url = urlInput;
+        } else {
+            configData.socialMedia.push({
+                icon: selectedVal.icon,
+                label: selectedVal.label,
+                url: urlInput
+            });
+        }
+        
+        const btn = document.getElementById('save-social-btn');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+        btn.disabled = true;
+        
+        try {
+            await saveConfigOnly("Social links updated!");
+            closeSocialModal();
+            renderSocials();
+        } catch(e) {
+            // Error handled in saveConfigOnly
+        } finally {
+            btn.innerHTML = origText;
+            btn.disabled = false;
+        }
+    }
+
+    async function deleteSocial(idx) {
+        if (!confirm("Remove this social link?")) return;
+        configData.socialMedia.splice(idx, 1);
+        renderSocials();
+        await saveConfigOnly("Social link removed!");
+    }
+
 </script>
 </body>
 </html>
