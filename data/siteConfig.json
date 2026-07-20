@@ -214,7 +214,7 @@
     ]
   },
   "expertiseSection": {
-    "isVisible": true,
+    "isVisible": false,
     "sectionName": "02 // EXPERTISE",
     "subtitle": "Services Offered",
     "cards": [
@@ -249,5 +249,27 @@
         "hidden": false
       }
     ]
-  }
+  },
+  "socialMedia": [
+    {
+      "icon": "fa-brands fa-instagram",
+      "label": "Instagram",
+      "url": "https://instagram.com/bhupeshdave._"
+    },
+    {
+      "icon": "fa-solid fa-globe",
+      "label": "Website",
+      "url": "http://bhupeshdave.com"
+    },
+    {
+      "icon": "fa-solid fa-envelope",
+      "label": "Email",
+      "url": "mailto:bhupeshdave@gmail.com"
+    },
+    {
+      "icon": "fa-solid fa-phone",
+      "label": "Phone",
+      "url": "tel:+919820038976"
+    }
+  ]
 }
