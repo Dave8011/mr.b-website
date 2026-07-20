@@ -816,7 +816,52 @@
             }
         }
 
-        /* Responsive Design — Small Mobile (480px) */
+        /* --- Tab Info Bar --- */
+        .tab-info-bar {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: rgba(201, 160, 42, 0.05);
+            border: 1px solid rgba(201, 160, 42, 0.15);
+            border-radius: 10px;
+            padding: 0.85rem 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-info-bar i {
+            color: var(--gold);
+            font-size: 1rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .tab-info-bar p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .tab-info-bar .page-badge {
+            display: inline-block;
+            background: rgba(201, 160, 42, 0.15);
+            color: var(--gold);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            margin-left: 4px;
+            text-transform: uppercase;
+        }
+
+        /* --- Section Divider --- */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
         @media (max-width: 480px) {
             .login-box {
                 padding: 1.75rem 1.25rem;
@@ -846,6 +891,11 @@
 
             .event-info-wrapper {
                 flex-direction: column;
+            }
+
+            .tab-info-bar {
+                flex-direction: column;
+                gap: 0.5rem;
             }
         }
     </style>
@@ -918,7 +968,7 @@
                     Management</button>
                 <button class="tab-btn" onclick="switchTab('tab-clients')" id="btn-tab-clients">Clients /
                     Brands</button>
-                <button class="tab-btn" onclick="switchTab('tab-social')" id="btn-tab-social">Social Media</button>
+                <button class="tab-btn" onclick="switchTab('tab-social')" id="btn-tab-social">Contact & Social</button>
                 <button class="tab-btn" onclick="switchTab('tab-shorts')" id="btn-tab-shorts">Shorts / Glimpses</button>
             </div>
 
@@ -935,6 +985,11 @@
                         <input type="checkbox" id="banner-visibility-toggle" onchange="toggleBannerVisibility()">
                         <div class="switch"></div>
                     </label>
+                </div>
+
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Controls the full-width slideshow image at the very top of the website. Affects: <span class="page-badge">🏠 Homepage</span></p>
                 </div>
 
                 <div class="upload-area" onclick="document.getElementById('banner-upload').click()">
@@ -978,6 +1033,11 @@
                     </label>
                 </div>
 
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Controls the 4-column color-coded stats strip (Years Experience, Shows, etc.). Affects: <span class="page-badge">🏠 Homepage</span></p>
+                </div>
+
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h2 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Stats List</h2>
                     <button class="btn btn-outline btn-sm" style="padding: 0.35rem 0.85rem;" onclick="addStatBlock()">
@@ -1007,6 +1067,11 @@
                         <input type="checkbox" id="about-visibility-toggle" onchange="toggleAboutVisibility()">
                         <div class="switch"></div>
                     </label>
+                </div>
+
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Controls the "About Mr. B" text block and button shown on the right side of the hero area. Affects: <span class="page-badge">🏠 Homepage</span></p>
                 </div>
 
                 <div class="form-row">
@@ -1066,6 +1131,11 @@
                         <input type="checkbox" id="story-visibility-toggle" onchange="toggleStoryVisibility()">
                         <div class="switch"></div>
                     </label>
+                </div>
+
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Controls the "01 // THE STORY" section with image, bio text and a call-to-action button. Affects: <span class="page-badge">🏠 Homepage</span></p>
                 </div>
 
                 <div class="form-row">
@@ -1157,6 +1227,11 @@
                     </div>
                 </div>
 
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Controls the "02 // EXPERTISE" section with service cards (Corporate Mentalism, Private Shows, etc.). Affects: <span class="page-badge">🏠 Homepage</span></p>
+                </div>
+
                 <div class="form-row" style="margin-bottom: 2rem;">
                     <div class="form-group" style="flex: 1;">
                         <label>Section Header Title</label>
@@ -1189,6 +1264,11 @@
                         <input type="checkbox" id="promo-visibility-toggle" onchange="togglePromoVisibility()">
                         <div class="switch"></div>
                     </label>
+                </div>
+
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Controls the event promo box with artist info, address, and "Why Attend" list. Affects: <span class="page-badge">🏠 Homepage</span></p>
                 </div>
 
                 <div class="form-row">
@@ -1286,6 +1366,11 @@
                     </div>
                 </div>
 
+                <div class="tab-info-bar" style="margin-top: 1.5rem;">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Add, edit and delete upcoming events and shows. Each event shows up as a card. Affects: <span class="page-badge">🏠 Homepage</span> <span class="page-badge">📚 Events Page</span></p>
+                </div>
+
                 <div id="event-list">
                     <!-- Events injected here -->
                 </div>
@@ -1310,6 +1395,11 @@
                     </div>
                 </div>
 
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Upload and manage brand logos shown in the infinite-scroll marquee. Affects: <span class="page-badge">🏠 Homepage</span></p>
+                </div>
+
                 <div class="form-group" style="max-width: 500px; margin-bottom: 2rem;">
                     <label>Section Header Title</label>
                     <div class="flex gap-2">
@@ -1324,24 +1414,45 @@
                 </div>
             </div>
 
-            <!-- SOCIAL MEDIA TAB -->
+            <!-- CONTACT & SOCIAL MEDIA TAB -->
             <div id="tab-social" class="tab-content">
                 <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
                     <div>
-                        <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Social Media</h1>
-                        <p class="text-muted text-sm">Manage the social media links displayed in the footer and across
-                            the site.</p>
+                        <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Contact & Social</h1>
+                        <p class="text-muted text-sm">Manage social media links and contact information (Address, Phone, Email).</p>
                     </div>
                     <div class="flex gap-4 items-center">
                         <button class="btn btn-primary" onclick="openSocialModal()">
-                            <i class="fa-solid fa-plus"></i> Add Link
+                            <i class="fa-solid fa-plus"></i> Add Social Link
                         </button>
                     </div>
                 </div>
 
-                <div id="social-list" class="banner-library"
-                    style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p><strong>Social Links</strong> appear in the footer and the "Follow Mr. B" block. <strong>Contact Info blocks</strong> (Address, Phone, Email) appear on the Contact page. Affects: <span class="page-badge">📄 All Pages (footer)</span> <span class="page-badge">📞 Contact Page</span></p>
+                </div>
+
+                <div id="social-list" class="banner-library" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); margin-bottom: 3rem;">
                     <!-- Social media items injected here -->
+                </div>
+
+                <hr style="border-color: rgba(255,255,255,0.1); margin-bottom: 3rem;">
+
+                <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;">Contact Information</h2>
+                        <p class="text-muted text-sm">These blocks appear on the Contact Us page.</p>
+                    </div>
+                    <div class="flex gap-4 items-center">
+                        <button class="btn btn-primary" onclick="openContactInfoModal()">
+                            <i class="fa-solid fa-plus"></i> Add Contact Block
+                        </button>
+                    </div>
+                </div>
+
+                <div id="contact-info-list" class="banner-library" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+                    <!-- Contact info items injected here -->
                 </div>
             </div>
 
@@ -1358,6 +1469,11 @@
                             <i class="fa-solid fa-video"></i> Add Video
                         </button>
                     </div>
+                </div>
+
+                <div class="tab-info-bar">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Each video can be toggled on/off independently for Home and Contact pages. Affects: <span class="page-badge">🏠 Homepage</span> <span class="page-badge">📞 Contact Page</span></p>
                 </div>
 
                 <div id="shorts-list" class="banner-library"
@@ -1538,6 +1654,45 @@
                 <button class="btn btn-primary" style="flex: 2;" onclick="saveShort()" id="save-short-btn">Save
                     Video</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Contact Info -->
+    <div class="modal-overlay" id="contact-info-modal">
+        <div class="modal-content" style="max-width: 500px; padding: 2.5rem 2rem;">
+            <div class="flex justify-between items-center" style="margin-bottom: 2rem;">
+                <h2 id="contact-info-modal-title" style="font-size: 1.4rem; font-weight: 600;">Add Contact Block</h2>
+                <button class="btn-icon" onclick="closeContactInfoModal()" style="border:none; background:rgba(255,255,255,0.05);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Icon Class</label>
+                <div style="display:flex; gap:0.5rem; margin-bottom: 0.5rem; flex-wrap:wrap;">
+                    <div class="icon-option" data-icon="fa-solid fa-location-dot" data-label="Location" onclick="selectContactIcon(this)" style="padding: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="icon-option" data-icon="fa-solid fa-phone" data-label="Phone" onclick="selectContactIcon(this)" style="padding: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;"><i class="fa-solid fa-phone"></i></div>
+                    <div class="icon-option" data-icon="fa-solid fa-envelope" data-label="Email" onclick="selectContactIcon(this)" style="padding: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="icon-option" data-icon="fa-brands fa-whatsapp" data-label="WhatsApp" onclick="selectContactIcon(this)" style="padding: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div class="icon-option" data-icon="fa-solid fa-globe" data-label="Globe" onclick="selectContactIcon(this)" style="padding: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer;"><i class="fa-solid fa-globe"></i></div>
+                </div>
+                <input type="text" id="ci-input-icon" class="form-control" placeholder="e.g. fa-solid fa-location-dot" style="margin-top: 0.5rem;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Title</label>
+                <input type="text" id="ci-input-title" class="form-control" placeholder="e.g. Phone">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Text Content (newlines will become line breaks)</label>
+                <textarea id="ci-input-content" class="form-control" rows="3" placeholder="Enter text here..."></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label>Link URL (Optional - wraps text in link)</label>
+                <input type="text" id="ci-input-link" class="form-control" placeholder="e.g. tel:+919820038976">
+            </div>
+
+            <button class="btn btn-gold" style="width: 100%; padding: 1rem; font-size: 1rem; justify-content: center;" onclick="saveContactInfo()">Save Block</button>
         </div>
     </div>
 
@@ -1952,6 +2107,7 @@
                     if (typeof renderShorts === 'function') renderShorts();
                     if (typeof renderSocials === 'function') renderSocials();
                     if (typeof renderExpertise === 'function') renderExpertise();
+                    if (typeof renderContactInfo === 'function') renderContactInfo();
                 }
             } catch (e) {
                 console.error("Failed to load config:", e);
@@ -3048,6 +3204,7 @@
                     renderClients();
                     if (typeof renderSocials === 'function') renderSocials();
                     if (typeof renderExpertise === 'function') renderExpertise();
+                    if (typeof renderContactInfo === 'function') renderContactInfo();
                 } else {
                     throw new Error(data.error || 'Failed to save configuration');
                 }
@@ -3216,6 +3373,137 @@
             card.hidden = !card.hidden;
             await saveConfigOnly(card.hidden ? "Card hidden" : "Card visible");
             renderExpertise();
+        }
+
+        // ==========================================
+        // CONTACT INFO LOGIC
+        // ==========================================
+        let editingContactIndex = -1;
+
+        function renderContactInfo() {
+            const container = document.getElementById('contact-info-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!configData.contactInfo || configData.contactInfo.length === 0) {
+                container.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1;">
+                    <i class="fa-solid fa-address-card"></i>
+                    <h3>No Contact Blocks</h3>
+                    <p class="text-muted">Click 'Add Contact Block' to add contact info.</p>
+                </div>
+                `;
+                return;
+            }
+
+            configData.contactInfo.forEach((ci, idx) => {
+                const div = document.createElement('div');
+                div.className = 'banner-item active';
+
+                let displayContent = ci.content ? ci.content.replace(/\n/g, '<br>') : '';
+                
+                div.innerHTML = `
+                <div style="padding: 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border); min-height:120px;">
+                    <div style="font-size:1.5rem; color:var(--gold); margin-bottom:0.5rem;"><i class="${ci.icon}"></i></div>
+                    <h3 style="margin-bottom:0.5rem; font-size:1.1rem;">${ci.title}</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">${displayContent}</p>
+                    ${ci.link ? `<p style="font-size:0.75rem; color:var(--gold); margin-top:0.5rem; word-break:break-all;"><i class="fa-solid fa-link"></i> ${ci.link}</p>` : ''}
+                </div>
+                <div class="banner-item-actions" style="display:flex; flex-direction:column; gap:0.5rem; padding: 0.75rem;">
+                    <button class="btn btn-outline" style="padding:0.4rem; font-size:0.75rem;" onclick="openContactInfoModal(${idx})">
+                        <i class="fa-solid fa-pen"></i> Edit
+                    </button>
+                    <button class="btn btn-outline" style="border-color:var(--danger); color:var(--danger); padding:0.4rem; font-size:0.75rem;" onclick="deleteContactInfo(${idx})">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selectContactIcon(el) {
+            document.querySelectorAll('#contact-info-modal .icon-option').forEach(opt => {
+                opt.style.borderColor = 'rgba(255,255,255,0.1)';
+                opt.style.color = 'var(--text-light)';
+            });
+            el.style.borderColor = 'var(--gold)';
+            el.style.color = 'var(--gold)';
+            document.getElementById('ci-input-icon').value = el.getAttribute('data-icon');
+        }
+
+        function openContactInfoModal(idx = -1) {
+            editingContactIndex = idx;
+            const title = document.getElementById('contact-info-modal-title');
+            
+            // Reset visual selection
+            document.querySelectorAll('#contact-info-modal .icon-option').forEach(opt => {
+                opt.style.borderColor = 'rgba(255,255,255,0.1)';
+                opt.style.color = 'var(--text-light)';
+            });
+            
+            if (idx >= 0) {
+                title.innerText = "Edit Contact Block";
+                const ci = configData.contactInfo[idx];
+                document.getElementById('ci-input-icon').value = ci.icon || '';
+                document.getElementById('ci-input-title').value = ci.title || '';
+                document.getElementById('ci-input-content').value = ci.content || '';
+                document.getElementById('ci-input-link').value = ci.link || '';
+            } else {
+                title.innerText = "Add Contact Block";
+                document.getElementById('ci-input-icon').value = 'fa-solid fa-location-dot';
+                document.getElementById('ci-input-title').value = '';
+                document.getElementById('ci-input-content').value = '';
+                document.getElementById('ci-input-link').value = '';
+            }
+            
+            document.getElementById('contact-info-modal').classList.add('active');
+        }
+
+        function closeContactInfoModal() {
+            document.getElementById('contact-info-modal').classList.remove('active');
+        }
+
+        async function saveContactInfo() {
+            const title = document.getElementById('ci-input-title').value.trim();
+            if (!title) return alert("Please enter a title.");
+
+            if (!configData.contactInfo) configData.contactInfo = [];
+
+            const ciData = {
+                id: (editingContactIndex >= 0 && configData.contactInfo[editingContactIndex].id) ? configData.contactInfo[editingContactIndex].id : 'ci-' + new Date().getTime(),
+                icon: document.getElementById('ci-input-icon').value.trim() || 'fa-solid fa-info',
+                title: title,
+                content: document.getElementById('ci-input-content').value.trim(),
+                link: document.getElementById('ci-input-link').value.trim()
+            };
+
+            if (editingContactIndex >= 0) {
+                configData.contactInfo[editingContactIndex] = ciData;
+            } else {
+                configData.contactInfo.push(ciData);
+            }
+
+            closeContactInfoModal();
+            
+            try {
+                const btn = document.querySelector('#contact-info-modal .btn-gold');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+                await saveConfigOnly(editingContactIndex >= 0 ? "Contact block updated" : "Contact block added");
+                renderContactInfo();
+                btn.innerHTML = orig;
+            } catch (e) {
+                // error handled in saveConfigOnly
+            }
+        }
+
+        async function deleteContactInfo(idx) {
+            if (confirm('Are you sure you want to delete this contact block?')) {
+                configData.contactInfo.splice(idx, 1);
+                await saveConfigOnly("Contact block deleted");
+                renderContactInfo();
+            }
         }
 
         // ==========================================

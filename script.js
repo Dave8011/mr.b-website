@@ -569,22 +569,51 @@ document.addEventListener('DOMContentLoaded', () => {
                     socialLinksContainer.appendChild(a);
                 });
             }
-            
-            const contactSocialLinks = document.getElementById('contact-social-links');
-            if (contactSocialLinks && config.socialMedia && config.socialMedia.length > 0) {
-                contactSocialLinks.innerHTML = '';
-                config.socialMedia.forEach(social => {
-                    const a = document.createElement('a');
-                    a.href = social.url;
-                    a.className = 'social-circle';
-                    a.setAttribute('aria-label', social.label);
-                    if (!social.url.startsWith('mailto:') && !social.url.startsWith('tel:')) {
-                        a.target = '_blank';
-                        a.rel = 'noopener';
-                    }
-                    a.innerHTML = `<i class="${social.icon}"></i>`;
-                    contactSocialLinks.appendChild(a);
-                });
+            // ── Dynamic Contact Info (contact.html only) ───────────────────────
+            const dynamicContactInfo = document.getElementById('dynamic-contact-info');
+            if (dynamicContactInfo) {
+                let contactHtml = '';
+                if (config.contactInfo && Array.isArray(config.contactInfo)) {
+                    config.contactInfo.forEach(item => {
+                        let textHtml = item.content ? item.content.replace(/\n/g, '<br>') : '';
+                        if (item.link) {
+                            textHtml = `<a href="${item.link}">${textHtml}</a>`;
+                        }
+                        contactHtml += `
+                            <div class="info-strip-item">
+                                <div class="icon-glow-box"><i class="${item.icon}"></i></div>
+                                <div>
+                                    <h4>${item.title}</h4>
+                                    <p>${textHtml}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Append Social Media Block
+                if (config.socialMedia && config.socialMedia.length > 0) {
+                    let socialLinksHtml = '';
+                    config.socialMedia.forEach(social => {
+                        const isExternal = !social.url.startsWith('mailto:') && !social.url.startsWith('tel:');
+                        const targetRel = isExternal ? 'target="_blank" rel="noopener"' : '';
+                        socialLinksHtml += `<a href="${social.url}" class="social-circle" aria-label="${social.label}" ${targetRel}><i class="${social.icon}"></i></a>`;
+                    });
+                    
+                    contactHtml += `
+                        <div class="info-strip-item">
+                            <div class="icon-glow-box"><i class="fa-solid fa-share-nodes"></i></div>
+                            <div>
+                                <h4>Follow Mr. B</h4>
+                                <div class="social-icons-inline" id="contact-social-links">
+                                    ${socialLinksHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                dynamicContactInfo.innerHTML = contactHtml;
             }
 
             // ── Shorts / Videos (Home & Contact pages) ────────────────────

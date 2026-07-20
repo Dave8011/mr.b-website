@@ -271,5 +271,28 @@
       "label": "Phone",
       "url": "tel:+919820038976"
     }
+  ],
+  "contactInfo": [
+    {
+      "id": "ci-1",
+      "icon": "fa-solid fa-location-dot",
+      "title": "Headquarters",
+      "content": "Daves Academy, Moti Bhuvan\nDr. D'Silva Road, Dadar West, Mumbai - 400028",
+      "link": ""
+    },
+    {
+      "id": "ci-2",
+      "icon": "fa-solid fa-phone",
+      "title": "Phone",
+      "content": "+91 98200 38976",
+      "link": "tel:+919820038976"
+    },
+    {
+      "id": "ci-3",
+      "icon": "fa-solid fa-envelope",
+      "title": "Email",
+      "content": "bhupeshdave@gmail.com",
+      "link": "mailto:bhupeshdave@gmail.com"
+    }
   ]
 }
