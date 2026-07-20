@@ -19,3 +19,6 @@ websiteideas/
 
 # Node
 node_modules/
+
+# Build Output
+public/

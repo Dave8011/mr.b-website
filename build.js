@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const cheerio = require('cheerio');
 
@@ -10,6 +10,35 @@ try {
 } catch (error) {
     console.error('Failed to read or parse siteConfig.json:', error);
     process.exit(1);
+}
+
+const publicDir = path.join(__dirname, 'public');
+
+// Setup public directory and copy static assets
+try {
+    if (fs.existsSync(publicDir)) {
+        fs.emptyDirSync(publicDir);
+    } else {
+        fs.mkdirSync(publicDir);
+    }
+    
+    // Copy all necessary files and folders, excluding source files and node_modules
+    const itemsToCopy = [
+        'images', 'style-css', 'data', 
+        'components.js', 'script.js', 'favicon.ico', 
+        'robots.txt', 'sitemap.xml', 'admin.html', 
+        'privacy.html', 'terms.html', 'contact.html', 'BHUPESH DAVE-BRAND KIT.pdf'
+    ];
+    
+    itemsToCopy.forEach(item => {
+        const srcPath = path.join(__dirname, item);
+        if (fs.existsSync(srcPath)) {
+            fs.copySync(srcPath, path.join(publicDir, item));
+        }
+    });
+    console.log('Successfully copied static assets to public directory.');
+} catch (error) {
+    console.error('Failed to setup public directory:', error);
 }
 
 // Helper to update elements safely
@@ -162,8 +191,9 @@ try {
         $('#dynamic-clients-section').css('display', 'block');
     }
 
-    fs.writeFileSync(indexPath, $.html());
-    console.log('Successfully pre-rendered index.html');
+    const outputIndexPath = path.join(publicDir, 'index.html');
+    fs.writeFileSync(outputIndexPath, $.html());
+    console.log('Successfully pre-rendered index.html to public/');
 } catch (error) {
     console.error('Error processing index.html:', error);
 }
@@ -229,8 +259,9 @@ try {
         }
     }
 
-    fs.writeFileSync(aboutPath, $.html());
-    console.log('Successfully pre-rendered about.html');
+    const outputAboutPath = path.join(publicDir, 'about.html');
+    fs.writeFileSync(outputAboutPath, $.html());
+    console.log('Successfully pre-rendered about.html to public/');
 } catch (error) {
     console.error('Error processing about.html:', error);
 }
