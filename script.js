@@ -218,6 +218,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // ── Story Section (index.html only) ───────────────────────────
+            const storySection = document.getElementById('dynamic-story-section');
+            if (storySection && config.storySection) {
+                if (config.storySection.isVisible === false) {
+                    storySection.style.display = 'none';
+                } else {
+                    storySection.style.display = 'block';
+                    
+                    const isMobile = window.innerWidth <= 768;
+                    const imageUrl = (isMobile && config.storySection.imageMobile) 
+                        ? config.storySection.imageMobile 
+                        : (config.storySection.imageDesktop || 'images/about.jpg');
+                        
+                    // Convert newlines to paragraphs
+                    const textHtml = config.storySection.text 
+                        ? config.storySection.text.split('\n').filter(p => p.trim() !== '').map(p => 
+                            `<p style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.8;">${p}</p>`
+                        ).join('')
+                        : '';
+
+                    let titleHtml = '';
+                    if (config.storySection.mainTitle) {
+                        const parts = config.storySection.mainTitle.split(' ');
+                        const lastWord = parts.length > 1 ? parts.pop() : '';
+                        const rest = parts.join(' ');
+                        
+                        titleHtml = `<h3 style="font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 1.5rem;">
+                            ${rest} ${lastWord ? `<span class="gold-text">${lastWord}</span>` : ''}
+                        </h3>`;
+                    }
+
+                    storySection.innerHTML = `
+                        <div class="container">
+                            <div class="section-slide-header text-center fade-in visible">
+                                <div class="slide-num">${config.storySection.sectionName || '01 // THE STORY'}</div>
+                                <h2 class="slide-subtitle">${config.storySection.subtitle || 'Meet Bhupesh Dave'}</h2>
+                            </div>
+                            <div class="academy-container">
+                                <div class="academy-image-wrapper fade-in visible">
+                                    <img src="${imageUrl}?v=${new Date().getTime()}" alt="The Story" class="academy-img image-frame-glow" style="width: 100%; border-radius: 8px;" onerror="this.src='images/hero.jpg'">
+                                </div>
+                                <div class="fade-in visible">
+                                    ${titleHtml}
+                                    ${textHtml}
+                                    ${config.storySection.btnText ? `<a href="${config.storySection.btnLink || '/contact'}" class="btn btn-primary">${config.storySection.btnText}</a>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
             // ── Event Promo Section (index.html only) ─────────────────────
             const promoSection = document.getElementById('promo-section');
             if (promoSection && config.promoSection) {

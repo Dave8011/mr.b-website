@@ -910,6 +910,7 @@
             <div class="tabs">
                 <button class="tab-btn" onclick="switchTab('tab-hero')" id="btn-tab-hero">Hero Banner</button>
                 <button class="tab-btn" onclick="switchTab('tab-about')" id="btn-tab-about">About Section</button>
+                <button class="tab-btn" onclick="switchTab('tab-story')" id="btn-tab-story">The Story</button>
                 <button class="tab-btn" onclick="switchTab('tab-stats')" id="btn-tab-stats">Stats Bar</button>
                 <button class="tab-btn" onclick="switchTab('tab-promo')" id="btn-tab-promo">Event Promo</button>
                 <button class="tab-btn active" onclick="switchTab('tab-events')" id="btn-tab-events">Events
@@ -1049,6 +1050,86 @@
                 <div style="margin-top: 1.5rem; text-align: right;">
                     <button class="btn btn-gold" onclick="saveAboutSection()" id="save-about-btn">Save About
                         Section</button>
+                </div>
+            </div>
+
+            <!-- THE STORY SECTION TAB -->
+            <div id="tab-story" class="tab-content">
+                <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                    <div>
+                        <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">The Story Section</h1>
+                        <p class="text-muted text-sm">Edit "The Story" section displayed on the homepage.</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <span class="toggle-label">Show Story Section</span>
+                        <input type="checkbox" id="story-visibility-toggle" onchange="toggleStoryVisibility()">
+                        <div class="switch"></div>
+                    </label>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Section Name (Small top text)</label>
+                        <input type="text" id="story-input-section-name" class="form-control" placeholder="e.g. 01 // THE STORY">
+                    </div>
+                    <div class="form-group">
+                        <label>Subtitle (Secondary text)</label>
+                        <input type="text" id="story-input-subtitle" class="form-control" placeholder="e.g. Meet Bhupesh Dave">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Main Title</label>
+                    <input type="text" id="story-input-main-title" class="form-control" placeholder="e.g. Unlocking the Untapped Potential">
+                    <p class="text-muted text-sm mt-2">The last word will automatically be colored gold.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Description (Use newlines for paragraphs)</label>
+                    <textarea id="story-input-text" class="form-control" rows="6" placeholder="The story details..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Button Text</label>
+                        <input type="text" id="story-input-btn-text" class="form-control" placeholder="e.g. Connect with Mr. B">
+                    </div>
+                    <div class="form-group">
+                        <label>Button Link</label>
+                        <input type="text" id="story-input-btn-link" class="form-control" placeholder="e.g. /contact">
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label>Desktop Image Upload</label>
+                        <div class="upload-area" onclick="document.getElementById('story-desktop-upload').click()" style="padding: 1.5rem; text-align: center;">
+                            <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <h4 style="margin-bottom: 0.5rem;">Upload Desktop Image</h4>
+                            <p class="text-muted text-sm">Recommended: 1200x800 px (Landscape)</p>
+                            <input type="file" id="story-desktop-upload" accept="image/*" style="display:none" onchange="handleStoryUpload(event, 'desktop')">
+                        </div>
+                        <div id="story-desktop-preview-container" style="margin-top:1rem; text-align: center;">
+                            <img id="story-desktop-preview" src="" style="max-width:100%; max-height: 150px; border-radius:8px; border:1px solid rgba(255,255,255,0.1);" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mobile Image Upload</label>
+                        <div class="upload-area" onclick="document.getElementById('story-mobile-upload').click()" style="padding: 1.5rem; text-align: center;">
+                            <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <h4 style="margin-bottom: 0.5rem;">Upload Mobile Image</h4>
+                            <p class="text-muted text-sm">Recommended: 800x1000 px (Portrait)</p>
+                            <input type="file" id="story-mobile-upload" accept="image/*" style="display:none" onchange="handleStoryUpload(event, 'mobile')">
+                        </div>
+                        <div id="story-mobile-preview-container" style="margin-top:1rem; text-align: center;">
+                            <img id="story-mobile-preview" src="" style="max-width:100%; max-height: 150px; border-radius:8px; border:1px solid rgba(255,255,255,0.1);" />
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; text-align: right;">
+                    <button class="btn btn-gold" onclick="saveStorySection()" id="save-story-btn">Save Story Section</button>
                 </div>
             </div>
 
@@ -1675,6 +1756,38 @@
                     document.getElementById('about-input-btn-text').value = configData.aboutSection.btnText || "Know More";
                     document.getElementById('about-input-btn-link').value = configData.aboutSection.btnLink || "/about";
 
+                    // Load Story Section data
+                    if (!configData.storySection) {
+                        configData.storySection = {
+                            isVisible: true,
+                            sectionName: "01 // THE STORY",
+                            subtitle: "Meet Bhupesh Dave",
+                            mainTitle: "Unlocking the Untapped Potential",
+                            text: "",
+                            imageDesktop: "images/about.jpg",
+                            imageMobile: "images/about.jpg",
+                            btnText: "Connect with Mr. B",
+                            btnLink: "/contact"
+                        };
+                    }
+                    
+                    document.getElementById('story-visibility-toggle').checked = configData.storySection.isVisible;
+                    document.getElementById('story-input-section-name').value = configData.storySection.sectionName || "";
+                    document.getElementById('story-input-subtitle').value = configData.storySection.subtitle || "";
+                    document.getElementById('story-input-main-title').value = configData.storySection.mainTitle || "";
+                    document.getElementById('story-input-text').value = configData.storySection.text || "";
+                    document.getElementById('story-input-btn-text').value = configData.storySection.btnText || "";
+                    document.getElementById('story-input-btn-link').value = configData.storySection.btnLink || "";
+                    
+                    if (configData.storySection.imageDesktop) {
+                        document.getElementById('story-desktop-preview-container').style.display = 'block';
+                        document.getElementById('story-desktop-preview').src = configData.storySection.imageDesktop;
+                    }
+                    if (configData.storySection.imageMobile) {
+                        document.getElementById('story-mobile-preview-container').style.display = 'block';
+                        document.getElementById('story-mobile-preview').src = configData.storySection.imageMobile;
+                    }
+
                     // Load Stats Section data
                     if (!configData.statsSection) {
                         configData.statsSection = {
@@ -1835,6 +1948,129 @@
                     showToast('fa-check', 'About Section saved successfully!');
                 } else {
                     throw new Error(data.error || 'Failed to save');
+                }
+            } catch (e) {
+                showToast('fa-triangle-exclamation', e.message, true);
+            } finally {
+                btn.innerHTML = origText;
+                btn.disabled = false;
+            }
+        }
+
+        let pendingStoryDesktopBase64 = null;
+        let pendingStoryMobileBase64 = null;
+
+        function handleStoryUpload(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                if (type === 'desktop') {
+                    pendingStoryDesktopBase64 = e.target.result;
+                    document.getElementById('story-desktop-preview-container').style.display = 'block';
+                    document.getElementById('story-desktop-preview').src = pendingStoryDesktopBase64;
+                } else if (type === 'mobile') {
+                    pendingStoryMobileBase64 = e.target.result;
+                    document.getElementById('story-mobile-preview-container').style.display = 'block';
+                    document.getElementById('story-mobile-preview').src = pendingStoryMobileBase64;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function toggleStoryVisibility() {
+            if (!sessionToken) return;
+            const isChecked = document.getElementById('story-visibility-toggle').checked;
+            configData.storySection.isVisible = isChecked;
+
+            try {
+                const res = await fetch('/api/saveConfig', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ configData: configData, sha: configSha })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    configSha = data.newSha;
+                    showToast('fa-eye', isChecked ? 'Story Section Visible' : 'Story Section Hidden');
+                } else {
+                    throw new Error(data.error || 'Failed to update visibility');
+                }
+            } catch (e) {
+                showToast('fa-triangle-exclamation', e.message, true);
+                document.getElementById('story-visibility-toggle').checked = !isChecked;
+                configData.storySection.isVisible = !isChecked;
+            }
+        }
+
+        async function saveStorySection() {
+            if (!sessionToken) return;
+
+            const btn = document.getElementById('save-story-btn');
+            const origText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            if (!configData.storySection) configData.storySection = {};
+
+            configData.storySection.sectionName = document.getElementById('story-input-section-name').value;
+            configData.storySection.subtitle = document.getElementById('story-input-subtitle').value;
+            configData.storySection.mainTitle = document.getElementById('story-input-main-title').value;
+            configData.storySection.text = document.getElementById('story-input-text').value;
+            configData.storySection.btnText = document.getElementById('story-input-btn-text').value;
+            configData.storySection.btnLink = document.getElementById('story-input-btn-link').value;
+
+            try {
+                // Upload desktop image if changed
+                if (pendingStoryDesktopBase64) {
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Uploading Desktop Image...';
+                    const res = await fetch('/api/uploadImage', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ base64Image: pendingStoryDesktopBase64, folder: 'about' })
+                    });
+                    const uploadData = await res.json();
+                    if (res.ok && uploadData.success) {
+                        configData.storySection.imageDesktop = uploadData.imageUrl;
+                        pendingStoryDesktopBase64 = null;
+                        document.getElementById('story-desktop-upload').value = '';
+                    } else {
+                        throw new Error(uploadData.error || 'Failed to upload desktop image');
+                    }
+                }
+
+                // Upload mobile image if changed
+                if (pendingStoryMobileBase64) {
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Uploading Mobile Image...';
+                    const res = await fetch('/api/uploadImage', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ base64Image: pendingStoryMobileBase64, folder: 'about' })
+                    });
+                    const uploadData = await res.json();
+                    if (res.ok && uploadData.success) {
+                        configData.storySection.imageMobile = uploadData.imageUrl;
+                        pendingStoryMobileBase64 = null;
+                        document.getElementById('story-mobile-upload').value = '';
+                    } else {
+                        throw new Error(uploadData.error || 'Failed to upload mobile image');
+                    }
+                }
+
+                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving Config...';
+                const resConfig = await fetch('/api/saveConfig', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ configData: configData, sha: configSha })
+                });
+                
+                const dataConfig = await resConfig.json();
+                if (resConfig.ok && dataConfig.success) {
+                    configSha = dataConfig.newSha;
+                    showToast('fa-check', 'Story Section saved successfully!');
+                } else {
+                    throw new Error(dataConfig.error || 'Failed to save config');
                 }
             } catch (e) {
                 showToast('fa-triangle-exclamation', e.message, true);

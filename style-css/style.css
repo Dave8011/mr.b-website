@@ -165,6 +165,7 @@ p {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     padding: 0.8rem 2rem;
     font-size: 0.85rem;
     font-weight: 600;
@@ -176,6 +177,7 @@ p {
     font-family: 'Inter', sans-serif;
     border: none;
     min-height: 48px; /* Mobile touch target standard */
+    line-height: 1.2;
 }
 
 .btn-primary {

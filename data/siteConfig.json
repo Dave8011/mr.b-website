@@ -146,6 +146,17 @@
       "hidden": false
     }
   ],
+  "storySection": {
+    "isVisible": true,
+    "sectionName": "01 // THE STORY",
+    "subtitle": "Meet Bhupesh Dave",
+    "mainTitle": "Unlocking the Untapped Potential",
+    "text": "Bhupesh Dave, renowned as Mr. B, is not just a mentalist; he is a psychological illusionist who pushes the boundaries of human cognition. With an innate ability to read subtle cues and a deep understanding of human psychology, he creates experiences that leave audiences questioning reality.\n\nHis journey began with a simple curiosity about the human mind and evolved into a lifelong mastery of perception, influence, and the art of the impossible.",
+    "imageDesktop": "images/about.jpg",
+    "imageMobile": "images/about.jpg",
+    "btnText": "Connect with Mr. B",
+    "btnLink": "/contact"
+  },
   "aboutSection": {
     "isVisible": true,
     "tag": "INDIAN SUPER BRAIN",

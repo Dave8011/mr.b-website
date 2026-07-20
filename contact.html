@@ -142,16 +142,19 @@
 
                         <div class="input-group">
                             <label for="interest"><i class="fa-regular fa-star" style="color:var(--gold); margin-right:5px;"></i> Area of Interest</label>
-                            <div class="select-wrapper">
-                                <select id="interest" name="interest" required>
-                                    <option value="" disabled selected>Select an option...</option>
-                                    <option value="corporate">Corporate Keynote &amp; Training</option>
-                                    <option value="show">Sixth Sense Mentalism Show</option>
-                                    <option value="academy">Magic Academy Enrollment</option>
-                                    <option value="workshop">Student &amp; Parent Workshop</option>
-                                    <option value="other">Other Inquiry</option>
-                                </select>
-                                <i class="fa-solid fa-chevron-down select-icon"></i>
+                            <div class="custom-dropdown" id="interest-dropdown">
+                                <div class="custom-dropdown-selected">
+                                    <span id="interest-selected-text">Select an option...</span>
+                                    <i class="fa-solid fa-chevron-down select-icon"></i>
+                                </div>
+                                <ul class="custom-dropdown-options">
+                                    <li data-value="corporate">Corporate Keynote &amp; Training</li>
+                                    <li data-value="show">Sixth Sense Mentalism Show</li>
+                                    <li data-value="academy">Magic Academy Enrollment</li>
+                                    <li data-value="workshop">Student &amp; Parent Workshop</li>
+                                    <li data-value="other">Other Inquiry</li>
+                                </ul>
+                                <input type="hidden" id="interest" name="interest" required>
                             </div>
                         </div>
 
@@ -195,6 +198,31 @@
                     btn.style = '';
                 }, 3000);
             }, 1500);
+        });
+
+        // Custom Dropdown Logic
+        const dropdown = document.getElementById('interest-dropdown');
+        const selectedText = document.getElementById('interest-selected-text');
+        const hiddenInput = document.getElementById('interest');
+        const options = dropdown.querySelectorAll('.custom-dropdown-options li');
+
+        dropdown.addEventListener('click', function(e) {
+            this.classList.toggle('active');
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', function(e) {
+                const value = this.getAttribute('data-value');
+                const text = this.innerText;
+                selectedText.innerText = text;
+                hiddenInput.value = value;
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
         });
     </script>
     <script src="script.js"></script>
