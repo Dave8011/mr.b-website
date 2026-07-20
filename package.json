@@ -1,0 +1,12 @@
+{
+  "name": "mr.b-website",
+  "version": "1.0.0",
+  "description": "Website for Bhupesh Dave (Mr. B)",
+  "main": "index.html",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0"
+  }
+}

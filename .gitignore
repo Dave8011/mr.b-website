@@ -16,3 +16,6 @@ yarn-error.log*
 
 # Design Ideas (Local only)
 websiteideas/
+
+# Node
+node_modules/

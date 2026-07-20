@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div class="academy-container">
                                 <div class="academy-image-wrapper fade-in visible">
-                                    <img src="${imageUrl}?v=${new Date().getTime()}" alt="The Story" class="academy-img image-frame-glow" style="width: 100%; border-radius: 8px;" onerror="this.src='images/hero.jpg'">
+                                    <img src="${imageUrl}?v=${new Date().getTime()}" alt="Mr. B Indian Mentalist performing mind reading" class="academy-img image-frame-glow" style="width: 100%; border-radius: 8px;" onerror="this.src='images/hero.jpg'">
                                 </div>
                                 <div class="fade-in visible">
                                     ${titleHtml}
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const profileDiv = document.createElement('div');
                             profileDiv.className = 'artist-profile';
                             profileDiv.innerHTML = `
-                                <img src="${artist.image || 'images/hero.jpg'}" alt="${artist.name || 'Artist'}" class="artist-avatar" onerror="this.src='images/hero.jpg'">
+                                <img src="${artist.image || 'images/hero.jpg'}" alt="${artist.name || 'Artist'} - Mentalist" class="artist-avatar" onerror="this.src='images/hero.jpg'">
                                 <span class="artist-name">${artist.name || ''}</span>
                             `;
                             elArtistsContainer.appendChild(profileDiv);
@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         cardsHtml += `
                             <div class="client-card">
                                 <div class="client-logo-wrapper">
-                                    <img src="${client.logoUrl}" alt="${client.name}" class="client-logo" loading="lazy">
+                                    <img src="${client.logoUrl}" alt="${client.name} - Mr. B Client" class="client-logo" loading="lazy">
                                 </div>
                                 <div class="client-name">${client.name}</div>
                             </div>
@@ -799,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span class="month">${monthStr}</span>
                                 </div>
                                 <div class="event-image-wrapper">
-                                    <img src="${event.image_url}" alt="${event.image_alt || event.title}" class="event-img" onerror="this.onerror=null; this.src='images/hero.jpg'">
+                                    <img src="${event.image_url}" alt="${event.image_alt || event.title} - Mr. B Event" class="event-img" onerror="this.onerror=null; this.src='images/hero.jpg'">
                                 </div>
                                 <div class="event-details">
                                     <h3>${event.title}</h3>
