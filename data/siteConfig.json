@@ -296,7 +296,7 @@
     }
   ],
   "ctaSection": {
-    "isVisible": false,
+    "isVisible": true,
     "titleRegular": "Ready for the",
     "titleGold": "Impossible?",
     "description": "Elevate your next event with an unforgettable experience of psychological illusion and mind reading.",
