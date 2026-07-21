@@ -1530,6 +1530,24 @@
                 <div id="contact-info-list" class="banner-library" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
                     <!-- Contact info items injected here -->
                 </div>
+
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+
+                <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;">Contact Form - Area of Interest Options</h2>
+                        <p class="text-muted text-sm">Manage the options available in the "Area of Interest" dropdown on the Contact page.</p>
+                    </div>
+                    <div class="flex gap-4 items-center">
+                        <button class="btn btn-primary" onclick="openInterestModal()">
+                            <i class="fa-solid fa-plus"></i> Add Option
+                        </button>
+                    </div>
+                </div>
+
+                <div id="interest-admin-list" class="banner-library" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+                    <!-- Interest options injected here -->
+                </div>
             </div>
 
             <!-- SHORTS TAB -->
@@ -1941,6 +1959,32 @@
             <div class="flex gap-2" style="margin-top: 2rem;">
                 <button class="btn btn-outline" style="flex: 1;" onclick="closeQuoteModal()">Cancel</button>
                 <button class="btn btn-gold" style="flex: 2; justify-content: center;" onclick="saveQuote()" id="save-quote-btn">Save Quote</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Area of Interest Option -->
+    <div class="modal-overlay" id="interest-modal">
+        <div class="modal-content" style="max-width: 450px; padding: 2.5rem 2rem;">
+            <div class="flex justify-between items-center" style="margin-bottom: 2rem;">
+                <h2 id="interest-modal-title" style="font-size: 1.4rem; font-weight: 600;">Add Area of Interest Option</h2>
+                <button class="btn-icon" onclick="closeInterestModal()" style="border:none; background:rgba(255,255,255,0.05);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label style="color: var(--text-main);">Option Label (Display Text)</label>
+                <input type="text" id="interest-input-label" class="form-control" placeholder="e.g. Corporate Keynote & Training" style="background: rgba(255,255,255,0.03);">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label style="color: var(--text-main);">Option Value (Internal Key - optional)</label>
+                <input type="text" id="interest-input-value" class="form-control" placeholder="e.g. corporate" style="background: rgba(255,255,255,0.03);">
+                <p class="text-muted text-sm" style="margin-top:0.4rem; font-size:0.8rem;">Used in form submissions. Will auto-generate if left blank.</p>
+            </div>
+
+            <div class="flex gap-2">
+                <button class="btn btn-outline" style="flex: 1;" onclick="closeInterestModal()">Cancel</button>
+                <button class="btn btn-primary" style="flex: 2;" onclick="saveInterestOption()" id="save-interest-btn">Save Option</button>
             </div>
         </div>
     </div>
@@ -2371,6 +2415,18 @@
                     if (quotesToggle) quotesToggle.checked = configData.quotesSection.isVisible !== false;
 
                     if (typeof renderAdminQuotes === 'function') renderAdminQuotes();
+
+                    // Load Area of Interests data
+                    if (!configData.areaOfInterests) {
+                        configData.areaOfInterests = [
+                            { id: "aoi-1", value: "corporate", label: "Corporate Keynote & Training" },
+                            { id: "aoi-2", value: "show", label: "Sixth Sense Mentalism Show" },
+                            { id: "aoi-3", value: "academy", label: "Magic Academy Enrollment" },
+                            { id: "aoi-4", value: "workshop", label: "Student & Parent Workshop" },
+                            { id: "aoi-5", value: "other", label: "Other Inquiry" }
+                        ];
+                    }
+                    if (typeof renderAdminInterests === 'function') renderAdminInterests();
                 }
             } catch (e) {
                 console.error("Failed to load config:", e);
@@ -4233,6 +4289,100 @@
             } catch (e) {
                 showToast('fa-triangle-exclamation', e.message, true);
             }
+        }
+
+        // ── Area of Interest Functions ────────────────────────────────
+        let editingInterestIndex = -1;
+
+        function renderAdminInterests() {
+            const container = document.getElementById('interest-admin-list');
+            if (!container) return;
+
+            if (!configData.areaOfInterests || configData.areaOfInterests.length === 0) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem 1rem;">No options added yet. Click "Add Option" above to create one.</div>';
+                return;
+            }
+
+            container.innerHTML = configData.areaOfInterests.map((item, idx) => `
+                <div class="banner-card" style="display:flex; flex-direction:column; justify-content:space-between; padding: 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
+                    <div>
+                        <div style="font-weight: 600; font-size: 1rem; color: #fff; margin-bottom: 0.25rem;">${item.label}</div>
+                        <div style="font-size: 0.8rem; color: var(--gold); font-family: monospace;">Key: ${item.value}</div>
+                    </div>
+                    <div class="flex gap-2" style="margin-top: 1.25rem;">
+                        <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; flex: 1;" onclick="openInterestModal(${idx})">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; color: #ff5555; border-color: rgba(255,85,85,0.3);" onclick="deleteInterestOption(${idx})">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openInterestModal(index = -1) {
+            editingInterestIndex = index;
+            const modal = document.getElementById('interest-modal');
+            const title = document.getElementById('interest-modal-title');
+
+            if (index >= 0 && configData.areaOfInterests && configData.areaOfInterests[index]) {
+                const item = configData.areaOfInterests[index];
+                title.textContent = 'Edit Area of Interest Option';
+                document.getElementById('interest-input-label').value = item.label || '';
+                document.getElementById('interest-input-value').value = item.value || '';
+            } else {
+                title.textContent = 'Add Area of Interest Option';
+                document.getElementById('interest-input-label').value = '';
+                document.getElementById('interest-input-value').value = '';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeInterestModal() {
+            document.getElementById('interest-modal').style.display = 'none';
+        }
+
+        async function saveInterestOption() {
+            if (!sessionToken) return;
+            const labelText = document.getElementById('interest-input-label').value.trim();
+            let valText = document.getElementById('interest-input-value').value.trim();
+
+            if (!labelText) {
+                showToast('fa-triangle-exclamation', 'Please enter option label text.', true);
+                return;
+            }
+
+            if (!valText) {
+                valText = labelText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            }
+
+            if (!configData.areaOfInterests) configData.areaOfInterests = [];
+
+            if (editingInterestIndex >= 0) {
+                configData.areaOfInterests[editingInterestIndex].label = labelText;
+                configData.areaOfInterests[editingInterestIndex].value = valText;
+            } else {
+                configData.areaOfInterests.push({
+                    id: 'aoi-' + Date.now(),
+                    value: valText,
+                    label: labelText
+                });
+            }
+
+            closeInterestModal();
+            renderAdminInterests();
+            await saveConfigOnly("Area of Interest options updated!");
+        }
+
+        async function deleteInterestOption(index) {
+            if (!sessionToken || !configData.areaOfInterests || !configData.areaOfInterests[index]) return;
+            if (!confirm('Remove this dropdown option?')) return;
+
+            configData.areaOfInterests.splice(index, 1);
+            renderAdminInterests();
+            await saveConfigOnly("Area of Interest option removed!");
         }
 
     </script>

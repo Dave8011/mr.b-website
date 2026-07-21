@@ -867,6 +867,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+
+            // ── Dynamic Area of Interest Options ───────────────────────
+            const interestOptionsList = document.querySelector('#interest-dropdown .custom-dropdown-options');
+            if (interestOptionsList && config.areaOfInterests && config.areaOfInterests.length > 0) {
+                interestOptionsList.innerHTML = config.areaOfInterests.map(opt => `
+                    <li data-value="${opt.value}">${opt.label}</li>
+                `).join('');
+
+                // Re-bind option click listeners
+                const dropdown = document.getElementById('interest-dropdown');
+                const selectedText = document.getElementById('interest-selected-text');
+                const hiddenInput = document.getElementById('interest');
+                const options = interestOptionsList.querySelectorAll('li');
+
+                options.forEach(option => {
+                    option.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const value = this.getAttribute('data-value');
+                        const text = this.innerText;
+                        if (selectedText) selectedText.innerText = text;
+                        if (hiddenInput) hiddenInput.value = value;
+                        if (dropdown) dropdown.classList.remove('active');
+                    });
+                });
+            }
         })
         .catch(err => {
             console.log("Config load error:", err);

@@ -449,5 +449,12 @@
         "hidden": false
       }
     ]
-  }
+  },
+  "areaOfInterests": [
+    { "id": "aoi-1", "value": "corporate", "label": "Corporate Keynote & Training" },
+    { "id": "aoi-2", "value": "show", "label": "Sixth Sense Mentalism Show" },
+    { "id": "aoi-3", "value": "academy", "label": "Magic Academy Enrollment" },
+    { "id": "aoi-4", "value": "workshop", "label": "Student & Parent Workshop" },
+    { "id": "aoi-5", "value": "other", "label": "Other Inquiry" }
+  ]
 }

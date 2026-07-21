@@ -317,5 +317,28 @@ try {
     console.error('Error processing about.html:', error);
 }
 
+// 3. Process contact.html
+try {
+    const contactPath = path.join(__dirname, 'contact.html');
+    if (fs.existsSync(contactPath)) {
+        let contactHtml = fs.readFileSync(contactPath, 'utf-8');
+        const $ = cheerio.load(contactHtml);
+
+        if (config.areaOfInterests && config.areaOfInterests.length > 0) {
+            let optionsHtml = '';
+            config.areaOfInterests.forEach(opt => {
+                optionsHtml += `<li data-value="${opt.value}">${opt.label}</li>`;
+            });
+            setHtml($, '#interest-dropdown .custom-dropdown-options', optionsHtml);
+        }
+
+        const outputContactPath = path.join(publicDir, 'contact.html');
+        fs.writeFileSync(outputContactPath, $.html());
+        console.log('Successfully pre-rendered contact.html to public/');
+    }
+} catch (error) {
+    console.error('Error processing contact.html:', error);
+}
+
 // Note: Components like header/footer are injected via components.js. 
 // For perfect SEO, we might want to inject those too, but this covers the dynamic JSON payload.
