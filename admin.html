@@ -32,9 +32,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #070709;
-            background: radial-gradient(circle at 50% -10%, rgba(201, 160, 42, 0.08) 0%, #070709 60%);
-            background-attachment: fixed;
+            background-color: #09090d;
             color: var(--text-main);
             margin: 0;
             -webkit-font-smoothing: antialiased;
@@ -545,12 +543,15 @@
             display: flex;
             gap: 0.65rem;
             margin-bottom: 2.25rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 1rem;
+            background: rgba(18, 18, 26, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.6rem;
+            border-radius: 40px;
             overflow-x: auto;
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none; /* IE/Edge */
             -webkit-overflow-scrolling: touch;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .tabs::-webkit-scrollbar {
@@ -558,35 +559,34 @@
         }
 
         .tab-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 0.6rem 1.35rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e2e2ec;
+            padding: 0.65rem 1.4rem;
             border-radius: 30px;
             cursor: pointer;
             font-size: 0.88rem;
             font-weight: 500;
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            backdrop-filter: blur(8px);
         }
 
         .tab-btn:hover {
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--border-light);
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.25);
             transform: translateY(-1px);
         }
 
         .tab-btn.active {
-            background: rgba(201, 160, 42, 0.15);
-            color: var(--gold);
+            background: var(--gold-gradient);
+            color: #000000;
             border-color: var(--gold);
-            box-shadow: 0 0 15px rgba(201, 160, 42, 0.2);
-            font-weight: 600;
+            box-shadow: 0 4px 18px rgba(201, 160, 42, 0.4);
+            font-weight: 700;
         }
 
         .tab-content {
@@ -2388,19 +2388,7 @@
                 configData.showHeroBanner = true; // Auto-enable if they uploaded a new one
 
                 // 3. Save the updated config
-                const configRes = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-
-                const configResData = await configRes.json();
-                if (!configRes.ok || !configResData.success) {
-                    throw new Error("Banner uploaded but failed to update library config.");
-                }
-
-                configSha = configResData.newSha;
-                showToast('fa-check', 'Banner added to library and set as active! Please wait 1-2 mins.');
+                await saveConfigOnly('Banner added to library and set as active! Please wait 1-2 mins.');
 
                 // 4. Reset UI
                 pendingBannerBase64 = null;
@@ -2681,21 +2669,8 @@
             configData.showHeroBanner = isChecked;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', isChecked ? 'Banner is now visible on the live site!' : 'Banner is now hidden from the live site!');
-                } else {
-                    throw new Error(data.error || 'Failed to update visibility');
-                }
+                await saveConfigOnly(isChecked ? 'Banner is now visible on the live site!' : 'Banner is now hidden from the live site!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
-                // Revert UI on failure
                 document.getElementById('banner-visibility-toggle').checked = !isChecked;
                 configData.showHeroBanner = !isChecked;
             }
@@ -2708,20 +2683,8 @@
             configData.aboutSection.isVisible = isChecked;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', isChecked ? 'About Section is now visible!' : 'About Section is now hidden!');
-                } else {
-                    throw new Error(data.error || 'Failed to update visibility');
-                }
+                await saveConfigOnly(isChecked ? 'About Section is now visible!' : 'About Section is now hidden!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
                 document.getElementById('about-visibility-toggle').checked = !isChecked;
                 configData.aboutSection.isVisible = !isChecked;
             }
@@ -2745,20 +2708,9 @@
             configData.aboutSection.btnLink = document.getElementById('about-input-btn-link').value;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', 'About Section saved successfully!');
-                } else {
-                    throw new Error(data.error || 'Failed to save');
-                }
+                await saveConfigOnly('About Section saved successfully!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
+                // Error handled in saveConfigOnly
             } finally {
                 btn.innerHTML = origText;
                 btn.disabled = false;
@@ -2791,20 +2743,9 @@
             configData.aboutUsPage.box4.text = document.getElementById('aboutus-box4-text').value;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', 'About Us Page saved successfully!');
-                } else {
-                    throw new Error(data.error || 'Failed to save');
-                }
+                await saveConfigOnly('About Us Page saved successfully!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
+                // Error handled in saveConfigOnly
             } finally {
                 btn.innerHTML = origText;
                 btn.disabled = false;
@@ -2839,20 +2780,8 @@
             configData.storySection.isVisible = isChecked;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-eye', isChecked ? 'Story Section Visible' : 'Story Section Hidden');
-                } else {
-                    throw new Error(data.error || 'Failed to update visibility');
-                }
+                await saveConfigOnly(isChecked ? 'Story Section Visible' : 'Story Section Hidden');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
                 document.getElementById('story-visibility-toggle').checked = !isChecked;
                 configData.storySection.isVisible = !isChecked;
             }
@@ -2913,21 +2842,9 @@
                 }
 
                 btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving Config...';
-                const resConfig = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                
-                const dataConfig = await resConfig.json();
-                if (resConfig.ok && dataConfig.success) {
-                    configSha = dataConfig.newSha;
-                    showToast('fa-check', 'Story Section saved successfully!');
-                } else {
-                    throw new Error(dataConfig.error || 'Failed to save config');
-                }
+                await saveConfigOnly('Story Section saved successfully!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
+                // Error handled in saveConfigOnly
             } finally {
                 btn.innerHTML = origText;
                 btn.disabled = false;
@@ -3002,20 +2919,8 @@
             configData.statsSection.isVisible = isChecked;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', isChecked ? 'Stats Section is now visible!' : 'Stats Section is now hidden!');
-                } else {
-                    throw new Error(data.error || 'Failed to update visibility');
-                }
+                await saveConfigOnly(isChecked ? 'Stats Section is now visible!' : 'Stats Section is now hidden!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
                 document.getElementById('stats-visibility-toggle').checked = !isChecked;
                 configData.statsSection.isVisible = !isChecked;
             }
@@ -3030,20 +2935,9 @@
             btn.disabled = true;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', 'Stats Section saved successfully!');
-                } else {
-                    throw new Error(data.error || 'Failed to save');
-                }
+                await saveConfigOnly('Stats Section saved successfully!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
+                // Error handled in saveConfigOnly
             } finally {
                 btn.innerHTML = origText;
                 btn.disabled = false;
@@ -3143,20 +3037,8 @@
             configData.promoSection.isVisible = isChecked;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', isChecked ? 'Promo Section is now visible!' : 'Promo Section is now hidden!');
-                } else {
-                    throw new Error(data.error || 'Failed to update visibility');
-                }
+                await saveConfigOnly(isChecked ? 'Promo Section is now visible!' : 'Promo Section is now hidden!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
                 document.getElementById('promo-visibility-toggle').checked = !isChecked;
                 configData.promoSection.isVisible = !isChecked;
             }
@@ -3171,10 +3053,7 @@
             btn.disabled = true;
 
             if (!configData.promoSection) configData.promoSection = {};
-
             configData.promoSection.artistSectionTitle = document.getElementById('promo-input-artist-section-title').value;
-            // artists array is already mutated directly via updatePromoArtistName and add/remove buttons
-
             configData.promoSection.addressTitle = document.getElementById('promo-input-address-title').value;
             configData.promoSection.addressText = document.getElementById('promo-input-address-text').value;
             configData.promoSection.attendTitle = document.getElementById('promo-input-attend-title').value;
@@ -3183,23 +3062,11 @@
             configData.promoSection.aboutDesc = document.getElementById('promo-input-about-desc').value;
             configData.promoSection.btnText = document.getElementById('promo-input-btn-text').value;
             configData.promoSection.btnLink = document.getElementById('promo-input-btn-link').value;
-            // note: artistImage is already set by handlePromoAvatarUpload
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', 'Promo Section saved successfully!');
-                } else {
-                    throw new Error(data.error || 'Failed to save');
-                }
+                await saveConfigOnly('Promo Section saved successfully!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
+                // Error handled in saveConfigOnly
             } finally {
                 btn.innerHTML = origText;
                 btn.disabled = false;
@@ -3213,32 +3080,19 @@
 
             const index = configData.activeBannerUrls.indexOf(url);
             if (index > -1) {
-                // Remove it
                 configData.activeBannerUrls.splice(index, 1);
             } else {
-                // Add it
                 configData.activeBannerUrls.push(url);
-                configData.showHeroBanner = true; // Auto-enable global toggle if they are adding one
+                configData.showHeroBanner = true;
                 document.getElementById('banner-visibility-toggle').checked = true;
             }
 
-            renderBanners(); // Update UI immediately
+            renderBanners();
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', 'Slideshow updated! Please wait 1-2 mins.');
-                } else {
-                    throw new Error(data.error || 'Failed to update slideshow');
-                }
+                await saveConfigOnly('Slideshow updated!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
+                // Error handled in saveConfigOnly
             }
         }
 
@@ -3799,29 +3653,77 @@
             });
         }
 
+        let savePromiseQueue = Promise.resolve();
+
         async function saveConfigOnly(successMsg) {
+            savePromiseQueue = savePromiseQueue.then(() => _executeSaveWithRetry(successMsg)).catch(err => {
+                console.error("saveConfig queue error:", err);
+            });
+            return savePromiseQueue;
+        }
+
+        async function _executeSaveWithRetry(successMsg, maxRetries = 3) {
             if (!sessionToken) return;
-            try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', successMsg);
-                    renderClients();
-                    if (typeof renderSocials === 'function') renderSocials();
-                    if (typeof renderExpertise === 'function') renderExpertise();
-                    if (typeof renderContactInfo === 'function') renderContactInfo();
-                } else {
-                    throw new Error(data.error || 'Failed to save configuration');
+
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    const res = await fetch('/api/saveConfig', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ configData: configData, sha: configSha })
+                    });
+
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        configSha = data.newSha;
+                        if (successMsg) showToast('fa-check', successMsg);
+                        if (typeof renderClients === 'function') renderClients();
+                        if (typeof renderSocials === 'function') renderSocials();
+                        if (typeof renderExpertise === 'function') renderExpertise();
+                        if (typeof renderContactInfo === 'function') renderContactInfo();
+                        if (typeof renderAdminQuotes === 'function') renderAdminQuotes();
+                        if (typeof renderAdminInterests === 'function') renderAdminInterests();
+                        return data;
+                    }
+
+                    const errMsg = data.error || 'Failed to save configuration';
+                    if (errMsg.includes('SHA') || errMsg.includes('mismatch') || errMsg.includes('expected') || errMsg.includes('is at')) {
+                        console.warn(`SHA conflict on attempt ${attempt}. Auto-refreshing SHA from server...`);
+                        try {
+                            const freshRes = await fetch('/api/getConfig', {
+                                headers: { 'Authorization': `Bearer ${sessionToken}` }
+                            });
+                            if (freshRes.ok) {
+                                const freshData = await freshRes.json();
+                                if (freshData.sha) configSha = freshData.sha;
+                            }
+                        } catch (e) { /* ignore error during fetch */ }
+
+                        if (attempt < maxRetries) {
+                            await new Promise(r => setTimeout(r, 350 * attempt));
+                            continue;
+                        }
+                    }
+
+                    throw new Error(sanitizeSaveError(errMsg));
+
+                } catch (e) {
+                    if (attempt >= maxRetries) {
+                        const cleanMsg = sanitizeSaveError(e.message);
+                        showToast('fa-triangle-exclamation', cleanMsg, true);
+                        throw e;
+                    }
+                    await new Promise(r => setTimeout(r, 350 * attempt));
                 }
-            } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
-                throw e; // rethrow for caller
             }
+        }
+
+        function sanitizeSaveError(msg) {
+            if (!msg) return 'Save operation failed. Please try again.';
+            if (msg.includes('SHA') || msg.includes('mismatch') || msg.includes('is at') || msg.includes('expected')) {
+                return 'Syncing with live server. Retrying automatically...';
+            }
+            return msg;
         }
 
         // ==========================================
@@ -4293,20 +4195,8 @@
             configData.ctaSection.isVisible = isChecked;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', isChecked ? 'CTA Section is now visible on live site!' : 'CTA Section is now hidden from live site!');
-                } else {
-                    throw new Error(data.error || 'Failed to update CTA visibility');
-                }
+                await saveConfigOnly(isChecked ? 'CTA Section is now visible on live site!' : 'CTA Section is now hidden from live site!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
                 document.getElementById('cta-visibility-toggle').checked = !isChecked;
                 configData.ctaSection.isVisible = !isChecked;
             }
@@ -4327,20 +4217,9 @@
             configData.ctaSection.btnLink = document.getElementById('cta-input-btn-link').value;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', 'CTA Section saved! Please wait 1-2 mins for live updates.');
-                } else {
-                    throw new Error(data.error || 'Failed to save CTA Section');
-                }
+                await saveConfigOnly('CTA Section saved! Please wait 1-2 mins for live updates.');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
+                // Error handled in saveConfigOnly
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = origText;
@@ -4354,20 +4233,8 @@
             configData.quotesSection.isVisible = isChecked;
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', isChecked ? 'Quotes Section is now visible!' : 'Quotes Section is now hidden!');
-                } else {
-                    throw new Error(data.error || 'Failed to update Quotes section visibility');
-                }
+                await saveConfigOnly(isChecked ? 'Quotes Section is now visible!' : 'Quotes Section is now hidden!');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
                 document.getElementById('quotes-visibility-toggle').checked = !isChecked;
                 configData.quotesSection.isVisible = !isChecked;
             }
@@ -4465,24 +4332,7 @@
 
             closeQuoteModal();
             renderAdminQuotes();
-
-            // Save to GitHub
-            try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', 'Quote saved successfully!');
-                } else {
-                    throw new Error(data.error || 'Failed to save quote');
-                }
-            } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
-            }
+            await saveConfigOnly('Quote saved successfully!');
         }
 
         async function toggleQuoteItemHidden(index) {
@@ -4493,20 +4343,8 @@
             renderAdminQuotes();
 
             try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', item.hidden ? 'Quote is now hidden.' : 'Quote is now visible.');
-                } else {
-                    throw new Error(data.error || 'Failed to update quote status');
-                }
+                await saveConfigOnly(item.hidden ? 'Quote is now hidden.' : 'Quote is now visible.');
             } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
                 item.hidden = !item.hidden;
                 renderAdminQuotes();
             }
@@ -4518,23 +4356,7 @@
 
             configData.quotesSection.quotes.splice(index, 1);
             renderAdminQuotes();
-
-            try {
-                const res = await fetch('/api/saveConfig', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${sessionToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ configData: configData, sha: configSha })
-                });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    configSha = data.newSha;
-                    showToast('fa-check', 'Quote deleted.');
-                } else {
-                    throw new Error(data.error || 'Failed to delete quote');
-                }
-            } catch (e) {
-                showToast('fa-triangle-exclamation', e.message, true);
-            }
+            await saveConfigOnly('Quote deleted.');
         }
 
         // ── Area of Interest Functions ────────────────────────────────
