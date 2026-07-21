@@ -241,15 +241,54 @@
             padding: 1.5rem;
         }
 
+        select.form-control option {
+            background-color: #12121a !important;
+            color: #ffffff !important;
+            padding: 10px;
+        }
+
         .login-box {
             background: rgba(18, 18, 24, 0.85);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 20px;
             padding: 3.5rem 2.5rem;
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             backdrop-filter: blur(20px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(201, 160, 42, 0.05);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(201, 160, 42, 0.08);
+        }
+
+        .login-logo-ring {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.25rem auto;
+            border-radius: 50%;
+            background: rgba(201, 160, 42, 0.08);
+            border: 1px solid rgba(201, 160, 42, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 0 25px rgba(201, 160, 42, 0.2);
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .input-with-icon input.form-control {
+            padding-left: 2.75rem;
         }
 
         /* Quick Stats Grid */
@@ -1058,37 +1097,44 @@
     <!-- Login Section -->
     <div id="login-view" class="login-wrapper">
         <div class="login-box">
-            <div style="text-align: center; margin-bottom: 2.5rem;">
-                <i class="fa-solid fa-bolt text-gold" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                <h2 class="cinzel">Admin Portal</h2>
-                <p class="text-muted text-sm" style="margin-top:0.5rem;">Secure access required</p>
+            <div style="text-align: center; margin-bottom: 2.25rem;">
+                <div class="login-logo-ring">
+                    <i class="fa-solid fa-bolt text-gold"></i>
+                </div>
+                <h2 class="cinzel" style="font-size: 1.6rem; letter-spacing: 1px; margin-bottom: 0.25rem;">Mr. B Admin</h2>
+                <p class="text-muted text-sm">Mentalism & Event Management Control</p>
             </div>
 
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="username" class="form-control" autocomplete="off">
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label style="font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; display: block; color: var(--text-main);">Username</label>
+                <div class="input-with-icon">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="username" class="form-control" placeholder="Enter admin username" autocomplete="off">
+                </div>
             </div>
+
             <div class="form-group" style="margin-bottom: 2rem;">
-                <label>Password</label>
-                <div style="position: relative;">
-                    <input type="password" id="password" class="form-control" style="padding-right: 2.5rem;">
+                <label style="font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; display: block; color: var(--text-main);">Password</label>
+                <div class="input-with-icon">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" class="form-control" placeholder="Enter password" style="padding-right: 2.5rem;">
                     <i class="fa-solid fa-eye" id="toggle-password"
-                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted);"
+                        style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 0.9rem;"
                         onclick="togglePasswordVisibility()"></i>
                 </div>
             </div>
 
-            <button class="btn btn-primary" style="width: 100%;" onclick="login()" id="login-btn">
-                Sign In <i class="fa-solid fa-arrow-right"></i>
+            <button class="btn btn-gold" style="width: 100%; justify-content: center; font-size: 0.95rem; font-weight: 600; padding: 0.85rem;" onclick="login()" id="login-btn">
+                Sign In to Portal <i class="fa-solid fa-arrow-right"></i>
             </button>
             <p id="login-error" class="hidden text-sm"
-                style="color: var(--danger); text-align: center; margin-top: 1rem;"></p>
+                style="color: var(--danger); text-align: center; margin-top: 1rem; background: rgba(255, 69, 58, 0.1); padding: 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 69, 58, 0.3);"></p>
 
-            <div style="margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+            <div style="margin-top: 2.25rem; border-top: 1px solid var(--border); padding-top: 1.25rem; text-align: center;">
                 <a href="/"
-                    style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: color 0.2s;"
-                    onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Website
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); transition: all 0.2s;"
+                    onmouseover="this.style.color='#fff'; this.style.borderColor='var(--gold)';" onmouseout="this.style.color='var(--text-muted)'; this.style.borderColor='var(--border)';">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Main Website
                 </a>
             </div>
         </div>
@@ -4382,11 +4428,11 @@
                 document.getElementById('quote-input-role').value = '';
             }
 
-            modal.style.display = 'flex';
+            document.getElementById('quote-modal').classList.add('active');
         }
 
         function closeQuoteModal() {
-            document.getElementById('quote-modal').style.display = 'none';
+            document.getElementById('quote-modal').classList.remove('active');
         }
 
         async function saveQuote() {
@@ -4537,11 +4583,11 @@
                 document.getElementById('interest-input-value').value = '';
             }
 
-            modal.style.display = 'flex';
+            document.getElementById('interest-modal').classList.add('active');
         }
 
         function closeInterestModal() {
-            document.getElementById('interest-modal').style.display = 'none';
+            document.getElementById('interest-modal').classList.remove('active');
         }
 
         async function saveInterestOption() {
