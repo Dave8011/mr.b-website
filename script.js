@@ -774,7 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (slidesContainer) {
                             slidesContainer.innerHTML = activeQuotes.map((q, idx) => `
                                 <div class="quote-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
-                                    <div class="quote-card-styled">
+                                    <div class="quote-card-borderless">
                                         <i class="fa-solid fa-quote-left quote-icon-gold"></i>
                                         <div class="quote-text-content">"${q.quote}"</div>
                                         <div class="quote-author-info">
@@ -786,83 +786,25 @@ document.addEventListener('DOMContentLoaded', () => {
                             `).join('');
                         }
 
-                        // Render controls if more than 1 quote
-                        if (controlsContainer && activeQuotes.length > 1) {
-                            const dotsHtml = activeQuotes.map((_, idx) => `
-                                <span class="quote-dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></span>
-                            `).join('');
+                        // Remove manual controls
+                        if (controlsContainer) {
+                            controlsContainer.innerHTML = '';
+                            controlsContainer.style.display = 'none';
+                        }
 
-                            controlsContainer.innerHTML = `
-                                <button class="quote-nav-btn quote-prev-btn" aria-label="Previous quote"><i class="fa-solid fa-chevron-left"></i></button>
-                                <div class="quote-dots">${dotsHtml}</div>
-                                <button class="quote-nav-btn quote-next-btn" aria-label="Next quote"><i class="fa-solid fa-chevron-right"></i></button>
-                            `;
-
-                            // Slider State & Controller
+                        // Automatic transition timer
+                        if (activeQuotes.length > 1) {
                             let currentQuoteIndex = 0;
-                            let quoteTimer = null;
+                            if (window.quoteAutoTimer) clearInterval(window.quoteAutoTimer);
 
-                            const goToQuote = (newIndex) => {
+                            window.quoteAutoTimer = setInterval(() => {
                                 const slides = slidesContainer.querySelectorAll('.quote-slide');
-                                const dots = controlsContainer.querySelectorAll('.quote-dot');
-
-                                if (slides.length === 0) return;
+                                if (!slides || slides.length <= 1) return;
 
                                 slides[currentQuoteIndex].classList.remove('active');
-                                if (dots[currentQuoteIndex]) dots[currentQuoteIndex].classList.remove('active');
-
-                                currentQuoteIndex = (newIndex + slides.length) % slides.length;
-
+                                currentQuoteIndex = (currentQuoteIndex + 1) % slides.length;
                                 slides[currentQuoteIndex].classList.add('active');
-                                if (dots[currentQuoteIndex]) dots[currentQuoteIndex].classList.add('active');
-                            };
-
-                            const startAutoRotate = () => {
-                                stopAutoRotate();
-                                quoteTimer = setInterval(() => {
-                                    goToQuote(currentQuoteIndex + 1);
-                                }, 6500); // Rotate every 6.5s
-                            };
-
-                            const stopAutoRotate = () => {
-                                if (quoteTimer) clearInterval(quoteTimer);
-                            };
-
-                            // Event Listeners for Prev/Next and Dots
-                            const prevBtn = controlsContainer.querySelector('.quote-prev-btn');
-                            const nextBtn = controlsContainer.querySelector('.quote-next-btn');
-                            const dots = controlsContainer.querySelectorAll('.quote-dot');
-
-                            if (prevBtn) {
-                                prevBtn.addEventListener('click', () => {
-                                    goToQuote(currentQuoteIndex - 1);
-                                    startAutoRotate();
-                                });
-                            }
-                            if (nextBtn) {
-                                nextBtn.addEventListener('click', () => {
-                                    goToQuote(currentQuoteIndex + 1);
-                                    startAutoRotate();
-                                });
-                            }
-                            dots.forEach(dot => {
-                                dot.addEventListener('click', () => {
-                                    const idx = parseInt(dot.getAttribute('data-index'), 10);
-                                    goToQuote(idx);
-                                    startAutoRotate();
-                                });
-                            });
-
-                            // Pause auto rotate on hover over card
-                            if (slidesContainer) {
-                                slidesContainer.addEventListener('mouseenter', stopAutoRotate);
-                                slidesContainer.addEventListener('mouseleave', startAutoRotate);
-                            }
-
-                            // Start timer
-                            startAutoRotate();
-                        } else if (controlsContainer) {
-                            controlsContainer.innerHTML = '';
+                            }, 5000);
                         }
                     }
                 }

@@ -226,7 +226,7 @@ try {
                 activeQuotes.forEach((q, idx) => {
                     slidesHtml += `
                         <div class="quote-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
-                            <div class="quote-card-styled">
+                            <div class="quote-card-borderless">
                                 <i class="fa-solid fa-quote-left quote-icon-gold"></i>
                                 <div class="quote-text-content">"${q.quote}"</div>
                                 <div class="quote-author-info">
