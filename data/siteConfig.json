@@ -294,5 +294,160 @@
       "content": "bhupeshdave@gmail.com",
       "link": "mailto:bhupeshdave@gmail.com"
     }
-  ]
+  ],
+  "ctaSection": {
+    "isVisible": true,
+    "titleRegular": "Ready for the",
+    "titleGold": "Impossible?",
+    "description": "Elevate your next event with an unforgettable experience of psychological illusion and mind reading.",
+    "btnText": "Book Mr. B Now",
+    "btnLink": "/contact"
+  },
+  "quotesSection": {
+    "isVisible": true,
+    "sectionName": "04 // GLIMPSES",
+    "sectionSubtitle": "Past Events & Testimonials",
+    "quotes": [
+      {
+        "id": "quote-1",
+        "quote": "Absolutely mind-blowing. I've never seen anything like it. He knew exactly what I was thinking before I even knew it myself.",
+        "author": "Corporate Executive",
+        "role": "Mumbai",
+        "hidden": false
+      },
+      {
+        "id": "quote-2",
+        "quote": "Mr. B brought an unmatched level of sophistication and astonishment to our annual gala. Highly recommended for any premium event.",
+        "author": "Event Organizer",
+        "role": "Delhi",
+        "hidden": false
+      },
+      {
+        "id": "quote-3",
+        "quote": "The level of psychological precision Bhupesh Dave displays is simply astonishing. Our entire board of directors was mesmerized.",
+        "author": "Managing Director",
+        "role": "Tech Global",
+        "hidden": false
+      },
+      {
+        "id": "quote-4",
+        "quote": "An unforgettable performance! He predicted details that were impossible for anyone to know. Truly India's premier mentalist.",
+        "author": "Celebrity Host",
+        "role": "Mumbai Gala",
+        "hidden": false
+      },
+      {
+        "id": "quote-5",
+        "quote": "Bhupesh Dave doesn't just perform magic; he reads the human mind with effortless elegance and charm.",
+        "author": "Senior Vice President",
+        "role": "Financial Services",
+        "hidden": false
+      },
+      {
+        "id": "quote-6",
+        "quote": "Our audience was left completely spellbound. Mr. B's interactive mind reading was the absolute highlight of our conference.",
+        "author": "HR Director",
+        "role": "Multinational Corp",
+        "hidden": false
+      },
+      {
+        "id": "quote-7",
+        "quote": "Pure genius! The mentalism acts were wrapped in humor, class, and absolute psychological brilliance.",
+        "author": "Event Curator",
+        "role": "Luxury Brand Showcase",
+        "hidden": false
+      },
+      {
+        "id": "quote-8",
+        "quote": "He bent metal, unlocked thoughts, and created moments of pure wonder that people are still talking about weeks later.",
+        "author": "Marketing Lead",
+        "role": "Automotive Giant",
+        "hidden": false
+      },
+      {
+        "id": "quote-9",
+        "quote": "Exceeded all expectations. Bhupesh Dave delivers world-class psychological illusion that captivates every single person in the room.",
+        "author": "Operations Head",
+        "role": "Bangalore IT Summit",
+        "hidden": false
+      },
+      {
+        "id": "quote-10",
+        "quote": "A masterpiece of intuition, influence, and mystery. Watching Mr. B live is an experience you will remember for a lifetime.",
+        "author": "VP Corporate Communications",
+        "role": "Global Enterprises",
+        "hidden": false
+      },
+      {
+        "id": "quote-11",
+        "quote": "Mind reading at its highest level. Interactive, witty, and profoundly astonishing from start to finish.",
+        "author": "Regional Director",
+        "role": "FMCG Enterprise",
+        "hidden": false
+      },
+      {
+        "id": "quote-12",
+        "quote": "Bhupesh Dave connects with the audience on a level I have never witnessed before. Extraordinary talent!",
+        "author": "Festival Organizer",
+        "role": "Cultural Arts Forum",
+        "hidden": false
+      },
+      {
+        "id": "quote-13",
+        "quote": "The energy and wonder he brings to the stage is unmatched. A true maestro of the human mind.",
+        "author": "Keynote Presenter",
+        "role": "Leadership Conclave",
+        "hidden": false
+      },
+      {
+        "id": "quote-14",
+        "quote": "An electrifying experience! Every demonstration felt impossibly real and completely mind-bending.",
+        "author": "Managing Editor",
+        "role": "National Media Group",
+        "hidden": false
+      },
+      {
+        "id": "quote-15",
+        "quote": "If you want your guests to experience genuine awe, Mr. B is the ultimate choice for any corporate or VIP event.",
+        "author": "VIP Event Planner",
+        "role": "Goa Resort & Convention",
+        "hidden": false
+      },
+      {
+        "id": "quote-16",
+        "quote": "Astonishing telepathy and psychological mastery. Bhupesh Dave proved why he holds the title of Indian Super Brain.",
+        "author": "Convener",
+        "role": "Annual Industry Awards",
+        "hidden": false
+      },
+      {
+        "id": "quote-17",
+        "quote": "The room was filled with gasps and applause. A hypnotic blend of psychological illusion and high-impact entertainment.",
+        "author": "Chief Operating Officer",
+        "role": "Pharma Leader",
+        "hidden": false
+      },
+      {
+        "id": "quote-18",
+        "quote": "Unbelievable accuracy and flawless execution. Mr. B is redefining entertainment for modern audiences.",
+        "author": "Creative Director",
+        "role": "Ad Agency Network",
+        "hidden": false
+      },
+      {
+        "id": "quote-19",
+        "quote": "Captivating, funny, and deeply impressive. Our corporate team was buzzing with excitement long after the show.",
+        "author": "Managing Director",
+        "role": "Real Estate Group",
+        "hidden": false
+      },
+      {
+        "id": "quote-20",
+        "quote": "Bhupesh Dave makes the impossible seem effortlessly real. An absolute master of his craft!",
+        "author": "Executive Producer",
+        "role": "Star Media Awards",
+        "hidden": false
+      }
+    ]
+  }
 }

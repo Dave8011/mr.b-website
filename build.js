@@ -191,6 +191,57 @@ try {
         $('#dynamic-clients-section').css('display', 'block');
     }
 
+    // CTA Section
+    if (config.ctaSection) {
+        if (config.ctaSection.isVisible === false) {
+            $('#dynamic-cta-section').css('display', 'none');
+        } else {
+            $('#dynamic-cta-section').css('display', 'block');
+            const reg = config.ctaSection.titleRegular || 'Ready for the';
+            const gold = config.ctaSection.titleGold || 'Impossible?';
+            let titleHtml = reg;
+            if (gold) titleHtml += ` <span class="gold-text">${gold}</span>`;
+            setHtml($, '#cta-dynamic-title', titleHtml);
+            setText($, '#cta-dynamic-desc', config.ctaSection.description);
+
+            const ctaBtn = $('#cta-dynamic-btn');
+            if (ctaBtn.length > 0) {
+                if (config.ctaSection.btnText) ctaBtn.text(config.ctaSection.btnText);
+                if (config.ctaSection.btnLink) ctaBtn.attr('href', config.ctaSection.btnLink);
+            }
+        }
+    }
+
+    // Quotes Section (GLIMPSES)
+    if (config.quotesSection) {
+        if (config.quotesSection.isVisible === false || !config.quotesSection.quotes) {
+            $('#dynamic-quotes-container').css('display', 'none');
+        } else {
+            const activeQuotes = config.quotesSection.quotes.filter(q => !q.hidden);
+            if (activeQuotes.length === 0) {
+                $('#dynamic-quotes-container').css('display', 'none');
+            } else {
+                $('#dynamic-quotes-container').css('display', 'block');
+                let slidesHtml = '';
+                activeQuotes.forEach((q, idx) => {
+                    slidesHtml += `
+                        <div class="quote-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+                            <div class="quote-card-styled">
+                                <i class="fa-solid fa-quote-left quote-icon-gold"></i>
+                                <div class="quote-text-content">"${q.quote}"</div>
+                                <div class="quote-author-info">
+                                    <div class="quote-author-name">${q.author || ''}</div>
+                                    <div class="quote-author-role">${q.role || ''}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                setHtml($, '#quotes-slides-container', slidesHtml);
+            }
+        }
+    }
+
     const outputIndexPath = path.join(publicDir, 'index.html');
     fs.writeFileSync(outputIndexPath, $.html());
     console.log('Successfully pre-rendered index.html to public/');

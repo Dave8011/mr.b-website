@@ -728,6 +728,145 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+
+            // ── Dynamic CTA Section ("Ready for the Impossible?") ─────────
+            const ctaSection = document.getElementById('dynamic-cta-section');
+            if (ctaSection && config.ctaSection) {
+                if (config.ctaSection.isVisible === false) {
+                    ctaSection.style.display = 'none';
+                } else {
+                    ctaSection.style.display = 'block';
+                    const ctaTitle = document.getElementById('cta-dynamic-title');
+                    const ctaDesc = document.getElementById('cta-dynamic-desc');
+                    const ctaBtn = document.getElementById('cta-dynamic-btn');
+
+                    if (ctaTitle) {
+                        const reg = config.ctaSection.titleRegular || 'Ready for the';
+                        const gold = config.ctaSection.titleGold || 'Impossible?';
+                        ctaTitle.innerHTML = `${reg} ${gold ? `<span class="gold-text">${gold}</span>` : ''}`;
+                    }
+                    if (ctaDesc && config.ctaSection.description) {
+                        ctaDesc.textContent = config.ctaSection.description;
+                    }
+                    if (ctaBtn) {
+                        if (config.ctaSection.btnText) ctaBtn.textContent = config.ctaSection.btnText;
+                        if (config.ctaSection.btnLink) ctaBtn.href = config.ctaSection.btnLink;
+                    }
+                }
+            }
+
+            // ── Dynamic Quotes Section (GLIMPSES) ──────────────────────────
+            const quotesContainer = document.getElementById('dynamic-quotes-container');
+            const slidesContainer = document.getElementById('quotes-slides-container');
+            const controlsContainer = document.getElementById('quotes-controls-container');
+
+            if (quotesContainer && config.quotesSection) {
+                if (config.quotesSection.isVisible === false || !config.quotesSection.quotes) {
+                    quotesContainer.style.display = 'none';
+                } else {
+                    const activeQuotes = config.quotesSection.quotes.filter(q => !q.hidden);
+                    if (activeQuotes.length === 0) {
+                        quotesContainer.style.display = 'none';
+                    } else {
+                        quotesContainer.style.display = 'block';
+
+                        // Render slides
+                        if (slidesContainer) {
+                            slidesContainer.innerHTML = activeQuotes.map((q, idx) => `
+                                <div class="quote-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+                                    <div class="quote-card-styled">
+                                        <i class="fa-solid fa-quote-left quote-icon-gold"></i>
+                                        <div class="quote-text-content">"${q.quote}"</div>
+                                        <div class="quote-author-info">
+                                            <div class="quote-author-name">${q.author || ''}</div>
+                                            <div class="quote-author-role">${q.role || ''}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('');
+                        }
+
+                        // Render controls if more than 1 quote
+                        if (controlsContainer && activeQuotes.length > 1) {
+                            const dotsHtml = activeQuotes.map((_, idx) => `
+                                <span class="quote-dot ${idx === 0 ? 'active' : ''}" data-index="${idx}"></span>
+                            `).join('');
+
+                            controlsContainer.innerHTML = `
+                                <button class="quote-nav-btn quote-prev-btn" aria-label="Previous quote"><i class="fa-solid fa-chevron-left"></i></button>
+                                <div class="quote-dots">${dotsHtml}</div>
+                                <button class="quote-nav-btn quote-next-btn" aria-label="Next quote"><i class="fa-solid fa-chevron-right"></i></button>
+                            `;
+
+                            // Slider State & Controller
+                            let currentQuoteIndex = 0;
+                            let quoteTimer = null;
+
+                            const goToQuote = (newIndex) => {
+                                const slides = slidesContainer.querySelectorAll('.quote-slide');
+                                const dots = controlsContainer.querySelectorAll('.quote-dot');
+
+                                if (slides.length === 0) return;
+
+                                slides[currentQuoteIndex].classList.remove('active');
+                                if (dots[currentQuoteIndex]) dots[currentQuoteIndex].classList.remove('active');
+
+                                currentQuoteIndex = (newIndex + slides.length) % slides.length;
+
+                                slides[currentQuoteIndex].classList.add('active');
+                                if (dots[currentQuoteIndex]) dots[currentQuoteIndex].classList.add('active');
+                            };
+
+                            const startAutoRotate = () => {
+                                stopAutoRotate();
+                                quoteTimer = setInterval(() => {
+                                    goToQuote(currentQuoteIndex + 1);
+                                }, 6500); // Rotate every 6.5s
+                            };
+
+                            const stopAutoRotate = () => {
+                                if (quoteTimer) clearInterval(quoteTimer);
+                            };
+
+                            // Event Listeners for Prev/Next and Dots
+                            const prevBtn = controlsContainer.querySelector('.quote-prev-btn');
+                            const nextBtn = controlsContainer.querySelector('.quote-next-btn');
+                            const dots = controlsContainer.querySelectorAll('.quote-dot');
+
+                            if (prevBtn) {
+                                prevBtn.addEventListener('click', () => {
+                                    goToQuote(currentQuoteIndex - 1);
+                                    startAutoRotate();
+                                });
+                            }
+                            if (nextBtn) {
+                                nextBtn.addEventListener('click', () => {
+                                    goToQuote(currentQuoteIndex + 1);
+                                    startAutoRotate();
+                                });
+                            }
+                            dots.forEach(dot => {
+                                dot.addEventListener('click', () => {
+                                    const idx = parseInt(dot.getAttribute('data-index'), 10);
+                                    goToQuote(idx);
+                                    startAutoRotate();
+                                });
+                            });
+
+                            // Pause auto rotate on hover over card
+                            if (slidesContainer) {
+                                slidesContainer.addEventListener('mouseenter', stopAutoRotate);
+                                slidesContainer.addEventListener('mouseleave', startAutoRotate);
+                            }
+
+                            // Start timer
+                            startAutoRotate();
+                        } else if (controlsContainer) {
+                            controlsContainer.innerHTML = '';
+                        }
+                    }
+                }
+            }
         })
         .catch(err => {
             console.log("Config load error:", err);

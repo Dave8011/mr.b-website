@@ -206,20 +206,21 @@ His journey began with a simple curiosity about the human mind and evolved into 
                 <!-- Dynamic Shorts Injected Here -->
             </div>
 
-            <div class="testimonials-grid fade-in" style="margin-top: 4rem;">
-                <div class="testimonial-card">
-                    <i class="fa-solid fa-quote-left gold-text" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                    <p style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); line-height: 1.6;">
-                        "Absolutely mind-blowing. I've never seen anything like it. He knew exactly what I was thinking
-                        before I even knew it myself."</p>
-                    <div class="testimonial-author">- Corporate Executive, Mumbai</div>
-                </div>
-                <div class="testimonial-card">
-                    <i class="fa-solid fa-quote-left gold-text" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                    <p style="font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text-light); line-height: 1.6;">
-                        "Mr. B brought an unmatched level of sophistication and astonishment to our annual gala. Highly
-                        recommended for any premium event."</p>
-                    <div class="testimonial-author">- Event Organizer, Delhi</div>
+            <div id="dynamic-quotes-container" class="fade-in">
+                <div class="quotes-carousel-wrapper">
+                    <div class="quotes-carousel-container" id="quotes-slides-container">
+                        <div class="quote-slide active">
+                            <div class="quote-card-styled">
+                                <i class="fa-solid fa-quote-left quote-icon-gold"></i>
+                                <div class="quote-text-content">"Absolutely mind-blowing. I've never seen anything like it. He knew exactly what I was thinking before I even knew it myself."</div>
+                                <div class="quote-author-info">
+                                    <div class="quote-author-name">Corporate Executive</div>
+                                    <div class="quote-author-role">Mumbai</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quotes-carousel-controls" id="quotes-controls-container"></div>
                 </div>
             </div>
         </div>
@@ -342,13 +343,13 @@ His journey began with a simple curiosity about the human mind and evolved into 
         </section>
 
     <!-- Contact + CTA -->
-    <section class="section fade-in" style="background: linear-gradient(to bottom, var(--background-navy), var(--background));">
+    <section id="dynamic-cta-section" class="section fade-in" style="background: linear-gradient(to bottom, var(--background-navy), var(--background));">
         <div class="container text-center">
-            <h2 style="font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 1.5rem;">Ready for the <span class="gold-text">Impossible?</span></h2>
-            <p style="font-family: 'Lora', serif; font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem;">
+            <h2 id="cta-dynamic-title" style="font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 1.5rem;">Ready for the <span class="gold-text">Impossible?</span></h2>
+            <p id="cta-dynamic-desc" style="font-family: 'Lora', serif; font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem;">
                 Elevate your next event with an unforgettable experience of psychological illusion and mind reading.
             </p>
-            <a href="/contact" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 3rem;">Book Mr. B Now</a>
+            <a id="cta-dynamic-btn" href="/contact" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 3rem;">Book Mr. B Now</a>
         </div>
     </section>
 

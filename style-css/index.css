@@ -663,3 +663,154 @@
     }
 }
 
+/* Animated Quotes & Testimonials Carousel */
+.quotes-carousel-wrapper {
+    position: relative;
+    max-width: 900px;
+    margin: 3rem auto 0;
+    padding: 0 1rem;
+}
+
+.quotes-carousel-container {
+    position: relative;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quote-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.98);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+    pointer-events: none;
+}
+
+.quote-slide.active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.quote-card-styled {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 3rem 3.5rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    position: relative;
+    text-align: center;
+}
+
+.quote-icon-gold {
+    font-size: 2.2rem;
+    color: var(--gold);
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+}
+
+.quote-text-content {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.8;
+    color: #e2e8f0;
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.quote-author-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.quote-author-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.quote-author-role {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.quotes-carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.quote-nav-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quote-nav-btn:hover {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+    transform: scale(1.08);
+}
+
+.quote-dots {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.quote-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quote-dot.active {
+    background: var(--gold);
+    width: 28px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(201, 160, 42, 0.4);
+}
+
+@media (max-width: 768px) {
+    .quote-card-styled {
+        padding: 2rem 1.5rem;
+    }
+    .quote-icon-gold {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    .quote-text-content {
+        margin-bottom: 1.5rem;
+    }
+}
+
+
