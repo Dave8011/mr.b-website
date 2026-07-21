@@ -923,7 +923,14 @@
             }
 
             .quick-stat-card {
-                padding: 1rem;
+                padding: 0.85rem 1rem;
+                border-radius: 12px;
+            }
+
+            .quick-stat-card .stat-icon-wrapper {
+                width: 38px;
+                height: 38px;
+                font-size: 0.95rem;
             }
 
             /* Container */
@@ -941,20 +948,29 @@
             /* Page Headers */
             .page-header {
                 flex-direction: column !important;
-                align-items: flex-start !important;
+                align-items: stretch !important;
                 gap: 1.25rem;
             }
 
-            /* Tabs Mobile */
+            .page-header > div:last-child {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            /* Tabs Mobile Navigation Bar */
             .tabs {
                 gap: 0.5rem;
-                padding-bottom: 0.85rem;
+                padding: 0.4rem;
+                border-radius: 25px;
                 margin-bottom: 1.75rem;
+                scroll-snap-type: x mandatory;
             }
 
             .tab-btn {
-                padding: 0.5rem 1.1rem;
-                font-size: 0.82rem;
+                padding: 0.55rem 1.1rem;
+                font-size: 0.84rem;
+                scroll-snap-align: center;
+                min-height: 40px;
             }
 
             /* Event Rows */
@@ -990,15 +1006,21 @@
                 height: 42px;
             }
 
-            /* Forms */
+            /* Forms & Mobile Inputs */
             .form-row {
                 flex-direction: column;
                 gap: 0;
             }
 
+            .form-control, select.form-control, textarea.form-control {
+                font-size: 16px !important; /* Prevents mobile Safari zoom */
+                padding: 0.8rem 1rem;
+            }
+
             .toggle-switch {
                 width: 100%;
                 justify-content: space-between;
+                padding: 0.85rem 1rem;
             }
 
             /* Modal Bottom Sheet on Mobile */
@@ -1011,21 +1033,22 @@
                 border-radius: 24px 24px 0 0;
                 max-width: 100%;
                 width: 100%;
-                max-height: 90vh;
+                max-height: 88vh;
                 overflow-y: auto;
                 transform: translateY(100%) scale(1);
-                padding: 2rem 1.5rem 2.5rem 1.5rem;
+                padding: 1.75rem 1.25rem 2.5rem 1.25rem;
                 position: relative;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
             }
 
             .modal-content::before {
                 content: '';
                 display: block;
-                width: 40px;
-                height: 4px;
-                background: rgba(255, 255, 255, 0.2);
-                border-radius: 2px;
-                margin: -0.5rem auto 1.5rem auto;
+                width: 44px;
+                height: 5px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 3px;
+                margin: -0.5rem auto 1.25rem auto;
             }
 
             .modal-overlay.active .modal-content {
@@ -1034,13 +1057,13 @@
 
             /* Libraries Grid */
             .banner-library {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
                 gap: 1rem;
             }
 
             .clients-library {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 0.85rem;
+                grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+                gap: 0.75rem;
             }
 
             /* Toast */
@@ -1056,6 +1079,7 @@
         @media (max-width: 480px) {
             .admin-quick-stats {
                 grid-template-columns: 1fr;
+                gap: 0.6rem;
             }
 
             .login-box {
@@ -1063,8 +1087,13 @@
             }
 
             .btn {
-                padding: 0.7rem 1.1rem;
-                font-size: 0.85rem;
+                padding: 0.75rem 1.1rem;
+                font-size: 0.88rem;
+                width: 100%;
+            }
+
+            .page-header h1, .page-header h2 {
+                font-size: 1.4rem !important;
             }
 
             .tabs {
@@ -1072,8 +1101,8 @@
             }
 
             .tab-btn {
-                padding: 0.45rem 0.85rem;
-                font-size: 0.78rem;
+                padding: 0.5rem 0.9rem;
+                font-size: 0.8rem;
             }
 
             .banner-library {
@@ -1157,28 +1186,28 @@
         <div class="container">
             <!-- Quick Stats Bar -->
             <div class="admin-quick-stats">
-                <div class="quick-stat-card">
+                <div class="quick-stat-card" onclick="switchTab('tab-events')" style="cursor: pointer;" title="Click to view Events">
                     <div>
                         <div class="text-muted text-sm" style="margin-bottom:0.25rem;">Upcoming Events</div>
                         <div style="font-size:1.4rem; font-weight:700;" id="stat-count-events">--</div>
                     </div>
                     <div class="stat-icon-wrapper"><i class="fa-solid fa-calendar-days"></i></div>
                 </div>
-                <div class="quick-stat-card">
+                <div class="quick-stat-card" onclick="switchTab('tab-clients')" style="cursor: pointer;" title="Click to view Brands & Clients">
                     <div>
                         <div class="text-muted text-sm" style="margin-bottom:0.25rem;">Brands & Clients</div>
                         <div style="font-size:1.4rem; font-weight:700;" id="stat-count-clients">--</div>
                     </div>
                     <div class="stat-icon-wrapper"><i class="fa-solid fa-briefcase"></i></div>
                 </div>
-                <div class="quick-stat-card">
+                <div class="quick-stat-card" onclick="switchTab('tab-shorts')" style="cursor: pointer;" title="Click to view Shorts">
                     <div>
                         <div class="text-muted text-sm" style="margin-bottom:0.25rem;">Video Shorts</div>
                         <div style="font-size:1.4rem; font-weight:700;" id="stat-count-shorts">--</div>
                     </div>
                     <div class="stat-icon-wrapper"><i class="fa-solid fa-video"></i></div>
                 </div>
-                <div class="quick-stat-card">
+                <div class="quick-stat-card" onclick="scrollToQuotes()" style="cursor: pointer;" title="Click to view Quotes Section">
                     <div>
                         <div class="text-muted text-sm" style="margin-bottom:0.25rem;">Quotes Managed</div>
                         <div style="font-size:1.4rem; font-weight:700;" id="stat-count-quotes">--</div>
@@ -1863,7 +1892,7 @@
                 <hr class="section-divider">
 
                 <!-- PART 2: Quotes / Testimonials Section -->
-                <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+                <div class="page-header flex justify-between items-center" id="admin-quotes-section" style="margin-bottom: 1.5rem;">
                     <div>
                         <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;">Quotes & Testimonials Section</h2>
                         <p class="text-muted text-sm">Manage the quotes shown in the GLIMPSES section on the homepage.</p>
@@ -2311,8 +2340,24 @@
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-            document.getElementById(tabId).classList.add('active');
-            document.getElementById('btn-' + tabId).classList.add('active');
+            const contentEl = document.getElementById(tabId);
+            const btnEl = document.getElementById('btn-' + tabId);
+
+            if (contentEl) contentEl.classList.add('active');
+            if (btnEl) {
+                btnEl.classList.add('active');
+                btnEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+        }
+
+        function scrollToQuotes() {
+            switchTab('tab-cta-quotes');
+            setTimeout(() => {
+                const target = document.getElementById('admin-quotes-section');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 120);
         }
 
         let pendingBannerBase64 = null;
