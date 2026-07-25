@@ -1920,6 +1920,138 @@
                 </div>
             </div>
         </div>
+    <!-- ===================== GALLERY TAB ===================== -->
+    <div id="tab-gallery" class="tab-content">
+        <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+            <div>
+                <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Gallery Manager</h1>
+                <p class="text-muted text-sm">Add show videos, news cutouts, PDFs, and media for the public gallery page.</p>
+            </div>
+            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                <label class="toggle-switch">
+                    <span class="toggle-label">Show Gallery Page</span>
+                    <input type="checkbox" id="gallery-visibility-toggle" onchange="toggleGalleryVisibility()" checked>
+                    <div class="switch"></div>
+                </label>
+                <a href="/gallery" target="_blank" class="btn btn-outline" style="font-size:0.82rem;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> View Gallery
+                </a>
+            </div>
+        </div>
+
+        <div class="tab-info-bar">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>Items added here appear on the public <span class="page-badge">🖼️ Gallery Page</span>. PDFs can be opened directly on stage from the gallery for easy reference.</p>
+        </div>
+
+        <!-- Add New Item Card -->
+        <div style="background: rgba(18,18,26,0.8); border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem; backdrop-filter: blur(12px);">
+            <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; display:flex; align-items:center; gap:0.65rem;">
+                <i class="fa-solid fa-plus" style="color: var(--gold);"></i> Add New Gallery Item
+            </h2>
+
+            <!-- Type Selector -->
+            <div class="form-group">
+                <label>Item Type</label>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; margin-top: 0.25rem;" id="gallery-type-selector">
+                    <div class="icon-option selected" data-type="video" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-solid fa-film" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Video
+                    </div>
+                    <div class="icon-option" data-type="news" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-regular fa-newspaper" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> News
+                    </div>
+                    <div class="icon-option" data-type="pdf" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-solid fa-file-pdf" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> PDF
+                    </div>
+                    <div class="icon-option" data-type="link" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-solid fa-link" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Link
+                    </div>
+                </div>
+                <input type="hidden" id="gallery-new-type" value="video">
+            </div>
+
+            <div class="form-row" style="margin-top: 1rem;">
+                <div class="form-group">
+                    <label>Title <span style="color:var(--gold);">*</span></label>
+                    <input type="text" id="gallery-new-title" class="form-control" placeholder="e.g. Sixth Sense Show — Mumbai 2024">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="gallery-new-date" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description (optional)</label>
+                <input type="text" id="gallery-new-desc" class="form-control" placeholder="Short description for the gallery card">
+            </div>
+
+            <!-- Video URL input -->
+            <div class="form-group" id="gallery-url-group">
+                <label id="gallery-url-label">YouTube Embed URL <span style="color:var(--gold);">*</span></label>
+                <input type="text" id="gallery-new-url" class="form-control" placeholder="https://www.youtube-nocookie.com/embed/XXXXXXXXXXX">
+                <p class="text-muted text-sm" style="margin-top:0.4rem;" id="gallery-url-hint">Paste the YouTube embed URL (youtube-nocookie.com/embed/...)</p>
+            </div>
+
+            <!-- Link URL input (for link type) -->
+            <div class="form-group hidden" id="gallery-link-group">
+                <label>External Link URL <span style="color:var(--gold);">*</span></label>
+                <input type="text" id="gallery-new-link" class="form-control" placeholder="https://...">
+                <p class="text-muted text-sm" style="margin-top:0.4rem;">URL that the card will open when clicked.</p>
+            </div>
+
+            <!-- File upload (News Image / PDF) -->
+            <div class="form-group hidden" id="gallery-upload-group">
+                <label id="gallery-upload-label">Upload File <span style="color:var(--gold);">*</span></label>
+                <div class="upload-area" id="gallery-upload-area" onclick="document.getElementById('gallery-file-input').click()" style="padding: 2rem;">
+                    <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size:2rem; margin-bottom:0.65rem;"></i>
+                    <p id="gallery-upload-hint" style="margin:0; color:var(--text-muted); font-size:0.9rem;">Click to upload image (JPG, PNG, WebP)</p>
+                    <input type="file" id="gallery-file-input" style="display:none" onchange="handleGalleryFileSelect(event)">
+                </div>
+                <div id="gallery-upload-preview" style="margin-top:1rem; display:none; position:relative; border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+                    <img id="gallery-preview-img" style="width:100%; max-height:200px; object-fit:cover; display:none;">
+                    <div id="gallery-pdf-preview" style="display:none; padding:1.5rem; text-align:center; background:rgba(239,68,68,0.06); border-radius:10px;">
+                        <i class="fa-solid fa-file-pdf" style="font-size:2.5rem; color:#ef4444; margin-bottom:0.5rem; display:block;"></i>
+                        <span id="gallery-pdf-name" style="font-size:0.85rem; color:var(--text-muted);"></span>
+                    </div>
+                    <button onclick="clearGalleryFile()" style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.7); border:none; color:#fff; width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <!-- Optional thumbnail for videos/PDFs -->
+            <div class="form-group" id="gallery-thumb-group" style="display:none;">
+                <label>Custom Thumbnail URL (optional)</label>
+                <input type="text" id="gallery-new-thumb" class="form-control" placeholder="https://... (leave blank to auto-detect from YouTube)">
+            </div>
+
+            <button class="btn btn-gold" style="margin-top:1rem; min-width:200px;" onclick="addGalleryItem()" id="gallery-add-btn">
+                <i class="fa-solid fa-plus"></i> Add to Gallery
+            </button>
+        </div>
+
+        <!-- Search bar inside admin -->
+        <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+            <div style="position:relative; flex:1; min-width:200px;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--gold); font-size:0.85rem; pointer-events:none;"></i>
+                <input type="search" id="admin-gallery-search" class="form-control" placeholder="Search gallery items…" oninput="renderAdminGallery()" style="padding-left: 2.75rem;">
+            </div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;" id="admin-gallery-filter">
+                <button class="btn btn-outline active" data-filter="all" onclick="setAdminGalleryFilter('all', this)" style="padding:0.5rem 1rem; font-size:0.82rem;">All</button>
+                <button class="btn btn-outline" data-filter="video" onclick="setAdminGalleryFilter('video', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-film"></i> Videos</button>
+                <button class="btn btn-outline" data-filter="news" onclick="setAdminGalleryFilter('news', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-regular fa-newspaper"></i> News</button>
+                <button class="btn btn-outline" data-filter="pdf" onclick="setAdminGalleryFilter('pdf', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-file-pdf"></i> PDFs</button>
+                <button class="btn btn-outline" data-filter="link" onclick="setAdminGalleryFilter('link', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-link"></i> Links</button>
+            </div>
+            <span id="admin-gallery-count" class="text-muted text-sm"></span>
+        </div>
+
+        <!-- Gallery Items List -->
+        <div id="admin-gallery-list">
+            <!-- Injected by renderAdminGallery() -->
+        </div>
+    </div>
+    <!-- ===================== END GALLERY TAB ===================== -->
+
     </div>
 
     <!-- Modal for Add/Edit -->
@@ -2133,138 +2265,6 @@
             <button class="btn btn-gold" style="width: 100%; padding: 1rem; font-size: 1rem; justify-content: center;" onclick="saveContactInfo()">Save Block</button>
         </div>
     </div>
-
-    <!-- ===================== GALLERY TAB ===================== -->
-    <div id="tab-gallery" class="tab-content">
-        <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
-            <div>
-                <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Gallery Manager</h1>
-                <p class="text-muted text-sm">Add show videos, news cutouts, PDFs, and media for the public gallery page.</p>
-            </div>
-            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-                <label class="toggle-switch">
-                    <span class="toggle-label">Show Gallery Page</span>
-                    <input type="checkbox" id="gallery-visibility-toggle" onchange="toggleGalleryVisibility()" checked>
-                    <div class="switch"></div>
-                </label>
-                <a href="/gallery" target="_blank" class="btn btn-outline" style="font-size:0.82rem;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> View Gallery
-                </a>
-            </div>
-        </div>
-
-        <div class="tab-info-bar">
-            <i class="fa-solid fa-circle-info"></i>
-            <p>Items added here appear on the public <span class="page-badge">🖼️ Gallery Page</span>. PDFs can be opened directly on stage from the gallery for easy reference.</p>
-        </div>
-
-        <!-- Add New Item Card -->
-        <div style="background: rgba(18,18,26,0.8); border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem; backdrop-filter: blur(12px);">
-            <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; display:flex; align-items:center; gap:0.65rem;">
-                <i class="fa-solid fa-plus" style="color: var(--gold);"></i> Add New Gallery Item
-            </h2>
-
-            <!-- Type Selector -->
-            <div class="form-group">
-                <label>Item Type</label>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; margin-top: 0.25rem;" id="gallery-type-selector">
-                    <div class="icon-option selected" data-type="video" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
-                        <i class="fa-solid fa-film" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Video
-                    </div>
-                    <div class="icon-option" data-type="news" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
-                        <i class="fa-regular fa-newspaper" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> News
-                    </div>
-                    <div class="icon-option" data-type="pdf" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
-                        <i class="fa-solid fa-file-pdf" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> PDF
-                    </div>
-                    <div class="icon-option" data-type="link" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
-                        <i class="fa-solid fa-link" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Link
-                    </div>
-                </div>
-                <input type="hidden" id="gallery-new-type" value="video">
-            </div>
-
-            <div class="form-row" style="margin-top: 1rem;">
-                <div class="form-group">
-                    <label>Title <span style="color:var(--gold);">*</span></label>
-                    <input type="text" id="gallery-new-title" class="form-control" placeholder="e.g. Sixth Sense Show — Mumbai 2024">
-                </div>
-                <div class="form-group">
-                    <label>Date</label>
-                    <input type="date" id="gallery-new-date" class="form-control">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Description (optional)</label>
-                <input type="text" id="gallery-new-desc" class="form-control" placeholder="Short description for the gallery card">
-            </div>
-
-            <!-- Video URL input -->
-            <div class="form-group" id="gallery-url-group">
-                <label id="gallery-url-label">YouTube Embed URL <span style="color:var(--gold);">*</span></label>
-                <input type="text" id="gallery-new-url" class="form-control" placeholder="https://www.youtube-nocookie.com/embed/XXXXXXXXXXX">
-                <p class="text-muted text-sm" style="margin-top:0.4rem;" id="gallery-url-hint">Paste the YouTube embed URL (youtube-nocookie.com/embed/...)</p>
-            </div>
-
-            <!-- Link URL input (for link type) -->
-            <div class="form-group hidden" id="gallery-link-group">
-                <label>External Link URL <span style="color:var(--gold);">*</span></label>
-                <input type="text" id="gallery-new-link" class="form-control" placeholder="https://...">
-                <p class="text-muted text-sm" style="margin-top:0.4rem;">URL that the card will open when clicked.</p>
-            </div>
-
-            <!-- File upload (News Image / PDF) -->
-            <div class="form-group hidden" id="gallery-upload-group">
-                <label id="gallery-upload-label">Upload File <span style="color:var(--gold);">*</span></label>
-                <div class="upload-area" id="gallery-upload-area" onclick="document.getElementById('gallery-file-input').click()" style="padding: 2rem;">
-                    <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size:2rem; margin-bottom:0.65rem;"></i>
-                    <p id="gallery-upload-hint" style="margin:0; color:var(--text-muted); font-size:0.9rem;">Click to upload image (JPG, PNG, WebP)</p>
-                    <input type="file" id="gallery-file-input" style="display:none" onchange="handleGalleryFileSelect(event)">
-                </div>
-                <div id="gallery-upload-preview" style="margin-top:1rem; display:none; position:relative; border:1px solid var(--border); border-radius:10px; overflow:hidden;">
-                    <img id="gallery-preview-img" style="width:100%; max-height:200px; object-fit:cover; display:none;">
-                    <div id="gallery-pdf-preview" style="display:none; padding:1.5rem; text-align:center; background:rgba(239,68,68,0.06); border-radius:10px;">
-                        <i class="fa-solid fa-file-pdf" style="font-size:2.5rem; color:#ef4444; margin-bottom:0.5rem; display:block;"></i>
-                        <span id="gallery-pdf-name" style="font-size:0.85rem; color:var(--text-muted);"></span>
-                    </div>
-                    <button onclick="clearGalleryFile()" style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.7); border:none; color:#fff; width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-            </div>
-
-            <!-- Optional thumbnail for videos/PDFs -->
-            <div class="form-group" id="gallery-thumb-group" style="display:none;">
-                <label>Custom Thumbnail URL (optional)</label>
-                <input type="text" id="gallery-new-thumb" class="form-control" placeholder="https://... (leave blank to auto-detect from YouTube)">
-            </div>
-
-            <button class="btn btn-gold" style="margin-top:1rem; min-width:200px;" onclick="addGalleryItem()" id="gallery-add-btn">
-                <i class="fa-solid fa-plus"></i> Add to Gallery
-            </button>
-        </div>
-
-        <!-- Search bar inside admin -->
-        <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
-            <div style="position:relative; flex:1; min-width:200px;">
-                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--gold); font-size:0.85rem; pointer-events:none;"></i>
-                <input type="search" id="admin-gallery-search" class="form-control" placeholder="Search gallery items…" oninput="renderAdminGallery()" style="padding-left: 2.75rem;">
-            </div>
-            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;" id="admin-gallery-filter">
-                <button class="btn btn-outline active" data-filter="all" onclick="setAdminGalleryFilter('all', this)" style="padding:0.5rem 1rem; font-size:0.82rem;">All</button>
-                <button class="btn btn-outline" data-filter="video" onclick="setAdminGalleryFilter('video', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-film"></i> Videos</button>
-                <button class="btn btn-outline" data-filter="news" onclick="setAdminGalleryFilter('news', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-regular fa-newspaper"></i> News</button>
-                <button class="btn btn-outline" data-filter="pdf" onclick="setAdminGalleryFilter('pdf', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-file-pdf"></i> PDFs</button>
-                <button class="btn btn-outline" data-filter="link" onclick="setAdminGalleryFilter('link', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-link"></i> Links</button>
-            </div>
-            <span id="admin-gallery-count" class="text-muted text-sm"></span>
-        </div>
-
-        <!-- Gallery Items List -->
-        <div id="admin-gallery-list">
-            <!-- Injected by renderAdminGallery() -->
-        </div>
-    </div>
-    <!-- ===================== END GALLERY TAB ===================== -->
 
     <!-- Modal for Add/Edit Social Media -->
     <div class="modal-overlay" id="social-modal">
