@@ -8,6 +8,7 @@ const globalHeader = `
         <nav class="nav-links">
             <a href="/" class="nav-link">Home</a>
             <a href="/about" class="nav-link">About Us</a>
+            <a href="/gallery" class="nav-link">Gallery</a>
             <a href="/contact" class="nav-link">Contact Us</a>
         </nav>
         <button class="mobile-nav-toggle" aria-label="Toggle Navigation">
@@ -30,6 +31,7 @@ const globalFooter = `
         <div class="footer-seo-links">
             <a href="/" class="seo-link">Home</a>
             <a href="/about" class="seo-link">About Us</a>
+            <a href="/gallery" class="seo-link">Gallery</a>
             <a href="/contact" class="seo-link">Contact Us</a>
             <a href="/privacy.html" class="seo-link">Privacy Policy</a>
             <a href="/terms.html" class="seo-link">Terms of Service</a>
@@ -94,4 +96,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Passively check if gallery page is enabled and hide nav link if not.
+    // Fire-and-forget: does NOT block page rendering.
+    (async () => {
+        try {
+            const res = await fetch('/api/getConfig');
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data.showGallery === false) {
+                document.querySelectorAll('a[href="/gallery"]').forEach(el => el.remove());
+            }
+        } catch (e) {
+            // Silently ignore — nav links stay visible if config can't be fetched
+        }
+    })();
 });

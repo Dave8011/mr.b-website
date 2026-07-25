@@ -1229,6 +1229,7 @@
                 <button class="tab-btn" onclick="switchTab('tab-social')" id="btn-tab-social"><i class="fa-solid fa-address-book"></i> Contact & Social</button>
                 <button class="tab-btn" onclick="switchTab('tab-shorts')" id="btn-tab-shorts"><i class="fa-solid fa-video"></i> Shorts</button>
                 <button class="tab-btn" onclick="switchTab('tab-cta-quotes')" id="btn-tab-cta-quotes"><i class="fa-solid fa-quote-left"></i> CTA & Quotes</button>
+                <button class="tab-btn" onclick="switchTab('tab-gallery')" id="btn-tab-gallery"><i class="fa-solid fa-photo-film"></i> Gallery</button>
             </div>
 
             <!-- HERO BANNER TAB -->
@@ -2133,6 +2134,138 @@
         </div>
     </div>
 
+    <!-- ===================== GALLERY TAB ===================== -->
+    <div id="tab-gallery" class="tab-content">
+        <div class="page-header flex justify-between items-center" style="margin-bottom: 1.5rem;">
+            <div>
+                <h1 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 0.25rem;">Gallery Manager</h1>
+                <p class="text-muted text-sm">Add show videos, news cutouts, PDFs, and media for the public gallery page.</p>
+            </div>
+            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                <label class="toggle-switch">
+                    <span class="toggle-label">Show Gallery Page</span>
+                    <input type="checkbox" id="gallery-visibility-toggle" onchange="toggleGalleryVisibility()" checked>
+                    <div class="switch"></div>
+                </label>
+                <a href="/gallery" target="_blank" class="btn btn-outline" style="font-size:0.82rem;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> View Gallery
+                </a>
+            </div>
+        </div>
+
+        <div class="tab-info-bar">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>Items added here appear on the public <span class="page-badge">🖼️ Gallery Page</span>. PDFs can be opened directly on stage from the gallery for easy reference.</p>
+        </div>
+
+        <!-- Add New Item Card -->
+        <div style="background: rgba(18,18,26,0.8); border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem; backdrop-filter: blur(12px);">
+            <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; display:flex; align-items:center; gap:0.65rem;">
+                <i class="fa-solid fa-plus" style="color: var(--gold);"></i> Add New Gallery Item
+            </h2>
+
+            <!-- Type Selector -->
+            <div class="form-group">
+                <label>Item Type</label>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; margin-top: 0.25rem;" id="gallery-type-selector">
+                    <div class="icon-option selected" data-type="video" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-solid fa-film" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Video
+                    </div>
+                    <div class="icon-option" data-type="news" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-regular fa-newspaper" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> News
+                    </div>
+                    <div class="icon-option" data-type="pdf" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-solid fa-file-pdf" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> PDF
+                    </div>
+                    <div class="icon-option" data-type="link" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-solid fa-link" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Link
+                    </div>
+                </div>
+                <input type="hidden" id="gallery-new-type" value="video">
+            </div>
+
+            <div class="form-row" style="margin-top: 1rem;">
+                <div class="form-group">
+                    <label>Title <span style="color:var(--gold);">*</span></label>
+                    <input type="text" id="gallery-new-title" class="form-control" placeholder="e.g. Sixth Sense Show — Mumbai 2024">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="gallery-new-date" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description (optional)</label>
+                <input type="text" id="gallery-new-desc" class="form-control" placeholder="Short description for the gallery card">
+            </div>
+
+            <!-- Video URL input -->
+            <div class="form-group" id="gallery-url-group">
+                <label id="gallery-url-label">YouTube Embed URL <span style="color:var(--gold);">*</span></label>
+                <input type="text" id="gallery-new-url" class="form-control" placeholder="https://www.youtube-nocookie.com/embed/XXXXXXXXXXX">
+                <p class="text-muted text-sm" style="margin-top:0.4rem;" id="gallery-url-hint">Paste the YouTube embed URL (youtube-nocookie.com/embed/...)</p>
+            </div>
+
+            <!-- Link URL input (for link type) -->
+            <div class="form-group hidden" id="gallery-link-group">
+                <label>External Link URL <span style="color:var(--gold);">*</span></label>
+                <input type="text" id="gallery-new-link" class="form-control" placeholder="https://...">
+                <p class="text-muted text-sm" style="margin-top:0.4rem;">URL that the card will open when clicked.</p>
+            </div>
+
+            <!-- File upload (News Image / PDF) -->
+            <div class="form-group hidden" id="gallery-upload-group">
+                <label id="gallery-upload-label">Upload File <span style="color:var(--gold);">*</span></label>
+                <div class="upload-area" id="gallery-upload-area" onclick="document.getElementById('gallery-file-input').click()" style="padding: 2rem;">
+                    <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size:2rem; margin-bottom:0.65rem;"></i>
+                    <p id="gallery-upload-hint" style="margin:0; color:var(--text-muted); font-size:0.9rem;">Click to upload image (JPG, PNG, WebP)</p>
+                    <input type="file" id="gallery-file-input" style="display:none" onchange="handleGalleryFileSelect(event)">
+                </div>
+                <div id="gallery-upload-preview" style="margin-top:1rem; display:none; position:relative; border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+                    <img id="gallery-preview-img" style="width:100%; max-height:200px; object-fit:cover; display:none;">
+                    <div id="gallery-pdf-preview" style="display:none; padding:1.5rem; text-align:center; background:rgba(239,68,68,0.06); border-radius:10px;">
+                        <i class="fa-solid fa-file-pdf" style="font-size:2.5rem; color:#ef4444; margin-bottom:0.5rem; display:block;"></i>
+                        <span id="gallery-pdf-name" style="font-size:0.85rem; color:var(--text-muted);"></span>
+                    </div>
+                    <button onclick="clearGalleryFile()" style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.7); border:none; color:#fff; width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <!-- Optional thumbnail for videos/PDFs -->
+            <div class="form-group" id="gallery-thumb-group" style="display:none;">
+                <label>Custom Thumbnail URL (optional)</label>
+                <input type="text" id="gallery-new-thumb" class="form-control" placeholder="https://... (leave blank to auto-detect from YouTube)">
+            </div>
+
+            <button class="btn btn-gold" style="margin-top:1rem; min-width:200px;" onclick="addGalleryItem()" id="gallery-add-btn">
+                <i class="fa-solid fa-plus"></i> Add to Gallery
+            </button>
+        </div>
+
+        <!-- Search bar inside admin -->
+        <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+            <div style="position:relative; flex:1; min-width:200px;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--gold); font-size:0.85rem; pointer-events:none;"></i>
+                <input type="search" id="admin-gallery-search" class="form-control" placeholder="Search gallery items…" oninput="renderAdminGallery()" style="padding-left: 2.75rem;">
+            </div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;" id="admin-gallery-filter">
+                <button class="btn btn-outline active" data-filter="all" onclick="setAdminGalleryFilter('all', this)" style="padding:0.5rem 1rem; font-size:0.82rem;">All</button>
+                <button class="btn btn-outline" data-filter="video" onclick="setAdminGalleryFilter('video', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-film"></i> Videos</button>
+                <button class="btn btn-outline" data-filter="news" onclick="setAdminGalleryFilter('news', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-regular fa-newspaper"></i> News</button>
+                <button class="btn btn-outline" data-filter="pdf" onclick="setAdminGalleryFilter('pdf', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-file-pdf"></i> PDFs</button>
+                <button class="btn btn-outline" data-filter="link" onclick="setAdminGalleryFilter('link', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-link"></i> Links</button>
+            </div>
+            <span id="admin-gallery-count" class="text-muted text-sm"></span>
+        </div>
+
+        <!-- Gallery Items List -->
+        <div id="admin-gallery-list">
+            <!-- Injected by renderAdminGallery() -->
+        </div>
+    </div>
+    <!-- ===================== END GALLERY TAB ===================== -->
+
     <!-- Modal for Add/Edit Social Media -->
     <div class="modal-overlay" id="social-modal">
         <div class="modal-content" style="max-width: 450px; padding: 2.5rem 2rem;">
@@ -2470,6 +2603,11 @@
 
                     document.getElementById('banner-visibility-toggle').checked = configData.showHeroBanner;
 
+                    // Gallery visibility
+                    if (configData.showGallery === undefined) configData.showGallery = true;
+                    const galleryToggle = document.getElementById('gallery-visibility-toggle');
+                    if (galleryToggle) galleryToggle.checked = configData.showGallery;
+
                     // Load About Section data
                     if (!configData.aboutSection) {
                         configData.aboutSection = {
@@ -2689,6 +2827,7 @@
                         ];
                     }
                     if (typeof renderAdminInterests === 'function') renderAdminInterests();
+                    if (typeof renderAdminGallery === 'function') renderAdminGallery();
                     updateQuickStats();
                 }
             } catch (e) {
@@ -2718,6 +2857,19 @@
             } catch (e) {
                 document.getElementById('banner-visibility-toggle').checked = !isChecked;
                 configData.showHeroBanner = !isChecked;
+            }
+        }
+
+        async function toggleGalleryVisibility() {
+            if (!sessionToken) return;
+            const isChecked = document.getElementById('gallery-visibility-toggle').checked;
+            configData.showGallery = isChecked;
+
+            try {
+                await saveConfigOnly(isChecked ? 'Gallery page is now visible on the live site!' : 'Gallery page is now hidden from the live site!');
+            } catch (e) {
+                document.getElementById('gallery-visibility-toggle').checked = !isChecked;
+                configData.showGallery = !isChecked;
             }
         }
 
@@ -3728,6 +3880,7 @@
                         if (typeof renderContactInfo === 'function') renderContactInfo();
                         if (typeof renderAdminQuotes === 'function') renderAdminQuotes();
                         if (typeof renderAdminInterests === 'function') renderAdminInterests();
+                        if (typeof renderAdminGallery === 'function') renderAdminGallery();
                         return data;
                     }
 
@@ -4496,6 +4649,308 @@
             configData.areaOfInterests.splice(index, 1);
             renderAdminInterests();
             await saveConfigOnly("Area of Interest option removed!");
+        }
+
+        // ====================================================
+        //  GALLERY ADMIN — Functions
+        // ====================================================
+
+        let pendingGalleryFileBase64 = null;
+        let pendingGalleryFilename = null;
+        let adminGalleryFilter = 'all';
+
+        function selectGalleryType(el) {
+            document.querySelectorAll('#gallery-type-selector .icon-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            const type = el.getAttribute('data-type');
+            document.getElementById('gallery-new-type').value = type;
+
+            // Toggle visible input groups
+            const urlGroup = document.getElementById('gallery-url-group');
+            const uploadGroup = document.getElementById('gallery-upload-group');
+            const linkGroup = document.getElementById('gallery-link-group');
+            const thumbGroup = document.getElementById('gallery-thumb-group');
+            const urlLabel = document.getElementById('gallery-url-label');
+            const urlHint = document.getElementById('gallery-url-hint');
+            const uploadLabel = document.getElementById('gallery-upload-label');
+            const uploadHint = document.getElementById('gallery-upload-hint');
+            const fileInput = document.getElementById('gallery-file-input');
+
+            urlGroup.classList.add('hidden');
+            uploadGroup.classList.add('hidden');
+            linkGroup.classList.add('hidden');
+            thumbGroup.style.display = 'none';
+
+            if (type === 'video') {
+                urlGroup.classList.remove('hidden');
+                urlLabel.innerHTML = 'YouTube Embed URL <span style="color:var(--gold);">*</span>';
+                urlHint.textContent = 'Paste the YouTube embed URL (youtube-nocookie.com/embed/...)';
+                thumbGroup.style.display = 'block';
+            } else if (type === 'news') {
+                uploadGroup.classList.remove('hidden');
+                uploadLabel.innerHTML = 'Upload News Image <span style="color:var(--gold);">*</span>';
+                uploadHint.textContent = 'Click to upload image (JPG, PNG, WebP)';
+                fileInput.accept = 'image/*';
+                clearGalleryFile();
+            } else if (type === 'pdf') {
+                uploadGroup.classList.remove('hidden');
+                linkGroup.classList.remove('hidden');
+                uploadLabel.innerHTML = 'Upload PDF File <span style="color:var(--gold);">*</span><span style="font-weight:400; color:var(--text-muted);"> — or paste link below</span>';
+                uploadHint.textContent = 'Click to upload PDF file';
+                fileInput.accept = 'application/pdf,.pdf';
+                thumbGroup.style.display = 'block';
+                document.getElementById('gallery-new-link').placeholder = 'https://... (optional if uploading file above)';
+                document.querySelector('#gallery-link-group label').innerHTML = 'External PDF Link (optional — use instead of or alongside upload)';
+                clearGalleryFile();
+            } else if (type === 'link') {
+                linkGroup.classList.remove('hidden');
+                thumbGroup.style.display = 'block';
+                document.getElementById('gallery-new-link').placeholder = 'https://drive.google.com/... or any URL';
+                document.querySelector('#gallery-link-group label').innerHTML = 'External Link URL <span style="color:var(--gold);">*</span>';
+            }
+        }
+
+        function handleGalleryFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            pendingGalleryFilename = file.name;
+            const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                pendingGalleryFileBase64 = e.target.result;
+
+                const preview = document.getElementById('gallery-upload-preview');
+                const imgEl = document.getElementById('gallery-preview-img');
+                const pdfEl = document.getElementById('gallery-pdf-preview');
+                const pdfName = document.getElementById('gallery-pdf-name');
+
+                preview.style.display = 'block';
+
+                if (isPdf) {
+                    imgEl.style.display = 'none';
+                    pdfEl.style.display = 'block';
+                    pdfName.textContent = file.name;
+                } else {
+                    imgEl.src = e.target.result;
+                    imgEl.style.display = 'block';
+                    pdfEl.style.display = 'none';
+                }
+            };
+
+            if (isPdf) {
+                reader.readAsDataURL(file);
+            } else {
+                // Compress image via canvas
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        if (w > 1600) { h = Math.round(h * 1600 / w); w = 1600; }
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        const compressed = canvas.toDataURL('image/jpeg', 0.85);
+                        pendingGalleryFileBase64 = compressed;
+
+                        const preview = document.getElementById('gallery-upload-preview');
+                        const imgEl = document.getElementById('gallery-preview-img');
+                        preview.style.display = 'block';
+                        imgEl.src = compressed;
+                        imgEl.style.display = 'block';
+                        document.getElementById('gallery-pdf-preview').style.display = 'none';
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function clearGalleryFile() {
+            pendingGalleryFileBase64 = null;
+            pendingGalleryFilename = null;
+            document.getElementById('gallery-file-input').value = '';
+            document.getElementById('gallery-upload-preview').style.display = 'none';
+            document.getElementById('gallery-preview-img').src = '';
+            document.getElementById('gallery-preview-img').style.display = 'none';
+            document.getElementById('gallery-pdf-preview').style.display = 'none';
+        }
+
+        async function addGalleryItem() {
+            if (!sessionToken) return;
+
+            const type = document.getElementById('gallery-new-type').value;
+            const title = document.getElementById('gallery-new-title').value.trim();
+            const desc = document.getElementById('gallery-new-desc').value.trim();
+            const dateVal = document.getElementById('gallery-new-date').value;
+            const thumbInput = document.getElementById('gallery-new-thumb').value.trim();
+
+            if (!title) {
+                showToast('fa-triangle-exclamation', 'Please enter a title for the item.', true);
+                return;
+            }
+
+            const btn = document.getElementById('gallery-add-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+
+            let url = '';
+            let thumbnail = thumbInput || '';
+
+            try {
+                if (type === 'video') {
+                    url = document.getElementById('gallery-new-url').value.trim();
+                    if (!url) { showToast('fa-triangle-exclamation', 'Please enter a YouTube embed URL.', true); return; }
+
+                } else if (type === 'news') {
+                    if (!pendingGalleryFileBase64) { showToast('fa-triangle-exclamation', 'Please select an image file.', true); return; }
+                    showToast('fa-cloud-arrow-up', 'Uploading image…');
+                    const uploadRes = await fetch('/api/uploadImage', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionToken}` },
+                        body: JSON.stringify({ base64Image: pendingGalleryFileBase64, folder: 'gallery' })
+                    });
+                    if (!uploadRes.ok) throw new Error('Image upload failed');
+                    const uploadData = await uploadRes.json();
+                    url = uploadData.imageUrl;
+
+                } else if (type === 'pdf') {
+                    const linkUrl = document.getElementById('gallery-new-link').value.trim();
+                    if (pendingGalleryFileBase64 && pendingGalleryFilename) {
+                        showToast('fa-cloud-arrow-up', 'Uploading PDF…');
+                        const pdfRes = await fetch('/api/uploadPdf', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionToken}` },
+                            body: JSON.stringify({ base64Pdf: pendingGalleryFileBase64, filename: pendingGalleryFilename })
+                        });
+                        if (!pdfRes.ok) throw new Error('PDF upload failed');
+                        const pdfData = await pdfRes.json();
+                        url = pdfData.pdfUrl;
+                    } else if (linkUrl) {
+                        url = linkUrl;
+                    } else {
+                        showToast('fa-triangle-exclamation', 'Please upload a PDF file or enter an external PDF link.', true);
+                        return;
+                    }
+
+                } else if (type === 'link') {
+                    url = document.getElementById('gallery-new-link').value.trim();
+                    if (!url) { showToast('fa-triangle-exclamation', 'Please enter an external link URL.', true); return; }
+                    thumbnail = thumbInput;
+                }
+
+                if (!configData.gallery) configData.gallery = [];
+
+                const newItem = {
+                    id: 'gal-' + Date.now(),
+                    type,
+                    title,
+                    description: desc,
+                    url,
+                    thumbnail,
+                    date: dateVal || new Date().toISOString().split('T')[0],
+                    hidden: false
+                };
+
+                configData.gallery.unshift(newItem);
+                renderAdminGallery();
+                await saveConfigOnly('Gallery item added!');
+
+                // Reset form
+                document.getElementById('gallery-new-title').value = '';
+                document.getElementById('gallery-new-desc').value = '';
+                document.getElementById('gallery-new-url').value = '';
+                document.getElementById('gallery-new-link').value = '';
+                document.getElementById('gallery-new-date').value = '';
+                document.getElementById('gallery-new-thumb').value = '';
+                clearGalleryFile();
+
+            } catch (err) {
+                showToast('fa-circle-exclamation', err.message || 'Failed to add item.', true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add to Gallery';
+            }
+        }
+
+        function setAdminGalleryFilter(type, btn) {
+            adminGalleryFilter = type;
+            document.querySelectorAll('#admin-gallery-filter button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderAdminGallery();
+        }
+
+        function renderAdminGallery() {
+            if (!configData.gallery) configData.gallery = [];
+            const items = configData.gallery;
+            const query = (document.getElementById('admin-gallery-search')?.value || '').toLowerCase().trim();
+            const list = document.getElementById('admin-gallery-list');
+            const countEl = document.getElementById('admin-gallery-count');
+
+            let filtered = items;
+            if (adminGalleryFilter !== 'all') filtered = filtered.filter(i => i.type === adminGalleryFilter);
+            if (query) filtered = filtered.filter(i =>
+                (i.title || '').toLowerCase().includes(query) ||
+                (i.description || '').toLowerCase().includes(query) ||
+                (i.url || '').toLowerCase().includes(query)
+            );
+
+            countEl.textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
+
+            if (!filtered.length) {
+                list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-photo-film"></i><p style="color:var(--text-muted);">${items.length ? 'No items match your search.' : 'No gallery items yet. Add one above!'}</p></div>`;
+                return;
+            }
+
+            const typeIcons = { video: 'fa-film', news: 'fa-newspaper', pdf: 'fa-file-pdf', link: 'fa-link' };
+            const typeColors = { video: 'rgba(255,255,255,0.7)', news: 'var(--gold)', pdf: '#ef4444', link: '#60a5fa' };
+
+            list.innerHTML = filtered.map((item, localIdx) => {
+                const realIdx = items.indexOf(item);
+                const icon = typeIcons[item.type] || 'fa-photo-film';
+                const color = typeColors[item.type] || 'var(--text-muted)';
+                const dateStr = item.date ? new Date(item.date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
+                const urlShort = (item.url || '').length > 55 ? item.url.substring(0, 55) + '…' : (item.url || '—');
+
+                return `
+                <div class="event-row" style="opacity: ${item.hidden ? '0.45' : '1'}; margin-bottom: 0.85rem; border-color: ${item.hidden ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)'};">
+                    <div class="event-info-wrapper">
+                        <div style="width:44px; height:44px; border-radius:12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fa-solid ${icon}" style="color:${color};"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight:600; font-size:0.95rem; margin-bottom:2px;">${item.title || '(Untitled)'}</div>
+                            <div style="font-size:0.78rem; color:var(--text-muted); font-family: monospace; margin-bottom: 2px;" title="${item.url || ''}">${urlShort}</div>
+                            <div style="font-size:0.75rem; color:rgba(255,255,255,0.25);">${dateStr}${item.description ? ' · ' + item.description.substring(0,60) : ''}</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 items-center" style="flex-shrink:0;">
+                        <span style="font-size:0.72rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:3px 9px; border-radius:20px; background:rgba(255,255,255,0.06); color:${color};">${item.type}</span>
+                        <button class="btn-icon" title="${item.hidden ? 'Show' : 'Hide'}" onclick="toggleGalleryItem(${realIdx})">
+                            <i class="fa-solid ${item.hidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
+                        </button>
+                        <button class="btn-icon danger" title="Delete" onclick="deleteGalleryItem(${realIdx})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function toggleGalleryItem(index) {
+            if (!sessionToken || !configData.gallery || !configData.gallery[index]) return;
+            configData.gallery[index].hidden = !configData.gallery[index].hidden;
+            renderAdminGallery();
+            await saveConfigOnly(configData.gallery[index].hidden ? 'Item hidden from gallery.' : 'Item shown in gallery.');
+        }
+
+        async function deleteGalleryItem(index) {
+            if (!sessionToken || !configData.gallery || !configData.gallery[index]) return;
+            if (!confirm(`Delete "${configData.gallery[index].title || 'this item'}" from the gallery?`)) return;
+            configData.gallery.splice(index, 1);
+            renderAdminGallery();
+            await saveConfigOnly('Gallery item deleted!');
         }
 
     </script>
