@@ -1953,9 +1953,12 @@
             <!-- Type Selector -->
             <div class="form-group">
                 <label>Item Type</label>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; margin-top: 0.25rem;" id="gallery-type-selector">
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.65rem; margin-top: 0.25rem;" id="gallery-type-selector">
                     <div class="icon-option selected" data-type="video" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
                         <i class="fa-solid fa-film" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Video
+                    </div>
+                    <div class="icon-option" data-type="image" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-solid fa-image" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Image
                     </div>
                     <div class="icon-option" data-type="news" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
                         <i class="fa-regular fa-newspaper" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> News
@@ -2038,6 +2041,7 @@
             <div style="display:flex; gap:0.5rem; flex-wrap:wrap;" id="admin-gallery-filter">
                 <button class="btn btn-outline active" data-filter="all" onclick="setAdminGalleryFilter('all', this)" style="padding:0.5rem 1rem; font-size:0.82rem;">All</button>
                 <button class="btn btn-outline" data-filter="video" onclick="setAdminGalleryFilter('video', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-film"></i> Videos</button>
+                <button class="btn btn-outline" data-filter="image" onclick="setAdminGalleryFilter('image', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-image"></i> Images</button>
                 <button class="btn btn-outline" data-filter="news" onclick="setAdminGalleryFilter('news', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-regular fa-newspaper"></i> News</button>
                 <button class="btn btn-outline" data-filter="pdf" onclick="setAdminGalleryFilter('pdf', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-file-pdf"></i> PDFs</button>
                 <button class="btn btn-outline" data-filter="link" onclick="setAdminGalleryFilter('link', this)" style="padding:0.5rem 1rem; font-size:0.82rem;"><i class="fa-solid fa-link"></i> Links</button>
@@ -4686,9 +4690,9 @@
                 urlLabel.innerHTML = 'YouTube Embed URL <span style="color:var(--gold);">*</span>';
                 urlHint.textContent = 'Paste the YouTube embed URL (youtube-nocookie.com/embed/...)';
                 thumbGroup.style.display = 'block';
-            } else if (type === 'news') {
+            } else if (type === 'news' || type === 'image') {
                 uploadGroup.classList.remove('hidden');
-                uploadLabel.innerHTML = 'Upload News Image <span style="color:var(--gold);">*</span>';
+                uploadLabel.innerHTML = type === 'image' ? 'Upload Image <span style="color:var(--gold);">*</span>' : 'Upload News Image <span style="color:var(--gold);">*</span>';
                 uploadHint.textContent = 'Click to upload image (JPG, PNG, WebP)';
                 fileInput.accept = 'image/*';
                 clearGalleryFile();
@@ -4903,8 +4907,8 @@
                 return;
             }
 
-            const typeIcons = { video: 'fa-film', news: 'fa-newspaper', pdf: 'fa-file-pdf', link: 'fa-link' };
-            const typeColors = { video: 'rgba(255,255,255,0.7)', news: 'var(--gold)', pdf: '#ef4444', link: '#60a5fa' };
+            const typeIcons = { video: 'fa-film', image: 'fa-image', news: 'fa-newspaper', pdf: 'fa-file-pdf', link: 'fa-link' };
+            const typeColors = { video: 'rgba(255,255,255,0.7)', image: '#a78bfa', news: 'var(--gold)', pdf: '#ef4444', link: '#60a5fa' };
 
             list.innerHTML = filtered.map((item, localIdx) => {
                 const realIdx = items.indexOf(item);

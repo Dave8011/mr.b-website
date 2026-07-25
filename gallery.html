@@ -72,6 +72,9 @@
                     <button class="filter-pill" data-filter="video" onclick="setFilter('video', this)">
                         <i class="fa-solid fa-film"></i> Videos
                     </button>
+                    <button class="filter-pill" data-filter="image" onclick="setFilter('image', this)">
+                        <i class="fa-solid fa-image"></i> Images
+                    </button>
                     <button class="filter-pill" data-filter="news" onclick="setFilter('news', this)">
                         <i class="fa-regular fa-newspaper"></i> News
                     </button>
@@ -201,17 +204,23 @@
             </div>`;
         }
 
-        if (item.type === 'news') {
+        if (item.type === 'news' || item.type === 'image') {
             const imgSrc = item.url || '';
+            const isNews = item.type === 'news';
+            const iconClass = isNews ? 'fa-regular fa-newspaper' : 'fa-solid fa-image';
+            const label = isNews ? 'News' : 'Image';
+            const badgeStyle = isNews ? '' : 'style="background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3);"';
+            const badgeClass = isNews ? 'badge-news' : '';
+
             return `
-            <div class="gallery-card" data-type="news" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
+            <div class="gallery-card" data-type="${item.type}" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
                  onclick="openImage('${imgSrc}', '${(item.title||'').replace(/'/g,"\\'")}')">
                 <div class="gallery-card-thumb">
-                    <span class="card-type-badge badge-news"><i class="fa-regular fa-newspaper"></i> News</span>
-                    ${imgSrc ? `<img src="${imgSrc}" alt="${item.title || 'News Cutout'}" loading="lazy">` : '<div style="width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><i class="fa-regular fa-newspaper" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>'}
+                    <span class="card-type-badge ${badgeClass}" ${badgeStyle}><i class="${iconClass}"></i> ${label}</span>
+                    ${imgSrc ? `<img src="${imgSrc}" alt="${item.title || label}" loading="lazy">` : `<div style="width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><i class="${iconClass}" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>`}
                 </div>
                 <div class="gallery-card-body">
-                    <div class="gallery-card-title">${item.title || 'News Cutout'}</div>
+                    <div class="gallery-card-title">${item.title || label}</div>
                     ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
                     <div class="gallery-card-footer">
                         <span class="gallery-card-date">${dateStr}</span>
