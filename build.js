@@ -27,7 +27,7 @@ try {
         'images', 'style-css', 'data', 
         'components.js', 'script.js', 'favicon.ico', 
         'robots.txt', 'sitemap.xml', 'admin.html', 
-        'privacy.html', 'terms.html', 'contact.html', 'BHUPESH DAVE-BRAND KIT.pdf'
+        'privacy.html', 'terms.html', 'contact.html', 'gallery.html', 'BHUPESH DAVE-BRAND KIT.pdf'
     ];
     
     itemsToCopy.forEach(item => {
