@@ -373,15 +373,16 @@
         try {
             const res = await fetch('/api/getConfig');
             if (!res.ok) throw new Error('Failed to fetch config');
-            const data = await res.json();
+            const payload = await res.json();
+            const configData = payload.config || {};
 
             // Gate: if admin has hidden the gallery page, redirect away
-            if (data.showGallery === false) {
+            if (configData.showGallery === false) {
                 window.location.replace('/');
                 return;
             }
 
-            allItems = (data.gallery || []).filter(i => !i.hidden);
+            allItems = (configData.gallery || []).filter(i => !i.hidden);
             renderGallery(allItems);
         } catch (err) {
             console.error('Gallery load error:', err);

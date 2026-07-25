@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const res = await fetch('/api/getConfig');
             if (!res.ok) return;
-            const data = await res.json();
-            if (data.showGallery === false) {
+            const payload = await res.json();
+            if (payload.config && payload.config.showGallery === false) {
                 document.querySelectorAll('a[href="/gallery"]').forEach(el => el.remove());
             }
         } catch (e) {
