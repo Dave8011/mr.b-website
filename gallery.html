@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Bhupesh Dave – Mr. B, India's Premier Mentalist</title>
+    <meta name="description" content="Explore the gallery of Bhupesh Dave (Mr. B) — show videos, news coverage, event glimpses, and performance materials.">
+    <link rel="canonical" href="https://bhupeshdave.com/gallery">
+    <link rel="icon" href="/favicon.ico">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bhupeshdave.com/gallery">
+    <meta property="og:title" content="Gallery | Bhupesh Dave – Mr. B">
+    <meta property="og:description" content="Watch show videos, news cutouts, and event glimpses from India's premier mentalist Bhupesh Dave.">
+    <meta property="og:image" content="https://bhupeshdave.com/images/hero.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="style-css/style.css">
+
+    <!-- Gallery Page Styles -->
+    <link rel="stylesheet" href="style-css/gallery.css">
+</head>
+<body>
+
+    <!-- Background Ambient Glows -->
+    <div class="bg-glow"></div>
+    <div style="position:fixed;top:20%;right:10%;width:60vw;height:60vw;background:radial-gradient(circle,rgba(15,118,110,0.04) 0%,rgba(12,12,30,0) 60%);z-index:-2;pointer-events:none;"></div>
+
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="gallery-hero">
+        <div class="container">
+            <div class="gallery-hero-eyebrow">05 // GALLERY</div>
+            <h1>Show <span class="gold-text">Highlights</span></h1>
+            <p>Videos, news coverage, event glimpses &amp; stage materials — all in one place.</p>
+        </div>
+    </section>
+
+    <!-- ===================== STICKY CONTROLS ===================== -->
+    <div class="gallery-controls" id="gallery-controls">
+        <div class="container">
+            <div class="gallery-controls-inner">
+                <!-- Search -->
+                <div class="gallery-search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="search"
+                        id="gallery-search-input"
+                        class="gallery-search"
+                        placeholder="Search videos, news, PDFs…"
+                        autocomplete="off"
+                        oninput="filterGallery()"
+                    >
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="gallery-filters" id="gallery-filter-pills">
+                    <button class="filter-pill active" data-filter="all" onclick="setFilter('all', this)">
+                        <i class="fa-solid fa-border-all"></i> All
+                    </button>
+                    <button class="filter-pill" data-filter="video" onclick="setFilter('video', this)">
+                        <i class="fa-solid fa-film"></i> Videos
+                    </button>
+                    <button class="filter-pill" data-filter="news" onclick="setFilter('news', this)">
+                        <i class="fa-regular fa-newspaper"></i> News
+                    </button>
+                    <button class="filter-pill" data-filter="pdf" onclick="setFilter('pdf', this)">
+                        <i class="fa-solid fa-file-pdf"></i> PDFs
+                    </button>
+                </div>
+
+                <!-- Results count -->
+                <span class="gallery-count" id="gallery-result-count"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== GALLERY GRID ===================== -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Cards injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== VIDEO LIGHTBOX ===================== -->
+    <div class="gallery-lightbox" id="video-lightbox" onclick="closeLightbox(event)">
+        <div class="lightbox-inner">
+            <button class="lightbox-close" onclick="closeLightbox(null, true)" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="lightbox-video-wrap" id="lightbox-video-wrap">
+                <!-- iframe injected by JS -->
+            </div>
+            <div class="lightbox-title" id="lightbox-video-title"></div>
+        </div>
+    </div>
+
+    <!-- ===================== IMAGE LIGHTBOX ===================== -->
+    <div class="gallery-lightbox" id="image-lightbox" onclick="closeImageLightbox(event)">
+        <div class="lightbox-inner">
+            <button class="lightbox-close" onclick="closeImageLightbox(null, true)" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="lightbox-image-wrap">
+                <img id="lightbox-img" src="" alt="">
+            </div>
+            <div class="lightbox-title" id="lightbox-img-title"></div>
+        </div>
+    </div>
+
+    <!-- ===================== PDF MODAL ===================== -->
+    <div class="pdf-modal" id="pdf-modal">
+        <div class="pdf-modal-header">
+            <div class="pdf-modal-title">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span id="pdf-modal-title-text">Document</span>
+            </div>
+            <div class="pdf-modal-actions">
+                <a id="pdf-download-btn" href="#" download class="pdf-btn pdf-btn-download">
+                    <i class="fa-solid fa-download"></i> Download
+                </a>
+                <button class="pdf-btn pdf-btn-close" onclick="closePdfModal()">
+                    <i class="fa-solid fa-xmark"></i> Close
+                </button>
+            </div>
+        </div>
+        <div class="pdf-modal-body">
+            <iframe id="pdf-iframe" src="" title="PDF Viewer"></iframe>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script src="components.js" defer></script>
+
+    <script>
+    // =========================================================
+    //  Gallery Page — Logic
+    // =========================================================
+
+    let allItems = [];
+    let currentFilter = 'all';
+
+    // Derive YouTube thumbnail from embed URL
+    function getYouTubeThumbnail(embedUrl) {
+        try {
+            const match = embedUrl.match(/embed\/([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    // Format date nicely
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        try {
+            return new Date(dateStr).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        } catch (e) { return dateStr; }
+    }
+
+    // Build a single card HTML
+    function buildCard(item) {
+        const dateStr = formatDate(item.date);
+
+        if (item.type === 'video') {
+            const thumb = item.thumbnail || getYouTubeThumbnail(item.url) || '';
+            return `
+            <div class="gallery-card" data-type="video" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
+                 onclick="openVideo('${encodeURIComponent(item.url)}', '${(item.title||'').replace(/'/g,"\\'")}')">
+                <div class="gallery-card-thumb">
+                    <span class="card-type-badge badge-video"><i class="fa-solid fa-film"></i> Video</span>
+                    ${thumb ? `<img src="${thumb}" alt="${item.title || 'Show Video'}" loading="lazy" onerror="this.style.display='none'">` : '<div style="width:100%;height:100%;background:rgba(0,0,0,0.5);"></div>'}
+                    <div class="play-overlay">
+                        <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                </div>
+                <div class="gallery-card-body">
+                    <div class="gallery-card-title">${item.title || 'Show Video'}</div>
+                    ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
+                    <div class="gallery-card-footer">
+                        <span class="gallery-card-date">${dateStr}</span>
+                        <span class="gallery-card-action"><i class="fa-solid fa-play"></i> Watch</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        if (item.type === 'news') {
+            const imgSrc = item.url || '';
+            return `
+            <div class="gallery-card" data-type="news" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
+                 onclick="openImage('${imgSrc}', '${(item.title||'').replace(/'/g,"\\'")}')">
+                <div class="gallery-card-thumb">
+                    <span class="card-type-badge badge-news"><i class="fa-regular fa-newspaper"></i> News</span>
+                    ${imgSrc ? `<img src="${imgSrc}" alt="${item.title || 'News Cutout'}" loading="lazy">` : '<div style="width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><i class="fa-regular fa-newspaper" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>'}
+                </div>
+                <div class="gallery-card-body">
+                    <div class="gallery-card-title">${item.title || 'News Cutout'}</div>
+                    ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
+                    <div class="gallery-card-footer">
+                        <span class="gallery-card-date">${dateStr}</span>
+                        <span class="gallery-card-action"><i class="fa-solid fa-expand"></i> View</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        if (item.type === 'pdf') {
+            return `
+            <div class="gallery-card" data-type="pdf" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
+                 onclick="openPdf('${encodeURIComponent(item.url)}', '${(item.title||'').replace(/'/g,"\\'")}')">
+                <div class="gallery-card-thumb pdf-thumb">
+                    <span class="card-type-badge badge-pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                    <i class="fa-solid fa-file-pdf pdf-icon-big"></i>
+                    <span class="pdf-ext-badge">PDF Document</span>
+                </div>
+                <div class="gallery-card-body">
+                    <div class="gallery-card-title">${item.title || 'Document'}</div>
+                    ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
+                    <div class="gallery-card-footer">
+                        <span class="gallery-card-date">${dateStr}</span>
+                        <span class="gallery-card-action"><i class="fa-solid fa-book-open"></i> Open</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        return '';
+    }
+
+    function renderGallery(items) {
+        const grid = document.getElementById('gallery-grid');
+        const countEl = document.getElementById('gallery-result-count');
+
+        const visible = items.filter(i => !i.hidden);
+
+        if (!visible.length) {
+            grid.innerHTML = `
+                <div class="gallery-empty">
+                    <i class="fa-solid fa-photo-film"></i>
+                    <h3>Nothing found</h3>
+                    <p>Try a different search term or filter.</p>
+                </div>`;
+            countEl.textContent = '0 items';
+            return;
+        }
+
+        countEl.textContent = `${visible.length} item${visible.length !== 1 ? 's' : ''}`;
+        grid.innerHTML = visible.map(buildCard).join('');
+    }
+
+    function filterGallery() {
+        const query = (document.getElementById('gallery-search-input').value || '').toLowerCase().trim();
+
+        let filtered = allItems.filter(item => !item.hidden);
+
+        if (currentFilter !== 'all') {
+            filtered = filtered.filter(i => i.type === currentFilter);
+        }
+
+        if (query) {
+            filtered = filtered.filter(i =>
+                (i.title || '').toLowerCase().includes(query) ||
+                (i.description || '').toLowerCase().includes(query)
+            );
+        }
+
+        const grid = document.getElementById('gallery-grid');
+        const countEl = document.getElementById('gallery-result-count');
+
+        if (!filtered.length) {
+            grid.innerHTML = `
+                <div class="gallery-empty">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>No results found</h3>
+                    <p>Try searching with a different keyword.</p>
+                </div>`;
+            countEl.textContent = '0 items';
+            return;
+        }
+
+        countEl.textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
+        grid.innerHTML = filtered.map(buildCard).join('');
+    }
+
+    function setFilter(type, btn) {
+        currentFilter = type;
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        filterGallery();
+    }
+
+    // ---- Video Lightbox ----
+    function openVideo(encodedUrl, title) {
+        const url = decodeURIComponent(encodedUrl);
+        const wrap = document.getElementById('lightbox-video-wrap');
+        document.getElementById('lightbox-video-title').textContent = title;
+        // Add autoplay
+        const autoplayUrl = url.includes('?') ? url + '&autoplay=1' : url + '?autoplay=1';
+        wrap.innerHTML = `<iframe src="${autoplayUrl}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+        document.getElementById('video-lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e, force) {
+        if (force || (e && e.target === document.getElementById('video-lightbox'))) {
+            document.getElementById('video-lightbox').classList.remove('active');
+            document.getElementById('lightbox-video-wrap').innerHTML = '';
+            document.body.style.overflow = '';
+        }
+    }
+
+    // ---- Image Lightbox ----
+    function openImage(src, title) {
+        document.getElementById('lightbox-img').src = src;
+        document.getElementById('lightbox-img-title').textContent = title;
+        document.getElementById('image-lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeImageLightbox(e, force) {
+        if (force || (e && e.target === document.getElementById('image-lightbox'))) {
+            document.getElementById('image-lightbox').classList.remove('active');
+            document.getElementById('lightbox-img').src = '';
+            document.body.style.overflow = '';
+        }
+    }
+
+    // ---- PDF Modal ----
+    function openPdf(encodedUrl, title) {
+        const url = decodeURIComponent(encodedUrl);
+        document.getElementById('pdf-modal-title-text').textContent = title || 'Document';
+        document.getElementById('pdf-iframe').src = url;
+        document.getElementById('pdf-download-btn').href = url;
+        document.getElementById('pdf-download-btn').setAttribute('download', title ? title + '.pdf' : 'document.pdf');
+        document.getElementById('pdf-modal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closePdfModal() {
+        document.getElementById('pdf-modal').classList.remove('active');
+        document.getElementById('pdf-iframe').src = '';
+        document.body.style.overflow = '';
+    }
+
+    // Keyboard close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeLightbox(null, true);
+            closeImageLightbox(null, true);
+            closePdfModal();
+        }
+    });
+
+    // ---- Load Data ----
+    async function loadGallery() {
+        try {
+            const res = await fetch('/api/getConfig');
+            if (!res.ok) throw new Error('Failed to fetch config');
+            const data = await res.json();
+
+            // Gate: if admin has hidden the gallery page, redirect away
+            if (data.showGallery === false) {
+                window.location.replace('/');
+                return;
+            }
+
+            allItems = (data.gallery || []).filter(i => !i.hidden);
+            renderGallery(allItems);
+        } catch (err) {
+            console.error('Gallery load error:', err);
+            document.getElementById('gallery-grid').innerHTML = `
+                <div class="gallery-empty">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <h3>Could not load gallery</h3>
+                    <p>Please try refreshing the page.</p>
+                </div>`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadGallery);
+    </script>
+
+</body>
+</html>
