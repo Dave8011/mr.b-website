@@ -2,6 +2,11 @@
   "showHeroBanner": true,
   "banners": [
     {
+      "id": "1785235382239",
+      "url": "images/banners/banner_1785235377371.jpg",
+      "uploadDate": "2026-07-28T10:43:02.239Z"
+    },
+    {
       "id": "1784280938120",
       "url": "images/banners/banner_1784280937114.jpg",
       "uploadDate": "2026-07-17T09:35:38.120Z"
@@ -19,7 +24,8 @@
   ],
   "activeBannerUrls": [
     "images/banners/banner_1783946419617.jpg",
-    "images/banners/banner_1783946392870.jpg"
+    "images/banners/banner_1783946392870.jpg",
+    "images/banners/banner_1785235377371.jpg"
   ],
   "showClientsSection": true,
   "clientsSectionTitle": "Our happy and satisfied Clients :",
