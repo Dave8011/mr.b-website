@@ -238,7 +238,7 @@
         "tags": "Interactive • Personal • Astonishing",
         "audience": "FOR INDIVIDUALS",
         "colorClass": "bg-pillar-teal",
-        "hidden": false
+        "hidden": true
       },
       {
         "id": "exp-1784560000003",
