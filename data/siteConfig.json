@@ -117,12 +117,6 @@
       "hidden": false
     },
     {
-      "id": "client-1784365147255",
-      "name": "Bahwan International Group",
-      "logoUrl": "images/brands/brand_bahwan_group.png",
-      "hidden": true
-    },
-    {
       "id": "client-1784367626930",
       "name": "Brihanmumbai Police",
       "logoUrl": "images/brands/img_1784367627608.jpg",
@@ -182,6 +176,50 @@
       {
         "name": "Bhupesh Dave",
         "image": "images/about.jpg"
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
+      },
+      {
+        "name": "",
+        "image": ""
       }
     ],
     "artistSectionTitle": "Artist"
