@@ -159,8 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             bannerImg.src = urls[0] + '?v=' + new Date().getTime();
                             bannerImg.style.width = '100%';
                             bannerImg.style.height = 'auto';
-                            bannerImg.style.maxHeight = '85vh';
-                            bannerImg.style.objectFit = 'cover';
                             bannerImg.style.display = 'block';
                         }
                     } else {
@@ -175,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         urls.forEach((url, i) => {
                             const slide = document.createElement('img');
                             slide.src = url;
-                            slide.style.cssText = `grid-area: 1 / 1; width: 100%; height: auto; max-height: 85vh; object-fit: cover; opacity: ${i === 0 ? 1 : 0}; transition: opacity 1s ease-in-out; z-index: ${i === 0 ? 2 : 1};`;
+                            slide.style.cssText = `grid-area: 1 / 1; width: 100%; height: auto; opacity: ${i === 0 ? 1 : 0}; transition: opacity 1s ease-in-out; z-index: ${i === 0 ? 2 : 1};`;
                             gridWrapper.appendChild(slide);
                             slideEls.push(slide);
                         });

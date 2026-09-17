@@ -81,6 +81,9 @@
                     <button class="filter-pill" data-filter="pdf" onclick="setFilter('pdf', this)">
                         <i class="fa-solid fa-file-pdf"></i> PDFs
                     </button>
+                    <button class="filter-pill" data-filter="ppt" onclick="setFilter('ppt', this)">
+                        <i class="fa-solid fa-file-powerpoint"></i> PPTs
+                    </button>
                     <button class="filter-pill" data-filter="link" onclick="setFilter('link', this)">
                         <i class="fa-solid fa-link"></i> Links
                     </button>
@@ -180,6 +183,7 @@
         if (t === 'image' || t === 'images' || t === 'img' || t === 'photo' || t === 'photos') return 'image';
         if (t === 'news' || t === 'article' || t === 'press') return 'news';
         if (t === 'pdf' || t === 'pdfs' || t === 'doc' || t === 'document') return 'pdf';
+        if (t === 'ppt' || t === 'pptx' || t === 'presentation') return 'ppt';
         if (t === 'link' || t === 'links' || t === 'url') return 'link';
         return t;
     }
@@ -281,15 +285,19 @@
             </div>`;
         }
 
-        if (normType === 'pdf') {
+        if (normType === 'pdf' || normType === 'ppt') {
             const safeTitle = (item.title || 'Document').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const isPpt = normType === 'ppt';
+            const icon = isPpt ? 'fa-file-powerpoint' : 'fa-file-pdf';
+            const label = isPpt ? 'PPT Document' : 'PDF Document';
+            const color = isPpt ? '#f97316' : '#ef4444';
             return `
-            <div class="gallery-card" data-type="pdf" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
-                 onclick="openPdf('${encodeURIComponent(item.url || '')}', '${safeTitle}')">
-                <div class="gallery-card-thumb pdf-thumb">
-                    <span class="card-type-badge badge-pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
-                    <i class="fa-solid fa-file-pdf pdf-icon-big"></i>
-                    <span class="pdf-ext-badge">PDF Document</span>
+            <div class="gallery-card" data-type="${normType}" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
+                 onclick="openPdf('${encodeURIComponent(item.url || '')}', '${safeTitle}', ${isPpt})">
+                <div class="gallery-card-thumb pdf-thumb" style="background: rgba(${isPpt?'249,115,22':'239,68,68'},0.05); border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <span class="card-type-badge badge-pdf" style="background: ${color};"><i class="fa-solid ${icon}"></i> ${normType.toUpperCase()}</span>
+                    <i class="fa-solid ${icon} pdf-icon-big" style="color: ${color};"></i>
+                    <span class="pdf-ext-badge" style="color: ${color};">${label}</span>
                 </div>
                 <div class="gallery-card-body">
                     <div class="gallery-card-title">${item.title || 'Document'}</div>
@@ -500,12 +508,19 @@
     }
 
     // ---- PDF Modal ----
-    function openPdf(encodedUrl, title) {
+    function openPdf(encodedUrl, title, isPpt = false) {
         const url = decodeURIComponent(encodedUrl);
         document.getElementById('pdf-modal-title-text').textContent = title || 'Document';
         document.getElementById('pdf-iframe').src = url;
         document.getElementById('pdf-download-btn').href = url;
-        document.getElementById('pdf-download-btn').setAttribute('download', title ? title + '.pdf' : 'document.pdf');
+        const ext = isPpt ? '.ppt' : '.pdf';
+        document.getElementById('pdf-download-btn').setAttribute('download', title ? title + ext : 'document' + ext);
+        
+        const titleIcon = document.querySelector('.pdf-modal-title i');
+        if (titleIcon) {
+            titleIcon.className = isPpt ? 'fa-solid fa-file-powerpoint' : 'fa-solid fa-file-pdf';
+        }
+        
         document.getElementById('pdf-modal').classList.add('active');
         document.body.style.overflow = 'hidden';
     }

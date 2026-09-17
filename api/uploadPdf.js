@@ -25,29 +25,29 @@ export default async function handler(req, res) {
     const repo = (process.env.GITHUB_REPO || '').replace('mr-b-website', 'mr.b-website');
     const githubToken = process.env.GITHUB_TOKEN;
 
-    // Sanitize the filename if provided, otherwise generate one
     let safeFilename;
     if (originalFilename) {
-        safeFilename = originalFilename
-            .replace(/[^a-zA-Z0-9.\-_]/g, '_')
-            .replace(/\.pdf$/i, '')
-            + `_${Date.now()}.pdf`;
+        const parts = originalFilename.split('.');
+        const candidateExt = parts.length > 1 ? parts.pop().toLowerCase().replace(/[^a-z0-9]/g, '') : 'pdf';
+        const ext = candidateExt || 'pdf';
+        const baseName = parts.join('.').replace(/[^a-zA-Z0-9.\-_]/g, '_') || 'document';
+        safeFilename = `${baseName}_${Date.now()}.${ext}`;
     } else {
         safeFilename = `document_${Date.now()}.pdf`;
     }
 
-    const path = `data/gallery/pdfs/${safeFilename}`;
+    const path = `data/gallery/docs/${safeFilename}`;
 
     if (!owner || !repo || !githubToken) {
         return res.status(500).json({ error: `Server Configuration Error: Missing GitHub environment variables.` });
     }
 
     try {
-        // Clean up the base64 string (remove data:application/pdf;base64, prefix if present)
+        // Clean up the base64 string (remove data URL prefix if present)
         const cleanBase64 = base64Pdf.replace(/^data:[^;]+;base64,/, '');
 
         const payload = {
-            message: `Upload PDF to gallery: ${safeFilename}`,
+            message: `Upload document to gallery: ${safeFilename}`,
             content: cleanBase64
         };
 

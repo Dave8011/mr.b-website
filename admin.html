@@ -1966,7 +1966,7 @@
             <!-- Type Selector -->
             <div class="form-group">
                 <label>Item Type</label>
-                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.65rem; margin-top: 0.25rem;" id="gallery-type-selector">
+                <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.65rem; margin-top: 0.25rem;" id="gallery-type-selector">
                     <div class="icon-option selected" data-type="video" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
                         <i class="fa-solid fa-film" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Video
                     </div>
@@ -1978,6 +1978,9 @@
                     </div>
                     <div class="icon-option" data-type="pdf" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
                         <i class="fa-solid fa-file-pdf" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> PDF
+                    </div>
+                    <div class="icon-option" data-type="ppt" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
+                        <i class="fa-solid fa-file-powerpoint" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> PPT
                     </div>
                     <div class="icon-option" data-type="link" onclick="selectGalleryType(this)" style="padding: 0.85rem 0.5rem; text-align:center; cursor:pointer; border-radius:10px; font-size:0.78rem;">
                         <i class="fa-solid fa-link" style="display:block; font-size:1.5rem; margin-bottom:0.4rem;"></i> Link
@@ -5093,6 +5096,7 @@
             if (t === 'image' || t === 'images' || t === 'img' || t === 'photo' || t === 'photos') return 'image';
             if (t === 'news' || t === 'article' || t === 'press') return 'news';
             if (t === 'pdf' || t === 'pdfs' || t === 'doc' || t === 'document') return 'pdf';
+            if (t === 'ppt' || t === 'pptx' || t === 'presentation') return 'ppt';
             if (t === 'link' || t === 'links' || t === 'url') return 'link';
             return t;
         }
@@ -5138,15 +5142,16 @@
                 if (linkLabel) linkLabel.innerHTML = 'Or Image URL (optional if uploading file above)';
                 const linkInput = document.getElementById('gallery-new-link');
                 if (linkInput) linkInput.placeholder = 'https://... (optional image URL)';
-            } else if (type === 'pdf') {
-                uploadLabel.innerHTML = 'Upload PDF File <span style="color:var(--gold);">*</span>';
-                uploadHint.textContent = 'Click to upload PDF file — No URL needed';
-                fileInput.accept = 'application/pdf,.pdf';
+            } else if (type === 'pdf' || type === 'ppt') {
+                const labelTxt = type === 'pdf' ? 'PDF' : 'PPT';
+                uploadLabel.innerHTML = `Upload ${labelTxt} File <span style="color:var(--gold);">*</span>`;
+                uploadHint.textContent = `Click to upload ${labelTxt} file — No URL needed`;
+                fileInput.accept = type === 'pdf' ? 'application/pdf,.pdf' : 'application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,.ppt,.pptx';
                 linkGroup.classList.remove('hidden');
                 const linkLabel = document.querySelector('#gallery-link-group label');
-                if (linkLabel) linkLabel.innerHTML = 'Or External PDF Link (optional if uploading file above)';
+                if (linkLabel) linkLabel.innerHTML = `Or External ${labelTxt} Link (optional if uploading file above)`;
                 const linkInput = document.getElementById('gallery-new-link');
-                if (linkInput) linkInput.placeholder = 'https://... (optional external PDF link)';
+                if (linkInput) linkInput.placeholder = `https://... (optional external ${labelTxt} link)`;
                 thumbGroup.style.display = 'block';
             } else if (type === 'link') {
                 uploadLabel.innerHTML = 'Upload Document / Resource File <span style="color:var(--text-muted); font-weight:normal;">(optional)</span>';
@@ -5166,7 +5171,7 @@
             if (!file) return;
 
             pendingGalleryFilename = file.name;
-            const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+            const isDoc = file.type === 'application/pdf' || file.name.toLowerCase().match(/\.(pdf|ppt|pptx)$/);
             const isVideo = file.type.startsWith('video/') || file.name.toLowerCase().match(/\.(mp4|webm|mov|ogg)$/);
             
             if (isVideo && file.size > 4.2 * 1024 * 1024) {
@@ -5177,7 +5182,7 @@
 
             const reader = new FileReader();
 
-            if (isPdf || isVideo) {
+            if (isDoc || isVideo) {
                 reader.onload = function(e) {
                     pendingGalleryFileBase64 = e.target.result;
 
@@ -5192,7 +5197,7 @@
                     if (vidEl) vidEl.style.display = 'none';
                     pdfEl.style.display = 'none';
 
-                    if (isPdf) {
+                    if (isDoc) {
                         pdfEl.style.display = 'block';
                         pdfName.textContent = file.name;
                     } else if (isVideo && vidEl) {
@@ -5273,9 +5278,9 @@
             try {
                 // If a file was selected directly from computer (No URL needed!)
                 if (pendingGalleryFileBase64) {
-                    const isPdf = pendingGalleryFilename && pendingGalleryFilename.toLowerCase().endsWith('.pdf');
-                    if (isPdf) {
-                        showToast('fa-cloud-arrow-up', 'Uploading PDF…');
+                    const isDoc = pendingGalleryFilename && pendingGalleryFilename.toLowerCase().match(/\.(pdf|ppt|pptx)$/);
+                    if (isDoc) {
+                        showToast('fa-cloud-arrow-up', 'Uploading Document...');
                         const pdfRes = await fetch('/api/uploadPdf', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionToken}` },
@@ -5382,8 +5387,8 @@
                 return;
             }
 
-            const typeIcons = { video: 'fa-film', image: 'fa-image', news: 'fa-newspaper', pdf: 'fa-file-pdf', link: 'fa-link' };
-            const typeColors = { video: 'rgba(255,255,255,0.7)', image: '#a78bfa', news: 'var(--gold)', pdf: '#ef4444', link: '#60a5fa' };
+            const typeIcons = { video: 'fa-film', image: 'fa-image', news: 'fa-newspaper', pdf: 'fa-file-pdf', ppt: 'fa-file-powerpoint', link: 'fa-link' };
+            const typeColors = { video: 'rgba(255,255,255,0.7)', image: '#a78bfa', news: 'var(--gold)', pdf: '#ef4444', ppt: '#f97316', link: '#60a5fa' };
 
             list.innerHTML = filtered.map((item, localIdx) => {
                 const realIdx = items.indexOf(item);
