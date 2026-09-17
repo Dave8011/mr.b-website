@@ -916,30 +916,66 @@ document.addEventListener('DOMContentLoaded', () => {
                         renderedCount++;
                         const eventDate = new Date(event.nextDate || event.date);
                         const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+                        const fullMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                         const monthStr = monthNames[eventDate.getMonth()];
                         const dayStr = String(eventDate.getDate()).padStart(2, '0');
-                        
+
                         const isMultiDate = Array.isArray(event.allDates) && event.allDates.length > 1;
                         let multiDatesStr = '';
+                        let cubeDayContent = `<span class="day">${dayStr}</span>`;
+                        let cubeMonthContent = `<span class="month">${monthStr}</span>`;
+                        let cubeSubContent = '';
+
                         if (isMultiDate) {
-                            multiDatesStr = event.allDates.map(d => {
-                                const dObj = new Date(d);
-                                return !isNaN(dObj) ? `${dObj.getDate()} ${monthNames[dObj.getMonth()]}` : d;
-                            }).join(', ');
+                            const sorted = [...event.allDates].sort();
+                            const groups = {};
+                            sorted.forEach(d => {
+                                const dt = new Date(d);
+                                if (!isNaN(dt)) {
+                                    const key = `${dt.getFullYear()}-${dt.getMonth()}`;
+                                    if (!groups[key]) groups[key] = { year: dt.getFullYear(), month: dt.getMonth(), days: [] };
+                                    groups[key].days.push(dt.getDate());
+                                }
+                            });
+
+                            const gKeys = Object.keys(groups);
+                            if (gKeys.length === 1) {
+                                const g = groups[gKeys[0]];
+                                const daysArr = g.days;
+                                multiDatesStr = `${daysArr.join(', ')} of ${fullMonths[g.month]} ${g.year}`;
+                                cubeMonthContent = `<span class="month">${monthNames[g.month]}</span>`;
+                                if (daysArr.length <= 3) {
+                                    cubeDayContent = `<span class="day" style="font-size:0.92rem; line-height:1.2; font-weight:700;">${daysArr.join(', ')}</span>`;
+                                } else {
+                                    const isConsecutive = daysArr.every((d, idx) => idx === 0 || d === daysArr[idx - 1] + 1);
+                                    if (isConsecutive) {
+                                        cubeDayContent = `<span class="day" style="font-size:1.1rem; line-height:1.2; font-weight:700;">${daysArr[0]}-${daysArr[daysArr.length - 1]}</span>`;
+                                    } else {
+                                        cubeDayContent = `<span class="day">${dayStr}</span>`;
+                                        cubeSubContent = `<span style="font-size:0.62rem; color:var(--gold); font-weight:700; display:block; margin-top:2px;">+${event.allDates.length - 1} MORE</span>`;
+                                    }
+                                }
+                            } else {
+                                multiDatesStr = gKeys.map(k => {
+                                    const g = groups[k];
+                                    return `${g.days.join(', ')} ${monthNames[g.month]} ${g.year}`;
+                                }).join(' & ');
+                                cubeSubContent = `<span style="font-size:0.62rem; color:var(--gold); font-weight:700; display:block; margin-top:2px;">+${event.allDates.length - 1} MORE</span>`;
+                            }
                         }
 
                         let highlightHtml = '';
                         if (event.diffDays >= 0 && event.diffDays <= 7) {
                             highlightHtml = `<div style="position:absolute; top:-10px; right:20px; background:var(--gold); color:#000; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.8rem; box-shadow:0 0 10px rgba(201,160,42,0.5); z-index:10;">${event.diffDays === 0 ? 'TODAY!' : event.diffDays + ' Days Left!'}</div>`;
                         }
-                        
+
                         const eventHtml = `
                             <div class="event-item" style="position:relative;">
                                 ${highlightHtml}
                                 <div class="event-date">
-                                    <span class="day">${dayStr}</span>
-                                    <span class="month">${monthStr}</span>
-                                    ${isMultiDate ? `<span style="font-size:0.62rem; color:var(--gold); font-weight:700; display:block; margin-top:2px;">+${event.allDates.length - 1} MORE</span>` : ''}
+                                    ${cubeDayContent}
+                                    ${cubeMonthContent}
+                                    ${cubeSubContent}
                                 </div>
                                 <div class="event-image-wrapper">
                                     <img src="${event.image_url}" alt="${event.image_alt || event.title} - Mr. B Event" class="event-img" onerror="this.onerror=null; this.src='images/hero.jpg'">

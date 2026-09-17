@@ -1947,8 +1947,18 @@
             <p>Items added here appear on the public <span class="page-badge">🖼️ Gallery Page</span>. PDFs can be opened directly on stage from the gallery for easy reference.</p>
         </div>
 
-        <!-- Add New Item Card -->
-        <div style="background: rgba(18,18,26,0.8); border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem; backdrop-filter: blur(12px);">
+        <!-- Mode Switch: Single Item vs Bulk Upload -->
+        <div style="display:flex; gap:0.75rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+            <button type="button" id="btn-gallery-mode-single" class="btn btn-primary" onclick="setGalleryAddMode('single')" style="font-size:0.85rem; padding:0.55rem 1.25rem;">
+                <i class="fa-solid fa-plus"></i> Single Item
+            </button>
+            <button type="button" id="btn-gallery-mode-bulk" class="btn btn-secondary" onclick="setGalleryAddMode('bulk')" style="font-size:0.85rem; padding:0.55rem 1.25rem;">
+                <i class="fa-solid fa-layer-group"></i> ⚡ Bulk Upload (News Cutouts / Images)
+            </button>
+        </div>
+
+        <!-- Add New Item Card (Single Item Mode) -->
+        <div id="gallery-single-container" style="background: rgba(18,18,26,0.8); border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem; backdrop-filter: blur(12px);">
             <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; display:flex; align-items:center; gap:0.65rem;">
                 <i class="fa-solid fa-plus" style="color: var(--gold);"></i> Add New Gallery Item
             </h2>
@@ -2035,6 +2045,105 @@
             </button>
         </div>
 
+        <!-- Bulk Upload Card (Bulk Mode) -->
+        <div id="gallery-bulk-container" style="display:none; background: rgba(18,18,26,0.8); border: 1px solid rgba(201,160,42,0.3); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem; backdrop-filter: blur(12px);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+                <h2 style="font-size: 1.25rem; font-weight: 600; margin:0; display:flex; align-items:center; gap:0.65rem;">
+                    <i class="fa-solid fa-layer-group" style="color: var(--gold);"></i> Bulk Upload News Cutouts & Images
+                </h2>
+                <span style="font-size:0.8rem; color:var(--text-muted);"><i class="fa-solid fa-bolt" style="color:var(--gold);"></i> Upload multiple files at once</span>
+            </div>
+
+            <!-- Target Category -->
+            <div class="form-group" style="margin-bottom:1.25rem;">
+                <label>Target Category</label>
+                <div style="display:flex; gap:1rem; margin-top:0.35rem; flex-wrap:wrap;">
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; background:rgba(255,255,255,0.04); border:1px solid var(--border); padding:0.65rem 1.25rem; border-radius:10px;">
+                        <input type="radio" name="bulk-category" value="news" checked onchange="updateBulkCategoryHint()">
+                        <span style="font-size:0.9rem; font-weight:600;"><i class="fa-regular fa-newspaper" style="color:var(--gold); margin-right:4px;"></i> News Cutouts / Press Articles</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; background:rgba(255,255,255,0.04); border:1px solid var(--border); padding:0.65rem 1.25rem; border-radius:10px;">
+                        <input type="radio" name="bulk-category" value="image" onchange="updateBulkCategoryHint()">
+                        <span style="font-size:0.9rem; font-weight:600;"><i class="fa-solid fa-image" style="color:#a78bfa; margin-right:4px;"></i> Gallery Images / Photos</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Display Arrangement (All Separate vs Group in One) -->
+            <div class="form-group" style="margin-bottom:1.5rem;">
+                <label>Display Arrangement on Website</label>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin-top:0.35rem;">
+                    <label id="bulk-arrange-separate-label" style="display:flex; gap:0.75rem; align-items:flex-start; cursor:pointer; background:rgba(255,255,255,0.03); border:1px solid var(--gold); padding:1rem; border-radius:12px; transition:all 0.2s;">
+                        <input type="radio" name="bulk-arrange" value="separate" checked onchange="updateBulkArrangeStyles()" style="margin-top:3px;">
+                        <div>
+                            <strong style="display:block; font-size:0.95rem; margin-bottom:2px;"><i class="fa-solid fa-table-cells-large" style="color:var(--gold); margin-right:5px;"></i> All Separate Cards</strong>
+                            <span class="text-muted text-sm" style="font-size:0.78rem;">Each uploaded image creates its own separate card in the gallery grid.</span>
+                        </div>
+                    </label>
+                    <label id="bulk-arrange-group-label" style="display:flex; gap:0.75rem; align-items:flex-start; cursor:pointer; background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:1rem; border-radius:12px; transition:all 0.2s;">
+                        <input type="radio" name="bulk-arrange" value="group" onchange="updateBulkArrangeStyles()" style="margin-top:3px;">
+                        <div>
+                            <strong style="display:block; font-size:0.95rem; margin-bottom:2px;"><i class="fa-solid fa-layer-group" style="color:var(--gold); margin-right:5px;"></i> Group into One Card (Collection / Set)</strong>
+                            <span class="text-muted text-sm" style="font-size:0.78rem;">Combines all images into a single card with an interactive slideshow lightbox.</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Batch Common Information -->
+            <div class="form-row">
+                <div class="form-group" style="flex:1.5;">
+                    <label id="bulk-title-label">Title / Batch Name</label>
+                    <input type="text" id="bulk-title" class="form-control" placeholder="e.g. Press Coverage 2026 (or leave empty to use file names)">
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>Date</label>
+                    <input type="date" id="bulk-date" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Description (optional)</label>
+                <input type="text" id="bulk-desc" class="form-control" placeholder="Optional description applied to the uploaded items">
+            </div>
+
+            <!-- Multi-file Dropzone -->
+            <div class="form-group" style="margin-top:1.5rem;">
+                <label>Select Multiple Images / Cutouts <span style="color:var(--gold);">*</span></label>
+                <div class="upload-area" onclick="document.getElementById('bulk-files-input').click()" style="padding: 2rem; text-align:center; border:2px dashed var(--border); border-radius:12px; cursor:pointer; background:rgba(255,255,255,0.02); transition:all 0.2s;">
+                    <i class="fa-solid fa-images text-gold" style="font-size:2.4rem; margin-bottom:0.75rem; display:block;"></i>
+                    <h3 style="font-size:1.05rem; margin-bottom:0.35rem;">Click to Select Multiple Files (or Drag & Drop)</h3>
+                    <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Select multiple JPG, PNG, WebP files from your computer</p>
+                    <input type="file" id="bulk-files-input" multiple accept="image/*" style="display:none" onchange="handleBulkFilesSelected(event)">
+                </div>
+            </div>
+
+            <!-- Selected Files Preview List -->
+            <div id="bulk-preview-wrapper" style="display:none; margin-top:1.5rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                    <span id="bulk-files-count" style="font-size:0.88rem; font-weight:600; color:var(--gold);"></span>
+                    <button type="button" class="btn btn-outline" onclick="clearBulkFiles()" style="font-size:0.75rem; padding:3px 10px;">Clear All</button>
+                </div>
+                <div id="bulk-files-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:0.75rem; max-height:260px; overflow-y:auto; padding-right:4px;"></div>
+            </div>
+
+            <!-- Upload Progress & Submit Button -->
+            <div id="bulk-progress-wrap" style="display:none; margin-top:1.5rem;">
+                <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:0.4rem;">
+                    <span id="bulk-progress-text" style="color:var(--gold);">Uploading...</span>
+                    <span id="bulk-progress-percent">0%</span>
+                </div>
+                <div style="width:100%; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden;">
+                    <div id="bulk-progress-bar" style="width:0%; height:100%; background:var(--gold-gradient); transition:width 0.2s;"></div>
+                </div>
+            </div>
+
+            <div style="margin-top:1.5rem;">
+                <button type="button" class="btn btn-gold" id="bulk-upload-submit-btn" style="min-width:220px;" onclick="executeBulkGalleryUpload()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload All to Gallery
+                </button>
+            </div>
+        </div>
+
         <!-- Search bar inside admin -->
         <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;">
             <div style="position:relative; flex:1; min-width:200px;">
@@ -2090,7 +2199,22 @@
                             <span class="text-muted text-sm" style="font-size:0.75rem; width:45px;">Main</span>
                         </div>
                     </div>
-                    <p class="text-muted text-sm" style="font-size:0.72rem; margin-top:0.25rem;">Add multiple dates for multi-day workshops or consecutive shows.</p>
+
+                    <!-- Quick Multi-Day Helper in a Month -->
+                    <div style="background:rgba(201,160,42,0.06); border:1px dashed rgba(201,160,42,0.3); border-radius:8px; padding:0.65rem 0.8rem; margin-top:0.6rem;">
+                        <div style="font-size:0.75rem; font-weight:600; color:var(--gold); margin-bottom:0.4rem; display:flex; align-items:center; gap:0.35rem;">
+                            <i class="fa-solid fa-calendar-days"></i> Quick Add Multi-Days in a Month (e.g. 15, 16, 17)
+                        </div>
+                        <div style="display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap;">
+                            <input type="month" id="ev-quick-month" class="form-control" style="flex:1; min-width:115px; font-size:0.78rem; padding:0.35rem 0.5rem;">
+                            <input type="text" id="ev-quick-days" class="form-control" placeholder="Days: 15, 16, 17 or 15-18" style="flex:1.4; min-width:130px; font-size:0.78rem; padding:0.35rem 0.5rem;">
+                            <button type="button" class="btn btn-gold" onclick="applyQuickMonthDays()" style="font-size:0.75rem; padding:0.38rem 0.75rem; white-space:nowrap;">
+                                <i class="fa-solid fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="text-muted text-sm" style="font-size:0.72rem; margin-top:0.35rem;">Add multiple dates for multi-day workshops or consecutive shows.</p>
                 </div>
                 <div class="form-group" style="flex: 1;">
                     <label>Time</label>
@@ -3464,12 +3588,29 @@
                     ? `<span class="text-sm text-muted"><span class="status-dot hidden"></span>Hidden</span>`
                     : `<span class="text-sm"><span class="status-dot active"></span>Live</span>`;
 
-                const formattedDatesList = allDates.length > 1
-                    ? allDates.map(d => {
-                        const dobj = new Date(d);
-                        return !isNaN(dobj) ? `${dobj.getDate()} ${monthNames[dobj.getMonth()]}` : d;
-                    }).join(', ')
-                    : '';
+                let formattedDatesList = '';
+                if (allDates.length > 1) {
+                    const sorted = [...allDates].sort();
+                    const groups = {};
+                    sorted.forEach(d => {
+                        const dt = new Date(d);
+                        if (!isNaN(dt)) {
+                            const k = `${dt.getFullYear()}-${dt.getMonth()}`;
+                            if (!groups[k]) groups[k] = { m: dt.getMonth(), y: dt.getFullYear(), days: [] };
+                            groups[k].days.push(dt.getDate());
+                        }
+                    });
+                    const gKeys = Object.keys(groups);
+                    if (gKeys.length === 1) {
+                        const g = groups[gKeys[0]];
+                        formattedDatesList = `${g.days.join(', ')} of ${monthNames[g.m]} ${g.y}`;
+                    } else {
+                        formattedDatesList = gKeys.map(k => {
+                            const g = groups[k];
+                            return `${g.days.join(', ')} ${monthNames[g.m]} ${g.y}`;
+                        }).join(' & ');
+                    }
+                }
 
                 const html = `
                 <div class="event-row" style="${ev.is_hidden ? 'opacity: 0.5; filter: grayscale(100%);' : ''}">
@@ -3567,6 +3708,81 @@
             container.appendChild(row);
         }
 
+        function applyQuickMonthDays() {
+            const monthVal = (document.getElementById('ev-quick-month')?.value || '').trim();
+            const daysVal = (document.getElementById('ev-quick-days')?.value || '').trim();
+
+            let yearStr = '', monthStr = '';
+            if (monthVal && monthVal.includes('-')) {
+                const parts = monthVal.split('-');
+                yearStr = parts[0];
+                monthStr = parts[1];
+            } else {
+                const primaryDate = document.getElementById('ev-date')?.value;
+                if (primaryDate && primaryDate.includes('-')) {
+                    const parts = primaryDate.split('-');
+                    yearStr = parts[0];
+                    monthStr = parts[1];
+                } else {
+                    const now = new Date();
+                    yearStr = String(now.getFullYear());
+                    monthStr = String(now.getMonth() + 1).padStart(2, '0');
+                }
+            }
+
+            if (!daysVal) {
+                showToast('fa-triangle-exclamation', 'Please enter days (e.g. 15, 16, 17 or 15-18)', true);
+                return;
+            }
+
+            // Parse days: handles "15, 16, 17", "15,16,17", "15 16 17", "15-18"
+            const daysSet = new Set();
+            const segments = daysVal.split(/[,;\s]+/);
+            segments.forEach(seg => {
+                seg = seg.trim();
+                if (!seg) return;
+                if (seg.includes('-')) {
+                    const [start, end] = seg.split('-').map(n => parseInt(n, 10));
+                    if (!isNaN(start) && !isNaN(end) && start <= end) {
+                        for (let d = start; d <= end; d++) {
+                            if (d >= 1 && d <= 31) daysSet.add(d);
+                        }
+                    }
+                } else {
+                    const d = parseInt(seg, 10);
+                    if (!isNaN(d) && d >= 1 && d <= 31) daysSet.add(d);
+                }
+            });
+
+            if (daysSet.size === 0) {
+                showToast('fa-triangle-exclamation', 'No valid days recognized. Enter numbers like 15, 16, 17.', true);
+                return;
+            }
+
+            const sortedDays = Array.from(daysSet).sort((a, b) => a - b);
+            const mainDateInput = document.getElementById('ev-date');
+
+            let addedCount = 0;
+            sortedDays.forEach((dayNum, i) => {
+                const dayString = String(dayNum).padStart(2, '0');
+                const fullDate = `${yearStr}-${monthStr}-${dayString}`;
+
+                if (i === 0 && (!mainDateInput.value || mainDateInput.value === '')) {
+                    mainDateInput.value = fullDate;
+                    addedCount++;
+                } else {
+                    const existing = Array.from(document.querySelectorAll('.ev-date-input')).map(inp => inp.value);
+                    if (!existing.includes(fullDate)) {
+                        addEventDateField(fullDate);
+                        addedCount++;
+                    }
+                }
+            });
+
+            document.getElementById('ev-quick-days').value = '';
+            showToast('fa-calendar-check', `Added ${addedCount} date(s) for ${yearStr}-${monthStr}!`);
+        }
+
         // --- Modal Logic ---
         function openModal(index = -1) {
             editingIndex = index;
@@ -3580,6 +3796,13 @@
                         <span class="text-muted text-sm" style="font-size:0.75rem; width:45px;">Main</span>
                     </div>
                 `;
+            }
+
+            if (document.getElementById('ev-quick-days')) document.getElementById('ev-quick-days').value = '';
+            const quickMonth = document.getElementById('ev-quick-month');
+            if (quickMonth) {
+                const now = new Date();
+                quickMonth.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
             }
 
             if (index >= 0) {
@@ -5152,6 +5375,10 @@
                 const dateStr = item.date ? new Date(item.date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
                 const urlShort = (item.url || '').length > 55 ? item.url.substring(0, 55) + '…' : (item.url || '—');
 
+                const groupBadge = Array.isArray(item.images) && item.images.length > 1
+                    ? `<span style="background:rgba(201,160,42,0.15); color:var(--gold); border:1px solid rgba(201,160,42,0.3); font-size:0.7rem; padding:2px 7px; border-radius:4px; margin-left:6px; font-weight:600;"><i class="fa-solid fa-layer-group"></i> ${item.images.length} items</span>`
+                    : '';
+
                 return `
                 <div class="event-row" style="opacity: ${item.hidden ? '0.45' : '1'}; margin-bottom: 0.85rem; border-color: ${item.hidden ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)'};">
                     <div class="event-info-wrapper">
@@ -5159,7 +5386,7 @@
                             <i class="fa-solid ${icon}" style="color:${color};"></i>
                         </div>
                         <div>
-                            <div style="font-weight:600; font-size:0.95rem; margin-bottom:2px;">${item.title || '(Untitled)'}</div>
+                            <div style="font-weight:600; font-size:0.95rem; margin-bottom:2px; display:flex; align-items:center; flex-wrap:wrap;">${item.title || '(Untitled)'}${groupBadge}</div>
                             <div style="font-size:0.78rem; color:var(--text-muted); font-family: monospace; margin-bottom: 2px;" title="${item.url || ''}">${urlShort}</div>
                             <div style="font-size:0.75rem; color:rgba(255,255,255,0.25);">${dateStr}${item.description ? ' · ' + item.description.substring(0,60) : ''}</div>
                         </div>
@@ -5190,6 +5417,251 @@
             configData.gallery.splice(index, 1);
             renderAdminGallery();
             await saveConfigOnly('Gallery item deleted!');
+        }
+
+        // ==========================================================================
+        //  Bulk Gallery Upload (News Cutouts & Images)
+        // ==========================================================================
+        let bulkSelectedFiles = [];
+
+        function setGalleryAddMode(mode) {
+            const singleContainer = document.getElementById('gallery-single-container');
+            const bulkContainer = document.getElementById('gallery-bulk-container');
+            const btnSingle = document.getElementById('btn-gallery-mode-single');
+            const btnBulk = document.getElementById('btn-gallery-mode-bulk');
+
+            if (mode === 'bulk') {
+                if (singleContainer) singleContainer.style.display = 'none';
+                if (bulkContainer) bulkContainer.style.display = 'block';
+                if (btnSingle) btnSingle.className = 'btn btn-secondary';
+                if (btnBulk) btnBulk.className = 'btn btn-primary';
+                const bulkDate = document.getElementById('bulk-date');
+                if (bulkDate && !bulkDate.value) {
+                    bulkDate.value = new Date().toISOString().split('T')[0];
+                }
+            } else {
+                if (singleContainer) singleContainer.style.display = 'block';
+                if (bulkContainer) bulkContainer.style.display = 'none';
+                if (btnSingle) btnSingle.className = 'btn btn-primary';
+                if (btnBulk) btnBulk.className = 'btn btn-secondary';
+            }
+        }
+
+        function updateBulkCategoryHint() {
+            const cat = document.querySelector('input[name="bulk-category"]:checked')?.value || 'news';
+            const titleInput = document.getElementById('bulk-title');
+            if (titleInput) {
+                titleInput.placeholder = cat === 'news'
+                    ? 'e.g. Press Coverage 2026 (or leave empty to use file names)'
+                    : 'e.g. Sixth Sense Show Highlights (or leave empty to use file names)';
+            }
+        }
+
+        function updateBulkArrangeStyles() {
+            const arrange = document.querySelector('input[name="bulk-arrange"]:checked')?.value;
+            const sepLabel = document.getElementById('bulk-arrange-separate-label');
+            const grpLabel = document.getElementById('bulk-arrange-group-label');
+            if (arrange === 'group') {
+                if (grpLabel) grpLabel.style.borderColor = 'var(--gold)';
+                if (sepLabel) sepLabel.style.borderColor = 'var(--border)';
+            } else {
+                if (sepLabel) sepLabel.style.borderColor = 'var(--gold)';
+                if (grpLabel) grpLabel.style.borderColor = 'var(--border)';
+            }
+        }
+
+        function handleBulkFilesSelected(event) {
+            const files = Array.from(event.target.files || []);
+            if (!files.length) return;
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        const maxW = 1920;
+                        if (w > maxW) {
+                            h = Math.round(h * maxW / w);
+                            w = maxW;
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        const compressed = canvas.toDataURL('image/jpeg', 0.82);
+
+                        bulkSelectedFiles.push({
+                            name: file.name,
+                            size: (file.size / 1024).toFixed(0) + ' KB',
+                            base64: compressed
+                        });
+                        renderBulkPreview();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeBulkFile(index) {
+            bulkSelectedFiles.splice(index, 1);
+            renderBulkPreview();
+        }
+
+        function clearBulkFiles() {
+            bulkSelectedFiles = [];
+            const input = document.getElementById('bulk-files-input');
+            if (input) input.value = '';
+            renderBulkPreview();
+        }
+
+        function renderBulkPreview() {
+            const wrapper = document.getElementById('bulk-preview-wrapper');
+            const countEl = document.getElementById('bulk-files-count');
+            const grid = document.getElementById('bulk-files-grid');
+            const submitBtn = document.getElementById('bulk-upload-submit-btn');
+
+            if (!bulkSelectedFiles.length) {
+                if (wrapper) wrapper.style.display = 'none';
+                if (submitBtn) submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload All to Gallery';
+                return;
+            }
+
+            if (wrapper) wrapper.style.display = 'block';
+            if (countEl) countEl.innerHTML = `<i class="fa-solid fa-images"></i> ${bulkSelectedFiles.length} file(s) ready to upload`;
+            if (submitBtn) submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Upload ${bulkSelectedFiles.length} Images to Gallery`;
+
+            if (grid) {
+                grid.innerHTML = bulkSelectedFiles.map((f, idx) => `
+                    <div style="position:relative; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:rgba(0,0,0,0.5);">
+                        <img src="${f.base64}" style="width:100%; height:90px; object-fit:cover; display:block;">
+                        <button type="button" onclick="removeBulkFile(${idx})" style="position:absolute; top:4px; right:4px; background:rgba(220,53,69,0.85); border:none; color:#fff; width:22px; height:22px; border-radius:50%; cursor:pointer; font-size:0.75rem; display:flex; align-items:center; justify-content:center;">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <div style="padding:4px 6px; font-size:0.68rem; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                            ${f.name}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function formatTitleFromFilename(filename) {
+            if (!filename) return 'Gallery Item';
+            const base = filename.substring(0, filename.lastIndexOf('.')) || filename;
+            return base.replace(/[_-]+/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase()).trim();
+        }
+
+        async function executeBulkGalleryUpload() {
+            if (!sessionToken) return alert('Session expired. Please log in.');
+            if (!bulkSelectedFiles.length) return alert('Please select at least one image to upload.');
+
+            const category = document.querySelector('input[name="bulk-category"]:checked')?.value || 'news';
+            const arrangement = document.querySelector('input[name="bulk-arrange"]:checked')?.value || 'separate';
+            const baseTitle = (document.getElementById('bulk-title')?.value || '').trim();
+            const dateVal = document.getElementById('bulk-date')?.value || new Date().toISOString().split('T')[0];
+            const descVal = (document.getElementById('bulk-desc')?.value || '').trim();
+
+            const submitBtn = document.getElementById('bulk-upload-submit-btn');
+            const progressWrap = document.getElementById('bulk-progress-wrap');
+            const progressText = document.getElementById('bulk-progress-text');
+            const progressPercent = document.getElementById('bulk-progress-percent');
+            const progressBar = document.getElementById('bulk-progress-bar');
+
+            submitBtn.disabled = true;
+            if (progressWrap) progressWrap.style.display = 'block';
+
+            const total = bulkSelectedFiles.length;
+            const uploadedUrls = [];
+
+            try {
+                for (let i = 0; i < total; i++) {
+                    const item = bulkSelectedFiles[i];
+                    const percent = Math.round(((i) / total) * 100);
+                    if (progressText) progressText.textContent = `Uploading ${i + 1} of ${total}: ${item.name}...`;
+                    if (progressPercent) progressPercent.textContent = `${percent}%`;
+                    if (progressBar) progressBar.style.width = `${percent}%`;
+
+                    const res = await fetch('/api/uploadImage', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionToken}` },
+                        body: JSON.stringify({
+                            base64Image: item.base64,
+                            folder: 'gallery',
+                            filename: item.name
+                        })
+                    });
+
+                    if (!res.ok) {
+                        const errData = await res.json().catch(() => ({}));
+                        throw new Error(errData.error || `Upload failed for ${item.name}`);
+                    }
+
+                    const data = await res.json();
+                    uploadedUrls.push({
+                        url: data.imageUrl,
+                        name: item.name
+                    });
+                }
+
+                if (progressBar) progressBar.style.width = '100%';
+                if (progressPercent) progressPercent.textContent = '100%';
+                if (progressText) progressText.textContent = 'Finalizing gallery configuration...';
+
+                if (!configData.gallery) configData.gallery = [];
+
+                if (arrangement === 'group') {
+                    const groupItem = {
+                        id: Date.now().toString(),
+                        type: category,
+                        title: baseTitle || (category === 'news' ? 'News Cutouts & Press Clippings' : 'Photo Collection'),
+                        description: descVal,
+                        date: dateVal,
+                        url: uploadedUrls[0].url,
+                        images: uploadedUrls.map(u => u.url),
+                        is_group: true,
+                        hidden: false
+                    };
+                    configData.gallery.unshift(groupItem);
+                } else {
+                    uploadedUrls.forEach((u, idx) => {
+                        const itemTitle = baseTitle
+                            ? (uploadedUrls.length > 1 ? `${baseTitle} - Part ${idx + 1}` : baseTitle)
+                            : formatTitleFromFilename(u.name);
+
+                        configData.gallery.unshift({
+                            id: (Date.now() + idx).toString(),
+                            type: category,
+                            title: itemTitle,
+                            description: descVal,
+                            date: dateVal,
+                            url: u.url,
+                            hidden: false
+                        });
+                    });
+                }
+
+                await saveConfigOnly(
+                    arrangement === 'group'
+                        ? `Group of ${uploadedUrls.length} ${category === 'news' ? 'news cutouts' : 'images'} added to gallery!`
+                        : `${uploadedUrls.length} ${category === 'news' ? 'news cutouts' : 'images'} added to gallery!`
+                );
+
+                clearBulkFiles();
+                document.getElementById('bulk-title').value = '';
+                document.getElementById('bulk-desc').value = '';
+                renderAdminGallery();
+                showToast('fa-circle-check', 'Bulk upload complete! Items are live in your gallery.');
+                setGalleryAddMode('single');
+
+            } catch (err) {
+                console.error('Bulk upload error:', err);
+                showToast('fa-triangle-exclamation', err.message, true);
+            } finally {
+                submitBtn.disabled = false;
+                if (progressWrap) progressWrap.style.display = 'none';
+            }
         }
 
     </script>
