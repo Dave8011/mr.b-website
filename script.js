@@ -155,22 +155,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (urls.length === 1) {
                         const bannerImg = document.getElementById('dynamic-hero-banner');
-                        if (bannerImg) bannerImg.src = urls[0] + '?v=' + new Date().getTime();
+                        if (bannerImg) {
+                            bannerImg.src = urls[0] + '?v=' + new Date().getTime();
+                            bannerImg.style.width = '100%';
+                            bannerImg.style.height = 'auto';
+                            bannerImg.style.maxHeight = 'none';
+                            bannerImg.style.objectFit = 'contain';
+                            bannerImg.style.display = 'block';
+                        }
                     } else {
                         bannerContainer.innerHTML = '';
+                        bannerContainer.style.background = '#06060c';
                         const placeholder = document.createElement('img');
                         placeholder.src = urls[0];
-                        placeholder.style.cssText = 'width:100%;height:auto;max-height:70vh;object-fit:cover;visibility:hidden;display:block;';
+                        placeholder.style.cssText = 'width:100%;height:auto;visibility:hidden;display:block;';
                         bannerContainer.appendChild(placeholder);
-                        
+
                         const slideEls = [];
                         urls.forEach((url, i) => {
-                            const slide = document.createElement('div');
-                            slide.style.cssText = `position:absolute;top:80px;left:0;width:100%;height:calc(100% - 80px);background-image:url(${url});background-size:cover;background-position:center;opacity:${i === 0 ? '1' : '0'};transition:opacity 1s ease-in-out;`;
+                            const slide = document.createElement('img');
+                            slide.src = url;
+                            slide.alt = 'Mr. B - Indian Super Brain Hero Banner';
+                            slide.style.cssText = `position:absolute;top:80px;left:0;width:100%;height:calc(100% - 80px);object-fit:contain;object-position:center;opacity:${i === 0 ? '1' : '0'};transition:opacity 1s ease-in-out;pointer-events:none;`;
                             bannerContainer.appendChild(slide);
                             slideEls.push(slide);
                         });
-                        
+
                         let cur = 0;
                         setInterval(() => {
                             slideEls[cur].style.opacity = '0';

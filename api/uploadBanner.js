@@ -32,8 +32,8 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Clean up the base64 string (remove data:image/jpeg;base64, prefix if present)
-        const cleanBase64 = base64Image.replace(/^data:image\/\w+;base64,/, '');
+        // Clean up the base64 string (remove data URL prefix if present)
+        const cleanBase64 = base64Image.replace(/^data:[^;]+;base64,/, '');
 
         // Upload the new file
         const payload = {
