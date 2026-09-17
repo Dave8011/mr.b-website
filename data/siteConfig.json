@@ -511,6 +511,20 @@
   "showGallery": true,
   "gallery": [
     {
+      "id": "1789641271773",
+      "type": "news",
+      "title": "News Cutouts & Press Clippings",
+      "description": "",
+      "date": "2026-09-17",
+      "url": "images/gallery/img_1789641261711.jpg",
+      "images": [
+        "images/gallery/img_1789641261711.jpg",
+        "images/gallery/img_1789641264305.jpg"
+      ],
+      "is_group": true,
+      "hidden": false
+    },
+    {
       "id": "gal-1789635852702",
       "type": "video",
       "title": "News latter",
