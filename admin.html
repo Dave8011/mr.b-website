@@ -1991,7 +1991,7 @@
 
             <div class="form-row" style="margin-top: 1rem;">
                 <div class="form-group">
-                    <label>Title <span style="color:var(--gold);">*</span></label>
+                    <label>Title</label>
                     <input type="text" id="gallery-new-title" class="form-control" placeholder="e.g. Sixth Sense Show — Mumbai 2024">
                 </div>
                 <div class="form-group">
@@ -2007,21 +2007,21 @@
 
             <!-- Video URL input -->
             <div class="form-group" id="gallery-url-group">
-                <label id="gallery-url-label">YouTube Embed URL <span style="color:var(--gold);">*</span></label>
+                <label id="gallery-url-label">YouTube Embed URL</label>
                 <input type="text" id="gallery-new-url" class="form-control" placeholder="https://www.youtube-nocookie.com/embed/XXXXXXXXXXX">
                 <p class="text-muted text-sm" style="margin-top:0.4rem;" id="gallery-url-hint">Paste the YouTube embed URL (youtube-nocookie.com/embed/...)</p>
             </div>
 
             <!-- Link URL input (for link type) -->
             <div class="form-group hidden" id="gallery-link-group">
-                <label>External Link URL <span style="color:var(--gold);">*</span></label>
+                <label>External Link URL</label>
                 <input type="text" id="gallery-new-link" class="form-control" placeholder="https://...">
                 <p class="text-muted text-sm" style="margin-top:0.4rem;">URL that the card will open when clicked.</p>
             </div>
 
             <!-- File upload (News Image / PDF) -->
             <div class="form-group hidden" id="gallery-upload-group">
-                <label id="gallery-upload-label">Upload File <span style="color:var(--gold);">*</span></label>
+                <label id="gallery-upload-label">Upload File</label>
                 <div class="upload-area" id="gallery-upload-area" onclick="document.getElementById('gallery-file-input').click()" style="padding: 2rem;">
                     <i class="fa-solid fa-cloud-arrow-up text-gold" style="font-size:2rem; margin-bottom:0.65rem;"></i>
                     <p id="gallery-upload-hint" style="margin:0; color:var(--text-muted); font-size:0.9rem;">Click to upload image (JPG, PNG, WebP)</p>
@@ -2112,7 +2112,7 @@
 
             <!-- Multi-file Dropzone -->
             <div class="form-group" style="margin-top:1.5rem;">
-                <label>Select Multiple Images / Cutouts <span style="color:var(--gold);">*</span></label>
+                <label>Select Multiple Images / Cutouts</label>
                 <div class="upload-area" onclick="document.getElementById('bulk-files-input').click()" style="padding: 2rem; text-align:center; border:2px dashed var(--border); border-radius:12px; cursor:pointer; background:rgba(255,255,255,0.02); transition:all 0.2s;">
                     <i class="fa-solid fa-images text-gold" style="font-size:2.4rem; margin-bottom:0.75rem; display:block;"></i>
                     <h3 style="font-size:1.05rem; margin-bottom:0.35rem;">Click to Select Multiple Files (or Drag & Drop)</h3>
@@ -2184,7 +2184,7 @@
             </div>
 
             <div class="form-group">
-                <label>Event Title <span style="color:var(--gold);">*</span></label>
+                <label>Event Title</label>
                 <input type="text" id="ev-title" class="form-control" placeholder="e.g. The Mind Unveiled">
             </div>
 
@@ -2192,7 +2192,7 @@
             <div class="form-row" style="align-items:flex-start;">
                 <div class="form-group" style="flex: 1.5;">
                     <div style="margin-bottom:0.4rem;">
-                        <label style="margin:0;">Date(s) <span style="color:var(--gold);">*</span></label>
+                        <label style="margin:0;">Date(s)</label>
                     </div>
                     <div id="ev-dates-container">
                         <div class="ev-date-row" style="display:flex; gap:0.5rem; margin-bottom:0.5rem; align-items:center;">
@@ -3861,8 +3861,8 @@
             });
             const sortedDates = Array.from(datesSet).sort();
 
-            if (!title) return alert("Please enter an event title.");
-            if (sortedDates.length === 0) return alert("Please enter at least one date for the event.");
+            // title is optional
+            // date is optional
 
             // If a new poster image was selected, upload it
             if (pendingEventImageBase64 && sessionToken) {
@@ -4462,7 +4462,7 @@
 
         async function saveExpertiseCard() {
             const title = document.getElementById('exp-input-title').value.trim();
-            if (!title) return alert("Please enter a card title.");
+            // title optional
 
             if (!configData.expertiseSection) configData.expertiseSection = { cards: [] };
             if (!configData.expertiseSection.cards) configData.expertiseSection.cards = [];
@@ -4606,7 +4606,7 @@
 
         async function saveContactInfo() {
             const title = document.getElementById('ci-input-title').value.trim();
-            if (!title) return alert("Please enter a title.");
+            // title optional
 
             if (!configData.contactInfo) configData.contactInfo = [];
 
@@ -5134,7 +5134,7 @@
                 urlHint.textContent = 'Paste YouTube URL (watch, embed, short) or external video link';
                 thumbGroup.style.display = 'block';
             } else if (type === 'image' || type === 'news') {
-                uploadLabel.innerHTML = type === 'image' ? 'Upload Image <span style="color:var(--gold);">*</span>' : 'Upload News Image <span style="color:var(--gold);">*</span>';
+                uploadLabel.innerHTML = type === 'image' ? 'Upload Image' : 'Upload News Image';
                 uploadHint.textContent = 'Click or drop image (JPG, PNG, WebP) — No URL needed';
                 fileInput.accept = 'image/*';
                 linkGroup.classList.remove('hidden');
@@ -5144,7 +5144,7 @@
                 if (linkInput) linkInput.placeholder = 'https://... (optional image URL)';
             } else if (type === 'pdf' || type === 'ppt') {
                 const labelTxt = type === 'pdf' ? 'PDF' : 'PPT';
-                uploadLabel.innerHTML = `Upload ${labelTxt} File <span style="color:var(--gold);">*</span>`;
+                uploadLabel.innerHTML = `Upload ${labelTxt} File`;
                 uploadHint.textContent = `Click to upload ${labelTxt} file — No URL needed`;
                 fileInput.accept = type === 'pdf' ? 'application/pdf,.pdf' : 'application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,.ppt,.pptx';
                 linkGroup.classList.remove('hidden');
@@ -5159,7 +5159,7 @@
                 fileInput.accept = '*/*';
                 linkGroup.classList.remove('hidden');
                 const linkLabel = document.querySelector('#gallery-link-group label');
-                if (linkLabel) linkLabel.innerHTML = 'External Link URL <span style="color:var(--gold);">*</span>';
+                if (linkLabel) linkLabel.innerHTML = 'External Link URL';
                 const linkInput = document.getElementById('gallery-new-link');
                 if (linkInput) linkInput.placeholder = 'https://...';
                 thumbGroup.style.display = 'block';
@@ -5262,11 +5262,6 @@
             const thumbInput = document.getElementById('gallery-new-thumb').value.trim();
             const enteredUrl = (document.getElementById('gallery-new-url')?.value || '').trim();
             const enteredLink = (document.getElementById('gallery-new-link')?.value || '').trim();
-
-            if (!title) {
-                showToast('fa-triangle-exclamation', 'Please enter a title for the item.', true);
-                return;
-            }
 
             const btn = document.getElementById('gallery-add-btn');
             btn.disabled = true;
