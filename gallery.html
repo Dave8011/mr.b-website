@@ -237,10 +237,10 @@
                     </div>
                 </div>
                 <div class="gallery-card-body">
-                    <div class="gallery-card-title">${item.title || 'Show Video'}</div>
+                    ${item.title ? `<div class="gallery-card-title">${item.title}</div>` : ''}
                     ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
                     <div class="gallery-card-footer">
-                        <span class="gallery-card-date">${dateStr}</span>
+                        ${item.date ? `<span class="gallery-card-date">${dateStr}</span>` : ''}
                         <span class="gallery-card-action"><i class="fa-solid fa-play"></i> Watch</span>
                     </div>
                 </div>
@@ -275,10 +275,10 @@
                     ${imgSrc ? `<img src="${imgSrc}" alt="${safeTitle}" loading="lazy">` : `<div style="width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><i class="${iconClass}" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>`}
                 </div>
                 <div class="gallery-card-body">
-                    <div class="gallery-card-title">${item.title || label}</div>
+                    ${item.title ? `<div class="gallery-card-title">${item.title}</div>` : ''}
                     ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
                     <div class="gallery-card-footer">
-                        <span class="gallery-card-date">${dateStr}</span>
+                        ${item.date ? `<span class="gallery-card-date">${dateStr}</span>` : ''}
                         <span class="gallery-card-action"><i class="fa-solid ${hasMultiple ? 'fa-layer-group' : 'fa-expand'}"></i> ${hasMultiple ? 'View Set' : 'View'}</span>
                     </div>
                 </div>
@@ -300,10 +300,10 @@
                     <span class="pdf-ext-badge" style="color: ${color};">${label}</span>
                 </div>
                 <div class="gallery-card-body">
-                    <div class="gallery-card-title">${item.title || 'Document'}</div>
+                    ${item.title ? `<div class="gallery-card-title">${item.title}</div>` : ''}
                     ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
                     <div class="gallery-card-footer">
-                        <span class="gallery-card-date">${dateStr}</span>
+                        ${item.date ? `<span class="gallery-card-date">${dateStr}</span>` : ''}
                         <span class="gallery-card-action"><i class="fa-solid fa-book-open"></i> Open</span>
                     </div>
                 </div>
@@ -322,10 +322,10 @@
                     ${thumb ? `<img src="${thumb}" alt="${safeTitle}" loading="lazy">` : `<div style="width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-link" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>`}
                 </div>
                 <div class="gallery-card-body">
-                    <div class="gallery-card-title">${item.title || 'External Resource'}</div>
+                    ${item.title ? `<div class="gallery-card-title">${item.title}</div>` : ''}
                     ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
                     <div class="gallery-card-footer">
-                        <span class="gallery-card-date">${dateStr}</span>
+                        ${item.date ? `<span class="gallery-card-date">${dateStr}</span>` : ''}
                         <span class="gallery-card-action"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit</span>
                     </div>
                 </div>
