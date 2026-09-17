@@ -270,6 +270,11 @@
       "icon": "fa-solid fa-phone",
       "label": "Phone",
       "url": "tel:+919820038976"
+    },
+    {
+      "icon": "fa-brands fa-facebook",
+      "label": "Facebook",
+      "url": "https://www.facebook.com/bhupesh.dave.836866"
     }
   ],
   "contactInfo": [
