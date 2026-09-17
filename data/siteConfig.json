@@ -511,15 +511,6 @@
   "showGallery": true,
   "gallery": [
     {
-      "id": "1789643717257",
-      "type": "news",
-      "title": "photo 9 2026 04 04 14 56 40",
-      "description": "",
-      "date": "2026-09-17",
-      "url": "images/gallery/img_1789643709579.jpg",
-      "hidden": false
-    },
-    {
       "id": "1789643717256",
       "type": "news",
       "title": "photo 4 2026 04 04 14 56 40",
