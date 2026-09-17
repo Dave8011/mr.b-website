@@ -275,6 +275,11 @@
       "icon": "fa-brands fa-facebook",
       "label": "Facebook",
       "url": "https://www.facebook.com/bhupesh.dave.836866"
+    },
+    {
+      "icon": "fa-brands fa-youtube",
+      "label": "YouTube",
+      "url": "https://www.youtube.com/@bhupeshdave6202"
     }
   ],
   "contactInfo": [
