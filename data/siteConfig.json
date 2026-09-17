@@ -511,6 +511,24 @@
   "showGallery": true,
   "gallery": [
     {
+      "id": "1789644506115",
+      "type": "image",
+      "title": "photo 11 2026 04 04 14 56 40",
+      "description": "",
+      "date": "2026-09-17",
+      "url": "images/gallery/img_1789644498462.jpg",
+      "hidden": false
+    },
+    {
+      "id": "1789644506114",
+      "type": "image",
+      "title": "photo 9 2026 04 04 14 56 40",
+      "description": "",
+      "date": "2026-09-17",
+      "url": "images/gallery/img_1789644496762.jpg",
+      "hidden": false
+    },
+    {
       "id": "gal-1789643566236",
       "type": "image",
       "title": "",
