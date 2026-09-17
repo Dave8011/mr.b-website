@@ -511,6 +511,16 @@
   "showGallery": true,
   "gallery": [
     {
+      "id": "gal-1789641459091",
+      "type": "news",
+      "title": "Showreel",
+      "description": "",
+      "url": "images/gallery/img_1789641451215.jpg",
+      "thumbnail": "",
+      "date": "2026-09-17",
+      "hidden": false
+    },
+    {
       "id": "1789641271773",
       "type": "news",
       "title": "News Cutouts & Press Clippings",
