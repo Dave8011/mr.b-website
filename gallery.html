@@ -81,6 +81,9 @@
                     <button class="filter-pill" data-filter="pdf" onclick="setFilter('pdf', this)">
                         <i class="fa-solid fa-file-pdf"></i> PDFs
                     </button>
+                    <button class="filter-pill" data-filter="link" onclick="setFilter('link', this)">
+                        <i class="fa-solid fa-link"></i> Links
+                    </button>
                 </div>
 
                 <!-- Results count -->
@@ -158,15 +161,38 @@
     let allItems = [];
     let currentFilter = 'all';
 
-    // Derive YouTube thumbnail from embed URL
-    function getYouTubeThumbnail(embedUrl) {
+    // Normalize item types so varying names/plurals map consistently to active tabs
+    function normalizeType(type) {
+        if (!type) return 'image';
+        const t = String(type).toLowerCase().trim();
+        if (t === 'video' || t === 'videos' || t === 'yt' || t === 'youtube') return 'video';
+        if (t === 'image' || t === 'images' || t === 'img' || t === 'photo' || t === 'photos') return 'image';
+        if (t === 'news' || t === 'article' || t === 'press') return 'news';
+        if (t === 'pdf' || t === 'pdfs' || t === 'doc' || t === 'document') return 'pdf';
+        if (t === 'link' || t === 'links' || t === 'url') return 'link';
+        return t;
+    }
+
+    // Extract YouTube video ID from various URL formats (watch, embed, short, share)
+    function getYouTubeId(url) {
+        if (!url) return null;
         try {
-            const match = embedUrl.match(/embed\/([a-zA-Z0-9_-]+)/);
-            if (match && match[1]) {
-                return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
-            }
+            const match = url.match(/(?:embed\/|v=|vi\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|shorts\/)([a-zA-Z0-9_-]{11})/);
+            if (match && match[1]) return match[1];
         } catch (e) {}
         return null;
+    }
+
+    // Derive YouTube thumbnail from URL
+    function getYouTubeThumbnail(url) {
+        const id = getYouTubeId(url);
+        return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
+    }
+
+    // Check if URL points directly to a video file
+    function isDirectVideo(url) {
+        if (!url) return false;
+        return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
     }
 
     // Format date nicely
@@ -180,15 +206,17 @@
     // Build a single card HTML
     function buildCard(item) {
         const dateStr = formatDate(item.date);
+        const normType = normalizeType(item.type);
 
-        if (item.type === 'video') {
+        if (normType === 'video') {
             const thumb = item.thumbnail || getYouTubeThumbnail(item.url) || '';
+            const safeTitle = (item.title || 'Show Video').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             return `
             <div class="gallery-card" data-type="video" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
-                 onclick="openVideo('${encodeURIComponent(item.url)}', '${(item.title||'').replace(/'/g,"\\'")}')">
+                 onclick="openVideo('${encodeURIComponent(item.url || '')}', '${safeTitle}')">
                 <div class="gallery-card-thumb">
                     <span class="card-type-badge badge-video"><i class="fa-solid fa-film"></i> Video</span>
-                    ${thumb ? `<img src="${thumb}" alt="${item.title || 'Show Video'}" loading="lazy" onerror="this.style.display='none'">` : '<div style="width:100%;height:100%;background:rgba(0,0,0,0.5);"></div>'}
+                    ${thumb ? `<img src="${thumb}" alt="${safeTitle}" loading="lazy" onerror="this.style.display='none'">` : '<div style="width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-film" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>'}
                     <div class="play-overlay">
                         <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
                     </div>
@@ -204,20 +232,21 @@
             </div>`;
         }
 
-        if (item.type === 'news' || item.type === 'image') {
+        if (normType === 'news' || normType === 'image') {
             const imgSrc = item.url || '';
-            const isNews = item.type === 'news';
+            const isNews = normType === 'news';
             const iconClass = isNews ? 'fa-regular fa-newspaper' : 'fa-solid fa-image';
             const label = isNews ? 'News' : 'Image';
             const badgeStyle = isNews ? '' : 'style="background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3);"';
             const badgeClass = isNews ? 'badge-news' : '';
+            const safeTitle = (item.title || label).replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
             return `
-            <div class="gallery-card" data-type="${item.type}" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
-                 onclick="openImage('${imgSrc}', '${(item.title||'').replace(/'/g,"\\'")}')">
+            <div class="gallery-card" data-type="${normType}" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
+                 onclick="openImage('${imgSrc}', '${safeTitle}')">
                 <div class="gallery-card-thumb">
                     <span class="card-type-badge ${badgeClass}" ${badgeStyle}><i class="${iconClass}"></i> ${label}</span>
-                    ${imgSrc ? `<img src="${imgSrc}" alt="${item.title || label}" loading="lazy">` : `<div style="width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><i class="${iconClass}" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>`}
+                    ${imgSrc ? `<img src="${imgSrc}" alt="${safeTitle}" loading="lazy">` : `<div style="width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><i class="${iconClass}" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>`}
                 </div>
                 <div class="gallery-card-body">
                     <div class="gallery-card-title">${item.title || label}</div>
@@ -230,10 +259,11 @@
             </div>`;
         }
 
-        if (item.type === 'pdf') {
+        if (normType === 'pdf') {
+            const safeTitle = (item.title || 'Document').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             return `
             <div class="gallery-card" data-type="pdf" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
-                 onclick="openPdf('${encodeURIComponent(item.url)}', '${(item.title||'').replace(/'/g,"\\'")}')">
+                 onclick="openPdf('${encodeURIComponent(item.url || '')}', '${safeTitle}')">
                 <div class="gallery-card-thumb pdf-thumb">
                     <span class="card-type-badge badge-pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
                     <i class="fa-solid fa-file-pdf pdf-icon-big"></i>
@@ -245,6 +275,28 @@
                     <div class="gallery-card-footer">
                         <span class="gallery-card-date">${dateStr}</span>
                         <span class="gallery-card-action"><i class="fa-solid fa-book-open"></i> Open</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        if (normType === 'link') {
+            const thumb = item.thumbnail || '';
+            const safeTitle = (item.title || 'Link').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const safeUrl = item.url || '#';
+            return `
+            <div class="gallery-card" data-type="link" data-title="${(item.title||'').toLowerCase()}" data-desc="${(item.description||'').toLowerCase()}"
+                 onclick="window.open('${safeUrl}', '_blank', 'noopener,noreferrer')">
+                <div class="gallery-card-thumb">
+                    <span class="card-type-badge" style="background:rgba(59,130,246,0.18); color:#60a5fa; border:1px solid rgba(59,130,246,0.3);"><i class="fa-solid fa-link"></i> Link</span>
+                    ${thumb ? `<img src="${thumb}" alt="${safeTitle}" loading="lazy">` : `<div style="width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-link" style="font-size:3rem;color:rgba(255,255,255,0.2);"></i></div>`}
+                </div>
+                <div class="gallery-card-body">
+                    <div class="gallery-card-title">${item.title || 'External Resource'}</div>
+                    ${item.description ? `<div class="gallery-card-desc">${item.description}</div>` : ''}
+                    <div class="gallery-card-footer">
+                        <span class="gallery-card-date">${dateStr}</span>
+                        <span class="gallery-card-action"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit</span>
                     </div>
                 </div>
             </div>`;
@@ -275,12 +327,12 @@
     }
 
     function filterGallery() {
-        const query = (document.getElementById('gallery-search-input').value || '').toLowerCase().trim();
+        const query = (document.getElementById('gallery-search-input')?.value || '').toLowerCase().trim();
 
         let filtered = allItems.filter(item => !item.hidden);
 
         if (currentFilter !== 'all') {
-            filtered = filtered.filter(i => i.type === currentFilter);
+            filtered = filtered.filter(i => normalizeType(i.type) === currentFilter);
         }
 
         if (query) {
@@ -298,7 +350,7 @@
                 <div class="gallery-empty">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <h3>No results found</h3>
-                    <p>Try searching with a different keyword.</p>
+                    <p>Try searching with a different keyword or category.</p>
                 </div>`;
             countEl.textContent = '0 items';
             return;
@@ -309,10 +361,25 @@
     }
 
     function setFilter(type, btn) {
-        currentFilter = type;
+        currentFilter = normalizeType(type);
         document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
+        if (btn) {
+            btn.classList.add('active');
+        } else {
+            const matching = document.querySelector(`.filter-pill[data-filter="${type}"]`);
+            if (matching) matching.classList.add('active');
+        }
         filterGallery();
+    }
+
+    function setupFilterListeners() {
+        document.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.onclick = function(e) {
+                e.preventDefault();
+                const filter = this.getAttribute('data-filter');
+                setFilter(filter, this);
+            };
+        });
     }
 
     // ---- Video Lightbox ----
@@ -320,9 +387,22 @@
         const url = decodeURIComponent(encodedUrl);
         const wrap = document.getElementById('lightbox-video-wrap');
         document.getElementById('lightbox-video-title').textContent = title;
-        // Add autoplay
-        const autoplayUrl = url.includes('?') ? url + '&autoplay=1' : url + '?autoplay=1';
-        wrap.innerHTML = `<iframe src="${autoplayUrl}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+
+        if (isDirectVideo(url)) {
+            wrap.innerHTML = `<video src="${url}" controls autoplay style="width:100%; height:100%; max-height:80vh; border-radius:10px;"></video>`;
+        } else {
+            const ytid = getYouTubeId(url);
+            let embedUrl = url;
+            if (ytid) {
+                embedUrl = `https://www.youtube-nocookie.com/embed/${ytid}?autoplay=1`;
+            } else if (url.includes('?')) {
+                embedUrl = url + '&autoplay=1';
+            } else {
+                embedUrl = url + '?autoplay=1';
+            }
+            wrap.innerHTML = `<iframe src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+        }
+
         document.getElementById('video-lightbox').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -379,29 +459,50 @@
 
     // ---- Load Data ----
     async function loadGallery() {
+        let configData = null;
+
+        // Try API first
         try {
             const res = await fetch('/api/getConfig');
-            if (!res.ok) throw new Error('Failed to fetch config');
-            const payload = await res.json();
-            const configData = payload.config || {};
-
-            // Gate: if admin has hidden the gallery page, redirect away
-            if (configData.showGallery === false) {
-                window.location.replace('/');
-                return;
+            if (res.ok) {
+                const payload = await res.json();
+                configData = payload.config;
             }
-
-            allItems = (configData.gallery || []).filter(i => !i.hidden);
-            renderGallery(allItems);
         } catch (err) {
-            console.error('Gallery load error:', err);
+            console.warn('API getConfig failed, falling back to siteConfig.json:', err);
+        }
+
+        // Fallback to static JSON file (works offline & in static hosts)
+        if (!configData) {
+            try {
+                const staticRes = await fetch('data/siteConfig.json?v=' + Date.now());
+                if (staticRes.ok) {
+                    configData = await staticRes.json();
+                }
+            } catch (err) {
+                console.error('Static siteConfig fetch failed:', err);
+            }
+        }
+
+        if (!configData) {
             document.getElementById('gallery-grid').innerHTML = `
                 <div class="gallery-empty">
                     <i class="fa-solid fa-circle-exclamation"></i>
                     <h3>Could not load gallery</h3>
                     <p>Please try refreshing the page.</p>
                 </div>`;
+            return;
         }
+
+        // Gate: if admin has hidden the gallery page, redirect away
+        if (configData.showGallery === false) {
+            window.location.replace('/');
+            return;
+        }
+
+        allItems = (configData.gallery || []).filter(i => !i.hidden);
+        renderGallery(allItems);
+        setupFilterListeners();
     }
 
     document.addEventListener('DOMContentLoaded', loadGallery);

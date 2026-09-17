@@ -858,18 +858,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 events.forEach(event => {
                     if (event.is_hidden) return;
                     
-                    const eventDate = new Date(event.date);
-                    eventDate.setHours(0,0,0,0);
+                    const allDates = Array.isArray(event.dates) && event.dates.length > 0 ? event.dates : (event.date ? [event.date] : []);
                     
-                    const diffTime = eventDate - now;
+                    // Filter and find future/today dates
+                    const upcomingDates = allDates
+                        .map(d => {
+                            const dt = new Date(d);
+                            dt.setHours(0,0,0,0);
+                            return { original: d, dateObj: dt };
+                        })
+                        .filter(item => !isNaN(item.dateObj) && item.dateObj >= now)
+                        .sort((a, b) => a.dateObj - b.dateObj);
+
+                    // If all dates have passed, event has expired
+                    if (upcomingDates.length === 0) return;
+                    
+                    const nextUpcoming = upcomingDates[0];
+                    const diffTime = nextUpcoming.dateObj - now;
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    
-                    if (diffDays < 0) return; // Expired
                     
                     const category = event.category || 'events'; // Default to 'events' if missing
                     availableCategories.add(category.toLowerCase());
                     
-                    activeEvents.push({...event, diffDays, category: category.toLowerCase()});
+                    activeEvents.push({
+                        ...event,
+                        allDates,
+                        nextDate: nextUpcoming.original,
+                        diffDays,
+                        category: category.toLowerCase()
+                    });
                 });
                 
                 if (activeEvents.length === 0) {
@@ -887,11 +904,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         
                         renderedCount++;
-                        const eventDate = new Date(event.date);
+                        const eventDate = new Date(event.nextDate || event.date);
                         const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
                         const monthStr = monthNames[eventDate.getMonth()];
                         const dayStr = String(eventDate.getDate()).padStart(2, '0');
                         
+                        const isMultiDate = Array.isArray(event.allDates) && event.allDates.length > 1;
+                        let multiDatesStr = '';
+                        if (isMultiDate) {
+                            multiDatesStr = event.allDates.map(d => {
+                                const dObj = new Date(d);
+                                return !isNaN(dObj) ? `${dObj.getDate()} ${monthNames[dObj.getMonth()]}` : d;
+                            }).join(', ');
+                        }
+
                         let highlightHtml = '';
                         if (event.diffDays >= 0 && event.diffDays <= 7) {
                             highlightHtml = `<div style="position:absolute; top:-10px; right:20px; background:var(--gold); color:#000; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.8rem; box-shadow:0 0 10px rgba(201,160,42,0.5); z-index:10;">${event.diffDays === 0 ? 'TODAY!' : event.diffDays + ' Days Left!'}</div>`;
@@ -903,6 +929,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="event-date">
                                     <span class="day">${dayStr}</span>
                                     <span class="month">${monthStr}</span>
+                                    ${isMultiDate ? `<span style="font-size:0.62rem; color:var(--gold); font-weight:700; display:block; margin-top:2px;">+${event.allDates.length - 1} MORE</span>` : ''}
                                 </div>
                                 <div class="event-image-wrapper">
                                     <img src="${event.image_url}" alt="${event.image_alt || event.title} - Mr. B Event" class="event-img" onerror="this.onerror=null; this.src='images/hero.jpg'">
@@ -910,6 +937,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="event-details">
                                     <h3>${event.title}</h3>
                                     <p>${event.location} • ${event.time}</p>
+                                    ${isMultiDate ? `<p style="color:var(--gold); font-size:0.82rem; margin-top:0.35rem;"><i class="fa-solid fa-calendar-days" style="margin-right:5px;"></i>${multiDatesStr}</p>` : ''}
                                 </div>
                                 <div class="event-action">
                                     <a href="${event.link}" class="btn btn-secondary">Get Tickets</a>

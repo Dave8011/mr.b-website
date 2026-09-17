@@ -366,6 +366,18 @@
     border: none;
 }
 
+.badge-image {
+    background: rgba(167, 139, 250, 0.25);
+    color: #c4b5fd;
+    border: 1px solid rgba(167, 139, 250, 0.4);
+}
+
+.badge-link {
+    background: rgba(59, 130, 246, 0.25);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
 /* Card Body */
 .gallery-card-body {
     padding: 1.1rem 1.25rem 1.25rem;

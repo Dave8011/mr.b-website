@@ -3,6 +3,9 @@
     "id": "event-1789636259590",
     "title": "Udyami Maharashtra - Omkar Hari Maali",
     "date": "2026-10-25",
+    "dates": [
+      "2026-10-25"
+    ],
     "time": "2:00pm",
     "location": "Hotel Tip-Top International.",
     "image_url": "images/event1.jpg",
@@ -15,6 +18,9 @@
     "id": "event-1783921931000",
     "title": "The Mind Unveiled - Mumbai",
     "date": "2026-08-15",
+    "dates": [
+      "2026-08-15"
+    ],
     "time": "7:00 PM",
     "location": "NCPA, Nariman Point",
     "image_url": "images/event1.jpg",
@@ -25,6 +31,9 @@
     "id": "event-1783921932000",
     "title": "Corporate Illusions - Bangalore",
     "date": "2026-09-22",
+    "dates": [
+      "2026-09-22"
+    ],
     "time": "6:30 PM",
     "location": "Taj West End",
     "image_url": "images/event2.jpg",
