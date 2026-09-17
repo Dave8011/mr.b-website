@@ -158,8 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (bannerImg) {
                             bannerImg.src = urls[0] + '?v=' + new Date().getTime();
                             bannerImg.style.width = '100%';
-                            bannerImg.style.height = 'auto';
+                            bannerImg.style.height = '100%';
+                            bannerImg.style.maxHeight = '85vh';
+                            bannerImg.style.objectFit = 'contain';
                             bannerImg.style.display = 'block';
+                            bannerImg.style.margin = '0 auto';
                         }
                     } else {
                         bannerContainer.innerHTML = '';
@@ -173,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         urls.forEach((url, i) => {
                             const slide = document.createElement('img');
                             slide.src = url;
-                            slide.style.cssText = `grid-area: 1 / 1; width: 100%; height: auto; opacity: ${i === 0 ? 1 : 0}; transition: opacity 1s ease-in-out; z-index: ${i === 0 ? 2 : 1};`;
+                            slide.style.cssText = `grid-area: 1 / 1; width: 100%; height: 100%; max-height: 85vh; object-fit: contain; opacity: ${i === 0 ? 1 : 0}; transition: opacity 1s ease-in-out; z-index: ${i === 0 ? 2 : 1};`;
                             gridWrapper.appendChild(slide);
                             slideEls.push(slide);
                         });
