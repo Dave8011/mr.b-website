@@ -1,558 +1,568 @@
 {
-    "showHeroBanner":  true,
-    "banners":  [
-                    {
-                        "id":  "1789636658538",
-                        "url":  "images/banners/banner_1789636651219.jpg",
-                        "uploadDate":  "2026-09-17T09:17:38.538Z"
-                    },
-                    {
-                        "id":  "1789636636498",
-                        "url":  "images/banners/banner_1789636629230.jpg",
-                        "uploadDate":  "2026-09-17T09:17:16.498Z"
-                    },
-                    {
-                        "id":  "1789636606032",
-                        "url":  "images/banners/banner_1789636598665.jpg",
-                        "uploadDate":  "2026-09-17T09:16:46.032Z"
-                    },
-                    {
-                        "id":  "1785235382239",
-                        "url":  "images/banners/banner_1785235377371.jpg",
-                        "uploadDate":  "2026-07-28T10:43:02.239Z"
-                    },
-                    {
-                        "id":  "1783946418980",
-                        "url":  "images/banners/banner_1783946419617.jpg",
-                        "uploadDate":  "2026-07-13T12:40:18.980Z"
-                    }
-                ],
-    "activeBannerUrls":  [
-                             "images/banners/banner_1785235377371.jpg",
-                             "images/banners/banner_1783946419617.jpg",
-                             "images/banners/banner_1789636598665.jpg",
-                             "images/banners/banner_1789636629230.jpg",
-                             "images/banners/banner_1789636651219.jpg"
-                         ],
-    "showClientsSection":  true,
-    "clientsSectionTitle":  "Our happy and satisfied Clients :",
-    "clients":  [
-                    {
-                        "id":  "client-1784360248799",
-                        "name":  "Lokmat",
-                        "logoUrl":  "images/brands/brand_lokmat.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360248896",
-                        "name":  "Sakal",
-                        "logoUrl":  "images/brands/brand_sakal.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360249043",
-                        "name":  "Loksatta",
-                        "logoUrl":  "images/brands/brand_loksatta.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360249072",
-                        "name":  "Panasonic",
-                        "logoUrl":  "images/brands/brand_panasonic.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360249232",
-                        "name":  "BCAS",
-                        "logoUrl":  "images/brands/brand_bcas.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360516706",
-                        "name":  "Thane Mahanagar Palika",
-                        "logoUrl":  "images/brands/brand_thane_mahanagar_palika.png",
-                        "hidden":  true
-                    },
-                    {
-                        "id":  "client-1784360516902",
-                        "name":  "Hindustan Unilever Limited",
-                        "logoUrl":  "images/brands/brand_hindustan_unilever.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360516990",
-                        "name":  "ICSI",
-                        "logoUrl":  "images/brands/brand_icsi.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360649169",
-                        "name":  "LIC",
-                        "logoUrl":  "images/brands/brand_lic.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360649202",
-                        "name":  "Total",
-                        "logoUrl":  "images/brands/brand_total.png",
-                        "hidden":  true
-                    },
-                    {
-                        "id":  "client-1784360649286",
-                        "name":  "Ambuja Cement",
-                        "logoUrl":  "images/brands/brand_ambuja_cement.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360649308",
-                        "name":  "Hari Krishna Exports",
-                        "logoUrl":  "images/brands/brand_hari_krishna_exports.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784360649331",
-                        "name":  "7Cs Group",
-                        "logoUrl":  "images/brands/brand_7cs_group.png",
-                        "hidden":  true
-                    },
-                    {
-                        "id":  "client-1784365147117",
-                        "name":  "SKC School \u0026 Jr. College",
-                        "logoUrl":  "images/brands/brand_skc_school.png",
-                        "hidden":  true
-                    },
-                    {
-                        "id":  "client-1784365147238",
-                        "name":  "Mahindra",
-                        "logoUrl":  "images/brands/brand_mahindra.png",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784367626930",
-                        "name":  "Brihanmumbai Police",
-                        "logoUrl":  "images/brands/img_1784367627608.jpg",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "client-1784367894710",
-                        "name":  "ABP Majha",
-                        "logoUrl":  "images/brands/img_1784367895434.jpg",
-                        "hidden":  false
-                    }
-                ],
-    "shorts":  [
-                   {
-                       "id":  "1784290480705",
-                       "url":  "https://www.youtube-nocookie.com/embed/cuqn6iCe4zY",
-                       "hideContact":  false,
-                       "hideHome":  false
-                   },
-                   {
-                       "id":  "1784288639868",
-                       "url":  "https://www.youtube-nocookie.com/embed/tQqOk4o6lY8",
-                       "hideContact":  true,
-                       "hideHome":  true
-                   }
-               ],
-    "storySection":  {
-                         "isVisible":  true,
-                         "sectionName":  "01 // THE STORY",
-                         "subtitle":  "Meet Bhupesh Dave",
-                         "mainTitle":  "Unlocking the Untapped Potential",
-                         "text":  "Bhupesh Dave, renowned as Mr. B, is not just a mentalist; he is a psychological illusionist who pushes the boundaries of human cognition. With an innate ability to read subtle cues and a deep understanding of human psychology, he creates experiences that leave audiences questioning reality.\n\nHis journey began with a simple curiosity about the human mind and evolved into a lifelong mastery of perception, influence, and the art of the impossible.",
-                         "imageDesktop":  "images/about.jpg",
-                         "imageMobile":  "images/about.jpg",
-                         "btnText":  "Connect with Mr. B",
-                         "btnLink":  "/contact"
-                     },
-    "aboutSection":  {
-                         "isVisible":  true,
-                         "tag":  "INDIAN SUPER BRAIN",
-                         "titleRegular":  "ABOUT",
-                         "titleGold":  "MR. B",
-                         "description":  "Bhupesh Dave, renowned as Mr. B, is India\u0027s foremost Mentalist, Mind Reader, and Psychological Illusionist. He possesses an unmatchable ability to read thoughts, bend metal objects with his mind, and unlock the untapped potential of human cognition.",
-                         "btnText":  "Know More",
-                         "btnLink":  "/about"
-                     },
-    "promoSection":  {
-                         "isVisible":  true,
-                         "addressTitle":  "Address",
-                         "addressText":  "Daves Academy, moti Bhvan , Dr. D’Silva Road, Dadar – West Mumbai - 400028",
-                         "attendTitle":  "Why should you attend?",
-                         "attendList":  "Experience Motivational Speaker like nowhere else\nBhupesh Dave\nLorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda, pariatur.\nLorem ipsum dolor sit amet consectetur, adipisicing elit.\nLorem ipsum dolor sit amet consectetur.",
-                         "aboutTitle":  "About",
-                         "aboutDesc":  "If you are looking for something that will stand-out and create a stunning impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect outcome for your event.",
-                         "btnText":  "Book Now",
-                         "btnLink":  "/contact",
-                         "artists":  [
-                                         {
-                                             "name":  "Bhupesh Dave",
-                                             "image":  "images/about.jpg"
-                                         }
-                                     ],
-                         "artistSectionTitle":  "Artist"
-                     },
-    "statsSection":  {
-                         "isVisible":  true,
-                         "stats":  [
-                                       {
-                                           "number":  "10",
-                                           "suffix":  "+",
-                                           "text":  "Years Experience",
-                                           "color":  "#8B1E32"
-                                       },
-                                       {
-                                           "number":  "500",
-                                           "suffix":  "+",
-                                           "text":  "Shows Worldwide",
-                                           "color":  "#4B296B"
-                                       },
-                                       {
-                                           "number":  "500",
-                                           "suffix":  "k+",
-                                           "text":  "Minds Astonished",
-                                           "color":  "#006D77"
-                                       },
-                                       {
-                                           "number":  "100",
-                                           "suffix":  "%",
-                                           "text":  "Unforgettable",
-                                           "color":  "#D4AF37"
-                                       }
-                                   ]
-                     },
-    "expertiseSection":  {
-                             "isVisible":  true,
-                             "sectionName":  "02 // EXPERTISE",
-                             "subtitle":  "Services Offered",
-                             "cards":  [
-                                           {
-                                               "id":  "exp-1784560000001",
-                                               "title":  "Corporate Mentalism",
-                                               "days":  "High Impact",
-                                               "desc":  "Elevate your corporate events with mind-bending psychological entertainment tailored for professionals and executives.",
-                                               "tags":  "Mind Reading • Influence • Engagement",
-                                               "audience":  "FOR BUSINESSES",
-                                               "colorClass":  "bg-pillar-burgundy",
-                                               "hidden":  false
-                                           },
-                                           {
-                                               "id":  "exp-1784560000002",
-                                               "title":  "Private Shows",
-                                               "days":  "Exclusive",
-                                               "desc":  "Intimate, unforgettable experiences designed for private parties, VIP gatherings, and elite celebrations.",
-                                               "tags":  "Interactive • Personal • Astonishing",
-                                               "audience":  "FOR INDIVIDUALS",
-                                               "colorClass":  "bg-pillar-teal",
-                                               "hidden":  false
-                                           },
-                                           {
-                                               "id":  "exp-1784560000003",
-                                               "title":  "Workshops",
-                                               "days":  "Transformative",
-                                               "desc":  "Unlock your own potential through specialized sessions on body language, memory enhancement, and perception.",
-                                               "tags":  "Education • Psychology • Growth",
-                                               "audience":  "FOR LEARNERS",
-                                               "colorClass":  "bg-pillar-purple",
-                                               "hidden":  false
-                                           }
-                                       ]
-                         },
-    "socialMedia":  [
-                        {
-                            "icon":  "fa-brands fa-instagram",
-                            "label":  "Instagram",
-                            "url":  "https://instagram.com/bhupeshdave._"
-                        },
-                        {
-                            "icon":  "fa-solid fa-globe",
-                            "label":  "Website",
-                            "url":  "http://bhupeshdave.com"
-                        },
-                        {
-                            "icon":  "fa-solid fa-envelope",
-                            "label":  "Email",
-                            "url":  "mailto:bhupeshdave@gmail.com"
-                        },
-                        {
-                            "icon":  "fa-solid fa-phone",
-                            "label":  "Phone",
-                            "url":  "tel:+919820038976"
-                        },
-                        {
-                            "icon":  "fa-brands fa-facebook",
-                            "label":  "Facebook",
-                            "url":  "https://www.facebook.com/bhupesh.dave.836866"
-                        },
-                        {
-                            "icon":  "fa-brands fa-youtube",
-                            "label":  "YouTube",
-                            "url":  "https://www.youtube.com/@bhupeshdave6202"
-                        }
-                    ],
-    "contactInfo":  [
-                        {
-                            "id":  "ci-1",
-                            "icon":  "fa-solid fa-location-dot",
-                            "title":  "Headquarters",
-                            "content":  "Daves Academy, Moti Bhuvan\nDr. D\u0027Silva Road, Dadar West, Mumbai - 400028",
-                            "link":  ""
-                        },
-                        {
-                            "id":  "ci-2",
-                            "icon":  "fa-solid fa-phone",
-                            "title":  "Phone",
-                            "content":  "+91 98200 38976",
-                            "link":  "tel:+919820038976"
-                        },
-                        {
-                            "id":  "ci-3",
-                            "icon":  "fa-solid fa-envelope",
-                            "title":  "Email",
-                            "content":  "bhupeshdave@gmail.com",
-                            "link":  "mailto:bhupeshdave@gmail.com"
-                        }
-                    ],
-    "ctaSection":  {
-                       "isVisible":  true,
-                       "titleRegular":  "Ready for the",
-                       "titleGold":  "Impossible?",
-                       "description":  "Elevate your next event with an unforgettable experience of psychological illusion and mind reading.",
-                       "btnText":  "Book Mr. B Now",
-                       "btnLink":  "/contact"
-                   },
-    "quotesSection":  {
-                          "isVisible":  true,
-                          "sectionName":  "04 // GLIMPSES",
-                          "sectionSubtitle":  "Past Events \u0026 Testimonials",
-                          "quotes":  [
-                                         {
-                                             "id":  "quote-1",
-                                             "quote":  "Absolutely mind-blowing. I\u0027ve never seen anything like it. He knew exactly what I was thinking before I even knew it myself.",
-                                             "author":  "Corporate Executive",
-                                             "role":  "Mumbai",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-2",
-                                             "quote":  "Mr. B brought an unmatched level of sophistication and astonishment to our annual gala. Highly recommended for any premium event.",
-                                             "author":  "Event Organizer",
-                                             "role":  "Delhi",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-3",
-                                             "quote":  "The level of psychological precision Bhupesh Dave displays is simply astonishing. Our entire board of directors was mesmerized.",
-                                             "author":  "Managing Director",
-                                             "role":  "Tech Global",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-5",
-                                             "quote":  "Bhupesh Dave doesn\u0027t just perform magic; he reads the human mind with effortless elegance and charm.",
-                                             "author":  "Senior Vice President",
-                                             "role":  "Financial Services",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-6",
-                                             "quote":  "Our audience was left completely spellbound. Mr. B\u0027s interactive mind reading was the absolute highlight of our conference.",
-                                             "author":  "HR Director",
-                                             "role":  "Multinational Corp",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-7",
-                                             "quote":  "Pure genius! The mentalism acts were wrapped in humor, class, and absolute psychological brilliance.",
-                                             "author":  "Event Curator",
-                                             "role":  "Luxury Brand Showcase",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-8",
-                                             "quote":  "He bent metal, unlocked thoughts, and created moments of pure wonder that people are still talking about weeks later.",
-                                             "author":  "Marketing Lead",
-                                             "role":  "Automotive Giant",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-9",
-                                             "quote":  "Exceeded all expectations. Bhupesh Dave delivers world-class psychological illusion that captivates every single person in the room.",
-                                             "author":  "Operations Head",
-                                             "role":  "Bangalore IT Summit",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-10",
-                                             "quote":  "A masterpiece of intuition, influence, and mystery. Watching Mr. B live is an experience you will remember for a lifetime.",
-                                             "author":  "VP Corporate Communications",
-                                             "role":  "Global Enterprises",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-11",
-                                             "quote":  "Mind reading at its highest level. Interactive, witty, and profoundly astonishing from start to finish.",
-                                             "author":  "Regional Director",
-                                             "role":  "FMCG Enterprise",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-12",
-                                             "quote":  "Bhupesh Dave connects with the audience on a level I have never witnessed before. Extraordinary talent!",
-                                             "author":  "Festival Organizer",
-                                             "role":  "Cultural Arts Forum",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-13",
-                                             "quote":  "The energy and wonder he brings to the stage is unmatched. A true maestro of the human mind.",
-                                             "author":  "Keynote Presenter",
-                                             "role":  "Leadership Conclave",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-14",
-                                             "quote":  "An electrifying experience! Every demonstration felt impossibly real and completely mind-bending.",
-                                             "author":  "Managing Editor",
-                                             "role":  "National Media Group",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-15",
-                                             "quote":  "If you want your guests to experience genuine awe, Mr. B is the ultimate choice for any corporate or VIP event.",
-                                             "author":  "VIP Event Planner",
-                                             "role":  "Goa Resort \u0026 Convention",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-16",
-                                             "quote":  "Astonishing telepathy and psychological mastery. Bhupesh Dave proved why he holds the title of Indian Super Brain.",
-                                             "author":  "Convener",
-                                             "role":  "Annual Industry Awards",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-17",
-                                             "quote":  "The room was filled with gasps and applause. A hypnotic blend of psychological illusion and high-impact entertainment.",
-                                             "author":  "Chief Operating Officer",
-                                             "role":  "Pharma Leader",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-18",
-                                             "quote":  "Unbelievable accuracy and flawless execution. Mr. B is redefining entertainment for modern audiences.",
-                                             "author":  "Creative Director",
-                                             "role":  "Ad Agency Network",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-19",
-                                             "quote":  "Captivating, funny, and deeply impressive. Our corporate team was buzzing with excitement long after the show.",
-                                             "author":  "Managing Director",
-                                             "role":  "Real Estate Group",
-                                             "hidden":  false
-                                         },
-                                         {
-                                             "id":  "quote-20",
-                                             "quote":  "Bhupesh Dave makes the impossible seem effortlessly real. An absolute master of his craft!",
-                                             "author":  "Executive Producer",
-                                             "role":  "Star Media Awards",
-                                             "hidden":  false
-                                         }
-                                     ]
-                      },
-    "areaOfInterests":  [
-                            {
-                                "id":  "aoi-1",
-                                "value":  "corporate",
-                                "label":  "Corporate Keynote \u0026 Training"
-                            },
-                            {
-                                "id":  "aoi-2",
-                                "value":  "show",
-                                "label":  "Sixth Sense Mentalism Show"
-                            },
-                            {
-                                "id":  "aoi-3",
-                                "value":  "academy",
-                                "label":  "Magic Academy Enrollment"
-                            },
-                            {
-                                "id":  "aoi-4",
-                                "value":  "workshop",
-                                "label":  "Student \u0026 Parent Workshop"
-                            },
-                            {
-                                "id":  "aoi-5",
-                                "value":  "other",
-                                "label":  "Other Inquiry"
-                            }
-                        ],
-    "aboutUsPage":  {
-                        "heroSubtitle":  "India’s One and only Mentalist, Mind reader, Magician and Motivational trainer with ISO 9001:2008 accreditation.",
-                        "box1":  {
-                                     "title":  "MR. B @ BHUPESH DAVE",
-                                     "highlight":  "Mr.B is India’s One and only Mentalist, Mind reader, Magician and Motivational trainer with ISO 9001:2008 accreditation.",
-                                     "list":  "Only mentalist awarded international Merlin medal.\nRecipient of Police mitra title by MUMBAI and Maharashtra Police.\nMr.B is considered to be the foremost experimentalist performing today in India. His unique mix of natural warmth with an unmatchable ability to read thoughts, bend metal objects with his mind, and scores of other amazing demonstrations of one’s mental ability, has made him one of the most sought-after corporate/Private entertainers in the world.\nHe has performed and trained all around the world for top corporate companies. High profile business personalities and celebrities choose Mr.B to perform at their private parties, wedding ceremonies and their corporate events.\nIf you are looking for something that will stand-out and create a stunning impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect outcome for your event.\nInteractive, Humorous, and total audience participation.\nPerforms in English, Hindi, Marathi and Gujarati with ease."
-                                 },
-                        "box2":  {
-                                     "title":  "THE SHOW - SIXTH SENSE",
-                                     "text":  "A mind miracle and thrilling program of Mentalism by Mr.B, is an interactive and humorous Program which involves audience in total. Sixth sense is a program with difference where Mr.B will read peoples mind and through telepathy, prediction and telekinesis, will take the audience in a different world of experiences.\nSurprise, thrill and excitement, Mr.B will not only read peoples mind but also display effects like metal bending, blind fold which will eventually surprise the audience and fill them with a thought process of positivity and maximizing their potential."
-                                 },
-                        "box3":  {
-                                     "title":  "ACHIEVEMENTS \u0026 EVENTS",
-                                     "list":  "Non Align Movement Act Award\nNavnirman Gaurav Puraskar\nMotivational Training Programs all over INDIA\nNavi Mumbai Police Training Program\nMumbai Police Crime Branch Training\nTraining Programs in Confidence building and memory development for Mentally Challenged Kids\nMentalism Shows for Cancer Patient.\nPerformed on invitation at Kargil to commemorate “Vijay Divas” on 26th July with actual Kargil warriors\nInvited by R.R. Rifles at Kashmir front and border villages to perform for military and civilians."
-                                 },
-                        "box4":  {
-                                     "title":  "ABOUT MOTIVATIONAL TRAINER",
-                                     "text":  "\u003cspan class=\"highlight-text\"\u003eBhupesh Dave\u003c/span\u003e is a multidimensional personality, success coach, memory expert who has been trained by international trainers like Anthony Robbins, Stephen Covey, Zig Ziglar, Aporesh Acharya (trainer of Dale Carnegie institute), Rajesh Tagore, India’s one of the powerful \u0026 result oriented sales trainer.\nMr. Dave is the Managing Director of Yash Institute and principle of Dave’s Academy. Motivational speaker and trainer has been conducting power program since 1996 addressed over 3,00,000 of man and woman in public and private seminars in the field covering different topics like Memory enhancement, Positive attitude, Goal setting, Team building, Basic and Advanced public speaking, basic and professional selling skills, Art of marketing etc for multinational companies and success mind people.\nCEO of Event management Co., Mr. Dave has served companies like - LIC of India, Hindustan Lever limited, Mumbai Police, Lintas Advertising Agency, Indian Express Group, TV9 Chanel, Cello Group of Co., Mahavir Distributions (Karnataka) Nirlep, Bahwan Group Of co. (Muscat), Jain Jagruti Centers, Aurangabad co-op banks, Lions clubs, Rotary clubs and Rotract RYLA.\nHe has conducted his seminars, workshops and programs not only all over India but also in the countries like United Kingdom, East Africa, Dubai, Muscat, Kenya, Singapore, Thailand, Nepal and Hong Kong. Recipient of Gold Medal at non aligned movement youth festival and honored by the then president of India Giani Zail Singh."
-                                 }
-                    },
-    "showGallery":  true,
-    "gallery":  [
-                    {
-                        "id":  "gal-9999999",
-                        "type":  "video",
-                        "title":  "Showreel 1",
-                        "description":  "",
-                        "url":  "images/gallery/showreel_1.mp4",
-                        "thumbnail":  "",
-                        "date":  "2026-09-17",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "gal-1789641459091",
-                        "type":  "news",
-                        "title":  "Showreel",
-                        "description":  "",
-                        "url":  "images/gallery/img_1789641451215.jpg",
-                        "thumbnail":  "",
-                        "date":  "2026-09-17",
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "1789641271773",
-                        "type":  "news",
-                        "title":  "News Cutouts \u0026 Press Clippings",
-                        "description":  "",
-                        "date":  "2026-09-17",
-                        "url":  "images/gallery/img_1789641261711.jpg",
-                        "images":  [
-                                       "images/gallery/img_1789641261711.jpg",
-                                       "images/gallery/img_1789641264305.jpg"
-                                   ],
-                        "is_group":  true,
-                        "hidden":  false
-                    },
-                    {
-                        "id":  "gal-1789635852702",
-                        "type":  "video",
-                        "title":  "News latter",
-                        "description":  "",
-                        "url":  "https://www.youtube.com/@bhupeshdave6202",
-                        "thumbnail":  "",
-                        "date":  "2026-09-17",
-                        "hidden":  false
-                    }
-                ]
+  "showHeroBanner": true,
+  "banners": [
+    {
+      "id": "1789636658538",
+      "url": "images/banners/banner_1789636651219.jpg",
+      "uploadDate": "2026-09-17T09:17:38.538Z"
+    },
+    {
+      "id": "1789636636498",
+      "url": "images/banners/banner_1789636629230.jpg",
+      "uploadDate": "2026-09-17T09:17:16.498Z"
+    },
+    {
+      "id": "1789636606032",
+      "url": "images/banners/banner_1789636598665.jpg",
+      "uploadDate": "2026-09-17T09:16:46.032Z"
+    },
+    {
+      "id": "1785235382239",
+      "url": "images/banners/banner_1785235377371.jpg",
+      "uploadDate": "2026-07-28T10:43:02.239Z"
+    },
+    {
+      "id": "1783946418980",
+      "url": "images/banners/banner_1783946419617.jpg",
+      "uploadDate": "2026-07-13T12:40:18.980Z"
+    }
+  ],
+  "activeBannerUrls": [
+    "images/banners/banner_1785235377371.jpg",
+    "images/banners/banner_1783946419617.jpg",
+    "images/banners/banner_1789636598665.jpg",
+    "images/banners/banner_1789636629230.jpg",
+    "images/banners/banner_1789636651219.jpg"
+  ],
+  "showClientsSection": true,
+  "clientsSectionTitle": "Our happy and satisfied Clients :",
+  "clients": [
+    {
+      "id": "client-1784360248799",
+      "name": "Lokmat",
+      "logoUrl": "images/brands/brand_lokmat.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360248896",
+      "name": "Sakal",
+      "logoUrl": "images/brands/brand_sakal.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360249043",
+      "name": "Loksatta",
+      "logoUrl": "images/brands/brand_loksatta.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360249072",
+      "name": "Panasonic",
+      "logoUrl": "images/brands/brand_panasonic.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360249232",
+      "name": "BCAS",
+      "logoUrl": "images/brands/brand_bcas.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360516706",
+      "name": "Thane Mahanagar Palika",
+      "logoUrl": "images/brands/brand_thane_mahanagar_palika.png",
+      "hidden": true
+    },
+    {
+      "id": "client-1784360516902",
+      "name": "Hindustan Unilever Limited",
+      "logoUrl": "images/brands/brand_hindustan_unilever.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360516990",
+      "name": "ICSI",
+      "logoUrl": "images/brands/brand_icsi.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649169",
+      "name": "LIC",
+      "logoUrl": "images/brands/brand_lic.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649202",
+      "name": "Total",
+      "logoUrl": "images/brands/brand_total.png",
+      "hidden": true
+    },
+    {
+      "id": "client-1784360649286",
+      "name": "Ambuja Cement",
+      "logoUrl": "images/brands/brand_ambuja_cement.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649308",
+      "name": "Hari Krishna Exports",
+      "logoUrl": "images/brands/brand_hari_krishna_exports.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784360649331",
+      "name": "7Cs Group",
+      "logoUrl": "images/brands/brand_7cs_group.png",
+      "hidden": true
+    },
+    {
+      "id": "client-1784365147117",
+      "name": "SKC School & Jr. College",
+      "logoUrl": "images/brands/brand_skc_school.png",
+      "hidden": true
+    },
+    {
+      "id": "client-1784365147238",
+      "name": "Mahindra",
+      "logoUrl": "images/brands/brand_mahindra.png",
+      "hidden": false
+    },
+    {
+      "id": "client-1784367626930",
+      "name": "Brihanmumbai Police",
+      "logoUrl": "images/brands/img_1784367627608.jpg",
+      "hidden": false
+    },
+    {
+      "id": "client-1784367894710",
+      "name": "ABP Majha",
+      "logoUrl": "images/brands/img_1784367895434.jpg",
+      "hidden": false
+    }
+  ],
+  "shorts": [
+    {
+      "id": "1784290480705",
+      "url": "https://www.youtube-nocookie.com/embed/cuqn6iCe4zY",
+      "hideContact": false,
+      "hideHome": false
+    },
+    {
+      "id": "1784288639868",
+      "url": "https://www.youtube-nocookie.com/embed/tQqOk4o6lY8",
+      "hideContact": true,
+      "hideHome": true
+    }
+  ],
+  "storySection": {
+    "isVisible": true,
+    "sectionName": "01 // THE STORY",
+    "subtitle": "Meet Bhupesh Dave",
+    "mainTitle": "Unlocking the Untapped Potential",
+    "text": "Bhupesh Dave, renowned as Mr. B, is not just a mentalist; he is a psychological illusionist who pushes the boundaries of human cognition. With an innate ability to read subtle cues and a deep understanding of human psychology, he creates experiences that leave audiences questioning reality.\n\nHis journey began with a simple curiosity about the human mind and evolved into a lifelong mastery of perception, influence, and the art of the impossible.",
+    "imageDesktop": "images/about.jpg",
+    "imageMobile": "images/about.jpg",
+    "btnText": "Connect with Mr. B",
+    "btnLink": "/contact"
+  },
+  "aboutSection": {
+    "isVisible": true,
+    "tag": "INDIAN SUPER BRAIN",
+    "titleRegular": "ABOUT",
+    "titleGold": "MR. B",
+    "description": "Bhupesh Dave, renowned as Mr. B, is India's foremost Mentalist, Mind Reader, and Psychological Illusionist. He possesses an unmatchable ability to read thoughts, bend metal objects with his mind, and unlock the untapped potential of human cognition.",
+    "btnText": "Know More",
+    "btnLink": "/about"
+  },
+  "promoSection": {
+    "isVisible": true,
+    "addressTitle": "Address",
+    "addressText": "Daves Academy, moti Bhvan , Dr. D’Silva Road, Dadar – West Mumbai - 400028",
+    "attendTitle": "Why should you attend?",
+    "attendList": "Experience Motivational Speaker like nowhere else\nBhupesh Dave\nLorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda, pariatur.\nLorem ipsum dolor sit amet consectetur, adipisicing elit.\nLorem ipsum dolor sit amet consectetur.",
+    "aboutTitle": "About",
+    "aboutDesc": "If you are looking for something that will stand-out and create a stunning impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect outcome for your event.",
+    "btnText": "Book Now",
+    "btnLink": "/contact",
+    "artists": [
+      {
+        "name": "Bhupesh Dave",
+        "image": "images/about.jpg"
+      }
+    ],
+    "artistSectionTitle": "Artist"
+  },
+  "statsSection": {
+    "isVisible": true,
+    "stats": [
+      {
+        "number": "10",
+        "suffix": "+",
+        "text": "Years Experience",
+        "color": "#8B1E32"
+      },
+      {
+        "number": "500",
+        "suffix": "+",
+        "text": "Shows Worldwide",
+        "color": "#4B296B"
+      },
+      {
+        "number": "500",
+        "suffix": "k+",
+        "text": "Minds Astonished",
+        "color": "#006D77"
+      },
+      {
+        "number": "100",
+        "suffix": "%",
+        "text": "Unforgettable",
+        "color": "#D4AF37"
+      }
+    ]
+  },
+  "expertiseSection": {
+    "isVisible": true,
+    "sectionName": "02 // EXPERTISE",
+    "subtitle": "Services Offered",
+    "cards": [
+      {
+        "id": "exp-1784560000001",
+        "title": "Corporate Mentalism",
+        "days": "High Impact",
+        "desc": "Elevate your corporate events with mind-bending psychological entertainment tailored for professionals and executives.",
+        "tags": "Mind Reading • Influence • Engagement",
+        "audience": "FOR BUSINESSES",
+        "colorClass": "bg-pillar-burgundy",
+        "hidden": false
+      },
+      {
+        "id": "exp-1784560000002",
+        "title": "Private Shows",
+        "days": "Exclusive",
+        "desc": "Intimate, unforgettable experiences designed for private parties, VIP gatherings, and elite celebrations.",
+        "tags": "Interactive • Personal • Astonishing",
+        "audience": "FOR INDIVIDUALS",
+        "colorClass": "bg-pillar-teal",
+        "hidden": false
+      },
+      {
+        "id": "exp-1784560000003",
+        "title": "Workshops",
+        "days": "Transformative",
+        "desc": "Unlock your own potential through specialized sessions on body language, memory enhancement, and perception.",
+        "tags": "Education • Psychology • Growth",
+        "audience": "FOR LEARNERS",
+        "colorClass": "bg-pillar-purple",
+        "hidden": false
+      }
+    ]
+  },
+  "socialMedia": [
+    {
+      "icon": "fa-brands fa-instagram",
+      "label": "Instagram",
+      "url": "https://instagram.com/bhupeshdave._"
+    },
+    {
+      "icon": "fa-solid fa-globe",
+      "label": "Website",
+      "url": "http://bhupeshdave.com"
+    },
+    {
+      "icon": "fa-solid fa-envelope",
+      "label": "Email",
+      "url": "mailto:bhupeshdave@gmail.com"
+    },
+    {
+      "icon": "fa-solid fa-phone",
+      "label": "Phone",
+      "url": "tel:+919820038976"
+    },
+    {
+      "icon": "fa-brands fa-facebook",
+      "label": "Facebook",
+      "url": "https://www.facebook.com/bhupesh.dave.836866"
+    },
+    {
+      "icon": "fa-brands fa-youtube",
+      "label": "YouTube",
+      "url": "https://www.youtube.com/@bhupeshdave6202"
+    }
+  ],
+  "contactInfo": [
+    {
+      "id": "ci-1",
+      "icon": "fa-solid fa-location-dot",
+      "title": "Headquarters",
+      "content": "Daves Academy, Moti Bhuvan\nDr. D'Silva Road, Dadar West, Mumbai - 400028",
+      "link": ""
+    },
+    {
+      "id": "ci-2",
+      "icon": "fa-solid fa-phone",
+      "title": "Phone",
+      "content": "+91 98200 38976",
+      "link": "tel:+919820038976"
+    },
+    {
+      "id": "ci-3",
+      "icon": "fa-solid fa-envelope",
+      "title": "Email",
+      "content": "bhupeshdave@gmail.com",
+      "link": "mailto:bhupeshdave@gmail.com"
+    }
+  ],
+  "ctaSection": {
+    "isVisible": true,
+    "titleRegular": "Ready for the",
+    "titleGold": "Impossible?",
+    "description": "Elevate your next event with an unforgettable experience of psychological illusion and mind reading.",
+    "btnText": "Book Mr. B Now",
+    "btnLink": "/contact"
+  },
+  "quotesSection": {
+    "isVisible": true,
+    "sectionName": "04 // GLIMPSES",
+    "sectionSubtitle": "Past Events & Testimonials",
+    "quotes": [
+      {
+        "id": "quote-1",
+        "quote": "Absolutely mind-blowing. I've never seen anything like it. He knew exactly what I was thinking before I even knew it myself.",
+        "author": "Corporate Executive",
+        "role": "Mumbai",
+        "hidden": false
+      },
+      {
+        "id": "quote-2",
+        "quote": "Mr. B brought an unmatched level of sophistication and astonishment to our annual gala. Highly recommended for any premium event.",
+        "author": "Event Organizer",
+        "role": "Delhi",
+        "hidden": false
+      },
+      {
+        "id": "quote-3",
+        "quote": "The level of psychological precision Bhupesh Dave displays is simply astonishing. Our entire board of directors was mesmerized.",
+        "author": "Managing Director",
+        "role": "Tech Global",
+        "hidden": false
+      },
+      {
+        "id": "quote-5",
+        "quote": "Bhupesh Dave doesn't just perform magic; he reads the human mind with effortless elegance and charm.",
+        "author": "Senior Vice President",
+        "role": "Financial Services",
+        "hidden": false
+      },
+      {
+        "id": "quote-6",
+        "quote": "Our audience was left completely spellbound. Mr. B's interactive mind reading was the absolute highlight of our conference.",
+        "author": "HR Director",
+        "role": "Multinational Corp",
+        "hidden": false
+      },
+      {
+        "id": "quote-7",
+        "quote": "Pure genius! The mentalism acts were wrapped in humor, class, and absolute psychological brilliance.",
+        "author": "Event Curator",
+        "role": "Luxury Brand Showcase",
+        "hidden": false
+      },
+      {
+        "id": "quote-8",
+        "quote": "He bent metal, unlocked thoughts, and created moments of pure wonder that people are still talking about weeks later.",
+        "author": "Marketing Lead",
+        "role": "Automotive Giant",
+        "hidden": false
+      },
+      {
+        "id": "quote-9",
+        "quote": "Exceeded all expectations. Bhupesh Dave delivers world-class psychological illusion that captivates every single person in the room.",
+        "author": "Operations Head",
+        "role": "Bangalore IT Summit",
+        "hidden": false
+      },
+      {
+        "id": "quote-10",
+        "quote": "A masterpiece of intuition, influence, and mystery. Watching Mr. B live is an experience you will remember for a lifetime.",
+        "author": "VP Corporate Communications",
+        "role": "Global Enterprises",
+        "hidden": false
+      },
+      {
+        "id": "quote-11",
+        "quote": "Mind reading at its highest level. Interactive, witty, and profoundly astonishing from start to finish.",
+        "author": "Regional Director",
+        "role": "FMCG Enterprise",
+        "hidden": false
+      },
+      {
+        "id": "quote-12",
+        "quote": "Bhupesh Dave connects with the audience on a level I have never witnessed before. Extraordinary talent!",
+        "author": "Festival Organizer",
+        "role": "Cultural Arts Forum",
+        "hidden": false
+      },
+      {
+        "id": "quote-13",
+        "quote": "The energy and wonder he brings to the stage is unmatched. A true maestro of the human mind.",
+        "author": "Keynote Presenter",
+        "role": "Leadership Conclave",
+        "hidden": false
+      },
+      {
+        "id": "quote-14",
+        "quote": "An electrifying experience! Every demonstration felt impossibly real and completely mind-bending.",
+        "author": "Managing Editor",
+        "role": "National Media Group",
+        "hidden": false
+      },
+      {
+        "id": "quote-15",
+        "quote": "If you want your guests to experience genuine awe, Mr. B is the ultimate choice for any corporate or VIP event.",
+        "author": "VIP Event Planner",
+        "role": "Goa Resort & Convention",
+        "hidden": false
+      },
+      {
+        "id": "quote-16",
+        "quote": "Astonishing telepathy and psychological mastery. Bhupesh Dave proved why he holds the title of Indian Super Brain.",
+        "author": "Convener",
+        "role": "Annual Industry Awards",
+        "hidden": false
+      },
+      {
+        "id": "quote-17",
+        "quote": "The room was filled with gasps and applause. A hypnotic blend of psychological illusion and high-impact entertainment.",
+        "author": "Chief Operating Officer",
+        "role": "Pharma Leader",
+        "hidden": false
+      },
+      {
+        "id": "quote-18",
+        "quote": "Unbelievable accuracy and flawless execution. Mr. B is redefining entertainment for modern audiences.",
+        "author": "Creative Director",
+        "role": "Ad Agency Network",
+        "hidden": false
+      },
+      {
+        "id": "quote-19",
+        "quote": "Captivating, funny, and deeply impressive. Our corporate team was buzzing with excitement long after the show.",
+        "author": "Managing Director",
+        "role": "Real Estate Group",
+        "hidden": false
+      },
+      {
+        "id": "quote-20",
+        "quote": "Bhupesh Dave makes the impossible seem effortlessly real. An absolute master of his craft!",
+        "author": "Executive Producer",
+        "role": "Star Media Awards",
+        "hidden": false
+      }
+    ]
+  },
+  "areaOfInterests": [
+    {
+      "id": "aoi-1",
+      "value": "corporate",
+      "label": "Corporate Keynote & Training"
+    },
+    {
+      "id": "aoi-2",
+      "value": "show",
+      "label": "Sixth Sense Mentalism Show"
+    },
+    {
+      "id": "aoi-3",
+      "value": "academy",
+      "label": "Magic Academy Enrollment"
+    },
+    {
+      "id": "aoi-4",
+      "value": "workshop",
+      "label": "Student & Parent Workshop"
+    },
+    {
+      "id": "aoi-5",
+      "value": "other",
+      "label": "Other Inquiry"
+    }
+  ],
+  "aboutUsPage": {
+    "heroSubtitle": "India’s One and only Mentalist, Mind reader, Magician and Motivational trainer with ISO 9001:2008 accreditation.",
+    "box1": {
+      "title": "MR. B @ BHUPESH DAVE",
+      "highlight": "Mr.B is India’s One and only Mentalist, Mind reader, Magician and Motivational trainer with ISO 9001:2008 accreditation.",
+      "list": "Only mentalist awarded international Merlin medal.\nRecipient of Police mitra title by MUMBAI and Maharashtra Police.\nMr.B is considered to be the foremost experimentalist performing today in India. His unique mix of natural warmth with an unmatchable ability to read thoughts, bend metal objects with his mind, and scores of other amazing demonstrations of one’s mental ability, has made him one of the most sought-after corporate/Private entertainers in the world.\nHe has performed and trained all around the world for top corporate companies. High profile business personalities and celebrities choose Mr.B to perform at their private parties, wedding ceremonies and their corporate events.\nIf you are looking for something that will stand-out and create a stunning impact, you can’t do better than choosing the mind of Mr.B, a guarantee of the perfect outcome for your event.\nInteractive, Humorous, and total audience participation.\nPerforms in English, Hindi, Marathi and Gujarati with ease."
+    },
+    "box2": {
+      "title": "THE SHOW - SIXTH SENSE",
+      "text": "A mind miracle and thrilling program of Mentalism by Mr.B, is an interactive and humorous Program which involves audience in total. Sixth sense is a program with difference where Mr.B will read peoples mind and through telepathy, prediction and telekinesis, will take the audience in a different world of experiences.\nSurprise, thrill and excitement, Mr.B will not only read peoples mind but also display effects like metal bending, blind fold which will eventually surprise the audience and fill them with a thought process of positivity and maximizing their potential."
+    },
+    "box3": {
+      "title": "ACHIEVEMENTS & EVENTS",
+      "list": "Non Align Movement Act Award\nNavnirman Gaurav Puraskar\nMotivational Training Programs all over INDIA\nNavi Mumbai Police Training Program\nMumbai Police Crime Branch Training\nTraining Programs in Confidence building and memory development for Mentally Challenged Kids\nMentalism Shows for Cancer Patient.\nPerformed on invitation at Kargil to commemorate “Vijay Divas” on 26th July with actual Kargil warriors\nInvited by R.R. Rifles at Kashmir front and border villages to perform for military and civilians."
+    },
+    "box4": {
+      "title": "ABOUT MOTIVATIONAL TRAINER",
+      "text": "<span class=\"highlight-text\">Bhupesh Dave</span> is a multidimensional personality, success coach, memory expert who has been trained by international trainers like Anthony Robbins, Stephen Covey, Zig Ziglar, Aporesh Acharya (trainer of Dale Carnegie institute), Rajesh Tagore, India’s one of the powerful & result oriented sales trainer.\nMr. Dave is the Managing Director of Yash Institute and principle of Dave’s Academy. Motivational speaker and trainer has been conducting power program since 1996 addressed over 3,00,000 of man and woman in public and private seminars in the field covering different topics like Memory enhancement, Positive attitude, Goal setting, Team building, Basic and Advanced public speaking, basic and professional selling skills, Art of marketing etc for multinational companies and success mind people.\nCEO of Event management Co., Mr. Dave has served companies like - LIC of India, Hindustan Lever limited, Mumbai Police, Lintas Advertising Agency, Indian Express Group, TV9 Chanel, Cello Group of Co., Mahavir Distributions (Karnataka) Nirlep, Bahwan Group Of co. (Muscat), Jain Jagruti Centers, Aurangabad co-op banks, Lions clubs, Rotary clubs and Rotract RYLA.\nHe has conducted his seminars, workshops and programs not only all over India but also in the countries like United Kingdom, East Africa, Dubai, Muscat, Kenya, Singapore, Thailand, Nepal and Hong Kong. Recipient of Gold Medal at non aligned movement youth festival and honored by the then president of India Giani Zail Singh."
+    }
+  },
+  "showGallery": true,
+  "gallery": [
+    {
+      "id": "gal-1789643566236",
+      "type": "image",
+      "title": "",
+      "description": "",
+      "url": "images/gallery/img_1789643558695.jpg",
+      "thumbnail": "",
+      "date": "2026-09-17",
+      "hidden": false
+    },
+    {
+      "id": "gal-9999999",
+      "type": "video",
+      "title": "Showreel 1",
+      "description": "",
+      "url": "images/gallery/showreel_1.mp4",
+      "thumbnail": "",
+      "date": "2026-09-17",
+      "hidden": false
+    },
+    {
+      "id": "gal-1789641459091",
+      "type": "news",
+      "title": "Showreel",
+      "description": "",
+      "url": "images/gallery/img_1789641451215.jpg",
+      "thumbnail": "",
+      "date": "2026-09-17",
+      "hidden": false
+    },
+    {
+      "id": "1789641271773",
+      "type": "news",
+      "title": "News Cutouts & Press Clippings",
+      "description": "",
+      "date": "2026-09-17",
+      "url": "images/gallery/img_1789641261711.jpg",
+      "images": [
+        "images/gallery/img_1789641261711.jpg",
+        "images/gallery/img_1789641264305.jpg"
+      ],
+      "is_group": true,
+      "hidden": false
+    },
+    {
+      "id": "gal-1789635852702",
+      "type": "video",
+      "title": "News latter",
+      "description": "",
+      "url": "https://www.youtube.com/@bhupeshdave6202",
+      "thumbnail": "",
+      "date": "2026-09-17",
+      "hidden": false
+    }
+  ]
 }
